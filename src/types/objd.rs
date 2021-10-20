@@ -1,6 +1,8 @@
+use deku::prelude::*;
+
 #[derive(PartialEq, Debug, DekuRead, DekuWrite)]
 struct ObjectData {
-    filename: String,
+    //filename: String,
     version: u32,
     initial_stack_size: u16,
     default_wall_adjacent_flags: u16,
@@ -94,8 +96,8 @@ struct ObjectData {
     three_d_object_type: u16,
     community_sort_flags: u16,
     dream_flags: u16,
+    /*
     #[deku(pad_bytes_before = "12")]
     filename_closer: String,
-
-
+     */
 }

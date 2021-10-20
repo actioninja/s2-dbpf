@@ -1,3 +1,6 @@
+use deku::prelude::*;
+use const_format::formatcp;
+
 pub enum FormatKind {
     UiData = 0x0,
     WallGraph = 0x0A284D0B,
@@ -271,12 +274,12 @@ impl FormatKind {
             FormatKind::GeometricNode => "Geometric Node",
             FormatKind::Lightmap => "Lightmap",
             FormatKind::WallLayer => "Wall Layer",
-            FormatKind::Unknown1 => format!("Unknown 1 ({:#X})", FormatKind::Unknown1 as u32),
+            FormatKind::Unknown1 => formatcp!("Unknown 1 ({:#x})", FormatKind::Unknown1 as u32),
             FormatKind::JpegImage => "JPEG Image",
             FormatKind::FamilyTies => "Family Ties",
             FormatKind::PredictiveMaps => "Predictive Maps",
             FormatKind::SoundEffects => "Sound Effects",
-            FormatKind::Unknown2 => format!("Unknown 2 ({:#X})", FormatKind::Unknown2 as u32),
+            FormatKind::Unknown2 => formatcp!("Unknown 2 ({:#x})", FormatKind::Unknown2 as u32),
             FormatKind::SimDescription => "Sim Description",
             FormatKind::FencePostLayer => "Fence Post Layer",
             FormatKind::Roof => "Roof",
@@ -292,9 +295,9 @@ impl FormatKind {
             FormatKind::Light => "Light",
             FormatKind::StringMap => "String Map",
             FormatKind::VertexLayer => "Vertex Layer",
-            FormatKind::Unknown3 => format!("Unknown ({:#X})", FormatKind::Unknown3 as u32),
+            FormatKind::Unknown3 => formatcp!("Unknown ({:#x})", FormatKind::Unknown3 as u32),
             FormatKind::SimRelations => "Sim Relations",
-            FormatKind::Unknown4 => format!("Unknown ({:#X})", FormatKind::Unknown4 as u32),
+            FormatKind::Unknown4 => formatcp!("Unknown ({:#x})", FormatKind::Unknown4 as u32),
             FormatKind::FacialStructure => "Facial Structure",
             FormatKind::MaxisMaterialShader => "Maxis Material Shader",
             FormatKind::SimWantsAndFears => "Sim Wants and Fears",

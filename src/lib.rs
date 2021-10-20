@@ -14,27 +14,16 @@ mod tests {
     }
 }
 
-#[derive(BinRead)]
-#[br(little, magic = b"DBPF")]
-struct DbpfRaw {
-
-}
-
 #[derive(Debug, PartialEq, DekuRead, DekuWrite)]
 #[deku(endian = "little", magic = b"DBPF")]
 struct DbpfHeader {
-    #[br(assert(major_version == 1, "Not compatible with V2 DBPF (Spore)"))]
     major_version: u32,
-    #[br(assert(minor_version == 1, "Not compatible with V1.0 DBPF (Simcity 4)"))]
     minor_version: u32,
-    #[br(assert(major_user_version == 0, "Malformed DBPF"))]
     major_user_version: u32,
-    #[br(assert(minor_user_version == 1, "Malformed DBPF"))]
     minor_user_version: u32,
     flags: u32,
     date_created: u32,
     date_modified: u32,
-    #[br(assert(index_major_version == 7, "Malformed DBPF Index Version"))]
     index_major_version: u32,
     index_entry_count: u32,
     first_index_entry_offset: u32,
