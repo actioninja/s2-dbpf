@@ -99,9 +99,19 @@ impl CompressedFile {
                 let dest_pos = decomp_index - src_pos;
                 println!("dest pos: {}", dest_pos);
 
-                let (dst, src) = decompressed.split_at_mut(src_pos);
+                //If the sections do not overlap, we can do ultra fast
+                //memory section copy
+                if (dest_pos + length) < src_pos {
+                    let (dst, src) = decompressed.split_at_mut(src_pos);
 
-                dst[dest_pos..dest_pos + length].copy_from_slice(&src[..length]);
+                    dst[dest_pos..dest_pos + length].copy_from_slice(&src[..length]);
+                }
+                //If they do, slower character by character copy is required
+                else {
+                    for i in 0..length {
+                        decompressed[dest_pos + i as usize] = decompressed[src_pos + i as usize];
+                    }
+                }
 
                 decomp_index += length;
 
