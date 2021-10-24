@@ -1,3 +1,4 @@
+#[allow(warnings)]
 mod constants;
 mod types;
 mod dbpf;
