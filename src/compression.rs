@@ -1,6 +1,9 @@
 use binrw::*;
 use binrw::io::Cursor;
 use std::str;
+use debug_print::{
+    debug_println as dprintln,
+};
 use crate::helpers::{copy_within_slice, U24};
 
 const MAGIC_QFS_ID: u16 = 0x10FB;
@@ -42,7 +45,7 @@ impl CompressedFile {
         //TODO: Hopefully in the long run, this will be replaced with some declarative niceness
         while comp_pos < comp_buf.len() {
             let control = &comp_buf[comp_pos];
-            println!("[cmp: {}, dcmp: {}] control: {:#X}", comp_pos, decomp_pos, control);
+            dprintln!("[cmp: {}, dcmp: {}] control: {:#X}", comp_pos, decomp_pos, control);
 
             // Rough explanation of compression scheme:
             // Operates somewhat like LZSS; encoded control bytes are used to determine how to
@@ -94,7 +97,7 @@ impl CompressedFile {
                 // Layout: 0FFN-NNPP|FFFF-FFFF
                 0x00..=0x7F => {
                     let control_slice = &comp_buf[comp_pos..comp_pos + 2];
-                    println!("Full control slice: {:X?}", control_slice);
+                    dprintln!("Full control slice: {:X?}", control_slice);
                     comp_pos += 2;
                     let num_plain_text: usize = (control_slice[0] & 0b0000_0011) as usize;
 
@@ -113,7 +116,7 @@ impl CompressedFile {
                 // Layout: 10NN-NNNN|PPFF-FFFF|FFFF-FFFF
                 0x80..=0xBF => {
                     let control_slice = &comp_buf[comp_pos..comp_pos + 3];
-                    println!("Full control slice: {:X?}", control_slice);
+                    dprintln!("Full control slice: {:X?}", control_slice);
                     comp_pos += 3;
 
                     let num_plain_text: usize = ((control_slice[1] & 0b1100_0000) >> 6) as usize;
@@ -133,7 +136,7 @@ impl CompressedFile {
                 // Layout: 110F-NNPP|FFFF-FFFF|FFFF-FFFF|NNNN-NNNN
                 0xC0..=0xDF => {
                     let control_slice = &comp_buf[comp_pos..comp_pos + 4];
-                    println!("Full control slice: {:02X?}", control_slice);
+                    dprintln!("Full control slice: {:02X?}", control_slice);
                     comp_pos += 4;
 
                     let num_plain_text: usize = (control_slice[0] & 0b0000_0011) as usize;
@@ -177,7 +180,7 @@ impl CompressedFile {
             };
 
             if let Some(plaintext_copy) = control_result.0 {
-                println!("Copying plaintext of length: {}", plaintext_copy);
+                dprintln!("Copying plaintext of length: {}", plaintext_copy);
                 let src_slice = &comp_buf[comp_pos..comp_pos + plaintext_copy];
                 decomp_buf[decomp_pos..decomp_pos + plaintext_copy].copy_from_slice(src_slice);
                 comp_pos += plaintext_copy;
@@ -185,10 +188,10 @@ impl CompressedFile {
             }
 
             if let Some((offset, length)) = control_result.1 {
-                println!("Copying length {} to {}", length, offset);
+                dprintln!("Copying length {} to {}", length, offset);
                 let src_pos = decomp_pos - offset;
-                println!("decomp index: {}", decomp_pos);
-                println!("src pos: {}", src_pos);
+                dprintln!("decomp index: {}", decomp_pos);
+                dprintln!("src pos: {}", src_pos);
 
                 // If the sections do not overlap, we can do ultra fast memory section copy
                 if (src_pos + length) < decomp_pos {
@@ -207,7 +210,7 @@ impl CompressedFile {
                 decomp_pos += length;
 
             }
-            println!("{:X?}", decomp_buf);
+            dprintln!("{:X?}", decomp_buf);
         }
 
         decomp_buf
