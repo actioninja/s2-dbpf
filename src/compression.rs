@@ -1,23 +1,26 @@
-use deku::prelude::*;
+use binrw::*;
+use binrw::io::Cursor;
+use crate::helpers::U24;
 
 const MAGIC_QFS_ID: u16 = 0x10FB;
 const COMPRESSION_HEADER_SIZE: u32 = 9;
 
-#[derive(PartialEq, Debug, Copy, Clone, DekuRead, DekuWrite)]
-#[deku(endian="little")]
+#[binrw]
+#[brw(little)]
+#[derive(PartialOrd, PartialEq, Debug)]
 struct CompressionHeader {
-    #[deku(bytes = 4)]
     compressed_size: u32,
-    #[deku(assert_eq = "0xFB10")]
-    compression_id: u16,
-    #[deku(endian = "big", bytes = 3)]
+    #[brw(big, magic = 0x10FBu16)]
+    #[br(map = |x: U24| *x)]
+    #[bw(map = |x: &u32| U24(*x))]
     uncompressed_size: u32,
 }
 
-#[derive(PartialEq, Debug, DekuRead, DekuWrite)]
+#[binrw]
+#[derive(PartialEq, Debug)]
 struct CompressedFile {
     header: CompressionHeader,
-    #[deku(count = "header.compressed_size - 9")]
+    #[br(count = (header.compressed_size - 9))]
     data: Vec<u8>,
 }
 
@@ -122,23 +125,29 @@ impl CompressedFile {
     }
 }
 
+impl TryFrom<&Vec<u8>> for CompressedFile {
+    type Error = &'static str;
 
-fn vec_to_compressed(in_vec: &Vec<u8>) -> Option<CompressedFile> {
-    if &in_vec[4..=5] == MAGIC_QFS_ID.to_be_bytes() {
-        let (_rest, mut val) = CompressedFile::from_bytes((in_vec.as_ref(), 0)).unwrap();
-        return Some(val);
+    fn try_from(in_vec: &Vec<u8>) -> Result<Self, Self::Error> {
+        if &in_vec[4..=5] == MAGIC_QFS_ID.to_be_bytes() {
+            let mut reader = Cursor::new(in_vec);
+            let val = CompressedFile::read(&mut reader).unwrap();
+            Ok(val)
+        } else {
+            return Err("Data is not compressed; use \"CompressedFile::compress\"");
+        }
+
     }
 
-    None
 }
 
 mod tests {
-    use crate::compression::{CompressedFile, vec_to_compressed};
+    use crate::compression::{CompressedFile};
 
     #[test]
     fn is_compressed_works() {
         let data: Vec<u8> = vec![0x30, 0x00, 0x00, 0x00, 0x10, 0xFB, 0x00, 0x01, 0x40, 0xE3, 0x53, 0x65, 0x6D, 0x69, 0x2D, 0x67, 0x6C, 0x6F, 0x62, 0x61, 0x6C, 0x20, 0x66, 0x69, 0x6C, 0x65, 0xAB, 0x40, 0x00, 0x00, 0xE1, 0x0D, 0x50, 0x65, 0x72, 0x73, 0x6F, 0x6E, 0x47, 0x08, 0x41, 0xC2, 0x00, 0x00, 0xEC, 0x73, 0xA3, 0xFC];
-        let compressed = vec_to_compressed(&data).unwrap();
+        let compressed = CompressedFile::try_from(&data).unwrap();
         println!("{:X?}", compressed);
         let decompressed = compressed.decompress();
     }

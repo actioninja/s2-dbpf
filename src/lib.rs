@@ -2,8 +2,9 @@ mod constants;
 mod types;
 mod dbpf;
 mod compression;
+mod helpers;
 
-use deku::prelude::*;
+use binrw::*;
 
 #[cfg(test)]
 mod tests {
@@ -14,8 +15,9 @@ mod tests {
     }
 }
 
-#[derive(Debug, PartialEq, DekuRead, DekuWrite)]
-#[deku(endian = "little", magic = b"DBPF")]
+#[binrw]
+#[derive(Debug, PartialEq)]
+#[brw(little, magic = b"DBPF")]
 struct DbpfHeader {
     major_version: u32,
     minor_version: u32,
@@ -31,7 +33,7 @@ struct DbpfHeader {
     hole_entry_count: u32,
     hole_offset: u32,
     hole_size: u32,
-    #[deku(pad_bytes_after = "32")]
+    #[brw(pad_after = 32)]
     index_minor_version: u32,
 }
 

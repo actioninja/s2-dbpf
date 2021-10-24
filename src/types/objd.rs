@@ -1,8 +1,10 @@
-use deku::prelude::*;
+use binrw::{binrw, NullString};
 
-#[derive(PartialEq, Debug, DekuRead, DekuWrite)]
+#[binrw]
+#[derive(PartialEq, Debug)]
 struct ObjectData {
-    //filename: String,
+    filename: NullString,
+    #[brw(pad_size_to = 64)]
     version: u32,
     initial_stack_size: u16,
     default_wall_adjacent_flags: u16,
