@@ -4,7 +4,17 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.                   /
 ////////////////////////////////////////////////////////////////////////////////
 
+use crate::constants::data_kinds::FormatKind;
 use binrw::*;
+
+#[binrw]
+#[derive(Debug, PartialEq)]
+struct Dbpf {
+    header: DbpfHeader,
+    #[brw(seek(), args(header.index_minor_version == 2))]
+    index_table: DbpfIndexTable,
+    data: Vec<u8>,
+}
 
 #[binrw]
 #[derive(Debug, PartialEq)]
@@ -29,24 +39,23 @@ struct DbpfHeader {
 }
 
 
-
-
 #[binrw]
 #[derive(Debug, PartialEq)]
-#[brw(little)]
+#[brw(little, import(has_hi: bool))]
 struct DbpfIndexTable {
+    #[br(args(has_hi))]
     entries: Vec<DbpfIndexEntry>,
 }
 
 #[binrw]
 #[derive(Debug, PartialEq)]
-#[brw(little)]
+#[brw(little, import(has_hi: bool))]
 struct DbpfIndexEntry {
     kind: FormatKind,
     group_id: u32,
     instance_id_lo: u32,
-    #[brw(skip)]
-    instance_id_hi: u32,
+    #[br(if(has_hi))]
+    instance_id_hi: Option<u32>,
     location_in_archive: u32,
     size_in_archive: u32,
 }

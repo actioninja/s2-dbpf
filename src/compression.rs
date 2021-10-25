@@ -58,6 +58,8 @@ impl CompressedFile {
         }
     }
 
+    /// Decompresses the data in the CompressedFile, yielding a Vec<u8>
+    /// This shouldn't be able to fail, data is already checked to be compressed
     pub fn decompress(&self) -> Vec<u8> {
         let comp_buf = &self.data;
         //Pre-allocate the decompression buffer to avoid having to resize a vec during the process
@@ -244,6 +246,11 @@ impl CompressedFile {
 impl TryFrom<&Vec<u8>> for CompressedFile {
     type Error = &'static str;
 
+    /// Rapid already compressed data to `CompressedData` conversion.
+    ///
+    /// # Errors
+    /// returns `Err("Data is not compressed; use \"CompressedFile::compress\")`
+    /// if the data isn't compressed, slower `compress()` call is needed
     fn try_from(in_vec: &Vec<u8>) -> Result<Self, Self::Error> {
         if &in_vec[4..=5] == MAGIC_QFS_ID.to_be_bytes() {
             let mut reader = Cursor::new(in_vec);

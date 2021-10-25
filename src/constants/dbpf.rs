@@ -5,7 +5,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-
-const INDEX_TABLE_FORMAT_0: u32 = 0;
-const INDEX_TABLE_FORMAT_1: u32 = 1;
-const INDEX_TABLE_FORMAT_2: u32 = 2;
+enum IndexTableFormat {
+    TypeMinusOne = 0,
+    TypeZero = 1,
+    TypeOne = 2,
+}

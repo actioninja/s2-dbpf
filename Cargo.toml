@@ -15,4 +15,4 @@ keywords = ["sims", "two", "dbpf", "package", "parsing"]
 [dependencies]
 binrw = "0.8"
 debug_print = "1.0"
-const_format = { version = "0.2", features = ["fmt", "const_generics"] }
+const_format = "0.2.22"
