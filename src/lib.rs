@@ -1,11 +1,10 @@
+use binrw::*;
+
 #[allow(warnings)]
-mod constants;
+pub mod constants;
 mod types;
-mod dbpf;
 mod compression;
 mod helpers;
-
-use binrw::*;
 
 #[cfg(test)]
 mod tests {
@@ -44,8 +43,4 @@ struct DbpfIndexEntry {
     instance_id_lo: u32,
     instance_id_hi: u32,
     payload: Vec<u8>,
-}
-
-enum DbpfFileType {
-    Bhav
 }

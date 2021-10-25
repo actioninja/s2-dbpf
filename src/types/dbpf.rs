@@ -21,3 +21,26 @@ struct DbpfHeader {
     #[brw(pad_after = 32)]
     index_minor_version: u32,
 }
+
+
+
+
+#[binrw]
+#[derive(Debug, PartialEq)]
+#[brw(little)]
+struct DbpfIndexTable {
+    entries: Vec<DbpfIndexEntry>,
+}
+
+#[binrw]
+#[derive(Debug, PartialEq)]
+#[brw(little)]
+struct DbpfIndexEntry {
+    kind: FormatKind,
+    group_id: u32,
+    instance_id_lo: u32,
+    #[brw(skip)]
+    instance_id_hi: u32,
+    location_in_archive: u32,
+    size_in_archive: u32,
+}

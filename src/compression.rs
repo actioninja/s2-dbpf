@@ -22,7 +22,7 @@ struct CompressionHeader {
 
 #[binrw]
 #[derive(PartialEq, Debug)]
-struct CompressedFile {
+pub struct CompressedFile {
     header: CompressionHeader,
     //compressed_size includes the length of the header, and the header is always 9 bytes long
     #[br(count = (header.compressed_size - 9))]
@@ -30,11 +30,29 @@ struct CompressedFile {
 }
 
 impl CompressedFile {
-    fn compress(in_vec: &Vec<u8>) -> CompressedFile {
-        todo!("Compression not currently implemented")
+    pub fn compress(in_vec: &Vec<u8>) -> Result<CompressedFile, Err(&'static str)> {
+        //Already compressed
+        if &in_vec[4..=5] == MAGIC_QFS_ID.to_be_bytes() {
+            Err("Already compressed!")
+        } else {
+            let uncompressed_len = in_vec.len();
+
+            todo!("Compression not yet implemented");
+            let compressed = vec![];
+
+            Ok(
+                CompressedFile {
+                    header: CompressionHeader {
+                        compressed_size: compressed.len() as u32,
+                        uncompressed_size: uncompressed_len as u32,
+                    },
+                    data: compressed,
+                }
+            )
+        }
     }
 
-    fn decompress(&self) -> Vec<u8> {
+    pub fn decompress(&self) -> Vec<u8> {
         let comp_buf = &self.data;
         //Pre-allocate the decompression buffer to avoid having to resize a vec during the process
         let mut decomp_buf: Vec<u8> = vec![0x00; self.header.uncompressed_size as usize];
