@@ -1,9 +1,15 @@
 [package]
 name = "s2-dbpf"
-version = "0.1.0"
+version = "0.0.0"
+description = "A crate providing both data formats and read/write for Sims 2 Data formats"
 edition = "2021"
+authors = ["actioninja"]
+license = "MPL-2.0"
+repository = "https://github.com/actioninja/s2-dbpf"
+readme = "README.md"
+categories = ["encoding", "data-structures", "parser-implementations", "game-development"]
+keywords = ["sims", "two", "dbpf", "package", "parsing"]
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
 binrw = "0.8"
