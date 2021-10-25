@@ -1,8 +1,9 @@
 [package]
 name = "s2-dbpf"
 version = "0.0.0"
-description = "A crate providing both data formats and read/write for Sims 2 Data formats"
 edition = "2021"
+rust-version = "1.56"
+description = "A crate providing both data formats and read/write for Sims 2 Data formats"
 authors = ["actioninja"]
 license = "MPL-2.0"
 repository = "https://github.com/actioninja/s2-dbpf"
