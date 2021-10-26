@@ -5,13 +5,14 @@ A Rust crate for efficient parsing and writing of data formats of The Sims 2.
 Currently heavily work in progress and not ready for usage.
 
 ## Goals
- - Provide a "close to format" method of working with DBPF files and all the data formats contained within them
- - Automate away as much of the potential vectors of producing malformed files as possible
- - Be as stack friendly and efficient as possible while still retaining readability (avoid "memory magic")
- - Act as a form of documentation of the data formats
- 
+
+- Provide a "close to format" method of working with DBPF files and all the data formats contained within them
+- Automate away as much of the potential vectors of producing malformed files as possible
+- Be as stack friendly and efficient as possible while still retaining readability (avoid "memory magic")
+- Act as a form of documentation of the data formats
 
 ## License
+
 s2-dbpf is licensed under the Mozilla Public License 2.0 (MPL 2.0)
 
 According to tl;drLegal, MPL is:

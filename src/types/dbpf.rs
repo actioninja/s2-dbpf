@@ -4,16 +4,20 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.                   /
 ////////////////////////////////////////////////////////////////////////////////
 
+use crate::compression::CompressedFile;
 use crate::constants::data_kinds::FormatKind;
 use binrw::*;
+use std::io::SeekFrom;
 
 #[binrw]
 #[derive(Debug, PartialEq)]
 struct Dbpf {
     header: DbpfHeader,
-    #[brw(seek(), args(header.index_minor_version == 2))]
-    index_table: DbpfIndexTable,
-    data: Vec<u8>,
+    #[brw(seek_before(SeekFrom::Start(header.index_location as u64)))]
+    #[br(args { count: header.index_entry_count as usize, inner: (header.index_minor_version == 2,) })]
+    index_table: Vec<DbpfIndexEntry>,
+    //#[brw(restore_position)]
+    //data: Vec<u8>,
 }
 
 #[binrw]
@@ -29,7 +33,7 @@ struct DbpfHeader {
     date_modified: u32,
     index_major_version: u32,
     index_entry_count: u32,
-    first_index_entry_offset: u32,
+    index_location: u32,
     index_size: u32,
     hole_entry_count: u32,
     hole_offset: u32,
@@ -38,18 +42,10 @@ struct DbpfHeader {
     index_minor_version: u32,
 }
 
-
 #[binrw]
 #[derive(Debug, PartialEq)]
-#[brw(little, import(has_hi: bool))]
-struct DbpfIndexTable {
-    #[br(args(has_hi))]
-    entries: Vec<DbpfIndexEntry>,
-}
-
-#[binrw]
-#[derive(Debug, PartialEq)]
-#[brw(little, import(has_hi: bool))]
+#[brw(little)]
+#[br(import(has_hi: bool))]
 struct DbpfIndexEntry {
     kind: FormatKind,
     group_id: u32,

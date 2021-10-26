@@ -4,13 +4,15 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.                   /
 ////////////////////////////////////////////////////////////////////////////////
 
-use binrw::*;
 use crate::constants::data_kinds::FormatKind;
+use binrw::*;
 
 #[binrw]
 #[derive(Debug, PartialEq)]
+#[brw(import(number_of_files: u32))]
 struct Dir {
-    entries: Vec<DirEntry>
+    #[br(count = number_of_files)]
+    entries: Vec<DirEntry>,
 }
 
 #[binrw]
@@ -19,6 +21,6 @@ struct DirEntry {
     type_id: FormatKind,
     group_id: u32,
     instance_id_lo: u32,
-    instance_id_hi: u32,
+    instance_id_hi: Option<u32>,
     decompressed_size: u32,
 }
