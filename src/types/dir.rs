@@ -10,7 +10,7 @@ use binrw::*;
 #[binrw]
 #[derive(Debug, PartialEq)]
 #[brw(import(number_of_files: u32))]
-struct Dir {
+pub struct Dir {
     #[br(count = number_of_files)]
     entries: Vec<DirEntry>,
 }

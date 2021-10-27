@@ -6,6 +6,7 @@
 
 use crate::compression::CompressedFile;
 use crate::constants::data_kinds::FormatKind;
+use crate::types::dir::Dir;
 use binrw::*;
 use std::io::SeekFrom;
 
@@ -16,8 +17,9 @@ struct Dbpf {
     #[brw(seek_before(SeekFrom::Start(header.index_location as u64)))]
     #[br(args { count: header.index_entry_count as usize, inner: (header.index_minor_version == 2,) })]
     index_table: Vec<DbpfIndexEntry>,
+    compression_table: Dir,
     //#[brw(restore_position)]
-    //data: Vec<u8>,
+    //data: Vec<u8>
 }
 
 #[binrw]
