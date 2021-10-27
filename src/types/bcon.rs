@@ -4,9 +4,17 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.                   /
 ////////////////////////////////////////////////////////////////////////////////
 
-mod bcon;
-mod bhav;
-mod dbpf;
-mod dir;
-mod objd;
-mod trcn;
+use binrw::*;
+
+#[binrw]
+#[derive(Debug, PartialEq)]
+#[brw(little)]
+struct Bcon {
+    file_name: NullString,
+    #[brw(pad_size_to = 64)]
+    count: u8,
+    //Unknown
+    flags: u8,
+    #[br(count(count))]
+    constants: Vec<i16>,
+}
