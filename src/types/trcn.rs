@@ -16,7 +16,7 @@ struct Trcn {
     unknown: u32,
     #[brw(pad_before = 32)]
     num_labels: u32,
-    #[brw(count = num_labels)]
+    #[br(count(num_labels as usize))]
     labels: Vec<BconLabel>,
 }
 
@@ -27,7 +27,8 @@ struct BconLabel {
     #[brw(pad_before = 32)]
     id_number: u32,
     name_length: u8,
-    #[br(count = name_length)]
+    #[br(count(name_length as usize), try_map = String::from_utf8)]
+    #[bw(map = |x: &String| x.as_bytes())]
     name: String,
     default_value: i16,
     min_value: i16,
