@@ -11,6 +11,7 @@ pub mod compression;
 pub mod constants;
 mod helpers;
 mod types;
+mod test_helpers;
 
 #[cfg(test)]
 mod tests {
