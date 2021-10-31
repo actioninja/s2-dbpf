@@ -5,7 +5,9 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 use binrw::*;
+#[cfg(test)]
 use proptest::prelude::*;
+#[cfg(test)]
 use test_strategy::Arbitrary;
 
 #[binrw]
@@ -45,6 +47,7 @@ pub struct Swaf {
 }
 
 //TODO: There probably is a better way to do this but I couldn't figure it out.
+#[cfg(test)]
 prop_compose! {
     fn swaf_mapper()(
         version in any::<SwafVersion>(),
@@ -88,6 +91,7 @@ prop_compose! {
     }
 }
 
+#[cfg(test)]
 impl Arbitrary for Swaf {
     type Parameters = ();
 
@@ -99,7 +103,8 @@ impl Arbitrary for Swaf {
 }
 
 #[binrw]
-#[derive(Arbitrary, Debug, PartialEq)]
+#[derive(Debug, PartialEq)]
+#[cfg_attr(test, derive(Arbitrary))]
 #[brw(little)]
 pub enum SwafVersion {
     #[brw(magic(0x01u32))]
@@ -111,7 +116,8 @@ pub enum SwafVersion {
 }
 
 #[binrw]
-#[derive(Arbitrary, Debug, PartialEq)]
+#[derive(Debug, PartialEq)]
+#[cfg_attr(test, derive(Arbitrary))]
 #[brw(little)]
 pub struct PreviousWantsFears {
     pub id: u32,
@@ -138,6 +144,7 @@ pub struct WantRecord {
     pub flags: u8,
 }
 
+#[cfg(test)]
 impl Arbitrary for WantRecord {
     type Parameters = ();
 
@@ -198,16 +205,9 @@ impl Arbitrary for WantRecord {
     type Strategy = BoxedStrategy<WantRecord>;
 }
 
-fn valid_want_record(input: &WantRecord) -> bool {
-    if input.version == WantRecordVersion::Nine {
-        input.influence.is_some()
-    } else {
-        input.influence.is_none()
-    }
-}
-
 #[binrw]
-#[derive(Arbitrary, Copy, Clone, Debug, PartialEq)]
+#[derive(Copy, Clone, Debug, PartialEq)]
+#[cfg_attr(test, derive(Arbitrary))]
 #[brw(little)]
 pub enum WantRecordVersion {
     #[brw(magic(0x07u32))]
@@ -219,7 +219,8 @@ pub enum WantRecordVersion {
 }
 
 #[binrw]
-#[derive(Arbitrary, Copy, Clone, Debug, PartialEq)]
+#[derive(Copy, Clone, Debug, PartialEq)]
+#[cfg_attr(test, derive(Arbitrary))]
 #[brw(little)]
 pub enum WantType {
     #[brw(magic(0x00u8))]
@@ -236,6 +237,7 @@ pub enum WantType {
     Career(u32),
 }
 
+#[cfg(test)]
 mod tests {
     use super::*;
     use crate::test_helpers::test_parsing;

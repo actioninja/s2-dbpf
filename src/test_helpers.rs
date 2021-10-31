@@ -4,7 +4,8 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.                   /
 ////////////////////////////////////////////////////////////////////////////////
 
-use paste::paste;
+#![allow(unused_macros)]
+#![allow(unused_imports)]
 
 macro_rules! test_parsing {
     ($data:expr, $types:expr, $intype:ident, $name:ident) => {

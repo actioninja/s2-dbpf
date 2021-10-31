@@ -4,14 +4,12 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.                   /
 ////////////////////////////////////////////////////////////////////////////////
 
-use binrw::*;
-
 pub mod compression;
 #[allow(warnings)]
 pub mod constants;
 mod helpers;
-mod types;
 mod test_helpers;
+mod types;
 
 #[cfg(test)]
 mod tests {

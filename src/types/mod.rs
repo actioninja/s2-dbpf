@@ -5,9 +5,9 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 mod bcon;
-mod bhav;
+pub mod bhav;
 //mod dbpf;
 mod dir;
 mod objd;
-mod swaf;
+pub mod swaf;
 mod trcn;

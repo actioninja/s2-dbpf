@@ -10,11 +10,11 @@ use binrw::*;
 #[derive(Debug, PartialEq)]
 #[brw(little)]
 struct Bhav {
-    file_name: NullString,
+    pub file_name: NullString,
     #[brw(pad_size_to = 64)]
-    header: BhavHeader,
+    pub header: BhavHeader,
     #[br(args { count: header.num_instructions as usize, inner: (header.signature,) } )]
-    instructions: Vec<BhavInstruction>,
+    pub instructions: Vec<BhavInstruction>,
 }
 
 #[binrw]
@@ -112,3 +112,5 @@ enum BhavGoToShort {
     False,
     OpNum(u16),
 }
+
+mod tests {}
