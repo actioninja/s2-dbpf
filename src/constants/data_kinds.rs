@@ -114,7 +114,7 @@ pub enum FormatKind {
 }
 
 impl FormatKind {
-    fn short_name(&self) -> &str {
+    const fn short_name(&self) -> &str {
         return match self {
             FormatKind::UiData => "UI",
             FormatKind::WallGraph => "WGRA",
@@ -219,7 +219,7 @@ impl FormatKind {
         };
     }
 
-    fn long_name(&self) -> &str {
+    const fn long_name(&self) -> &str {
         return match self {
             FormatKind::UiData => "UI Data",
             FormatKind::WallGraph => "Wall Graph",
