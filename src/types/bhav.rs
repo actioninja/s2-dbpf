@@ -5,6 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 use binrw::*;
+
 #[cfg(test)]
 use proptest::prelude::*;
 use std::io::{Read, Seek, Write};
@@ -19,6 +20,7 @@ struct Bhav {
     #[brw(pad_size_to = 64)]
     pub header: BhavHeader,
     #[br(args { count: header.num_instructions as usize, inner: (header.signature,) } )]
+    #[bw(args_raw = (header.signature,))]
     pub instructions: Vec<BhavInstruction>,
 }
 
@@ -61,15 +63,20 @@ pub enum BhavSignature {
     Nine,
 }
 
+impl Default for BhavSignature {
+    fn default() -> Self {
+        BhavSignature::Zero
+    }
+}
+
 #[derive(Debug, PartialEq)]
-#[cfg_attr(test, derive(Arbitrary))]
 pub struct BhavInstruction {
-    opcode: u16,
-    goto_true: BhavGoTo,
-    goto_false: BhavGoTo,
-    node_version: Option<bool>,
-    operands: [u8; 16],
-    cache_flags: Option<u8>,
+    pub opcode: u16,
+    pub goto_true: BhavGoTo,
+    pub goto_false: BhavGoTo,
+    pub node_version: Option<bool>,
+    pub operands: [u8; 16],
+    pub cache_flags: Option<u8>,
 }
 
 impl BinRead for BhavInstruction {
@@ -80,12 +87,43 @@ impl BinRead for BhavInstruction {
         options: &ReadOptions,
         args: Self::Args,
     ) -> BinResult<Self> {
-        todo!()
+        let opcode = u16::read_options(reader, options, ())?;
+        let signature = args.0;
+        let byte_gotos = signature < BhavSignature::Seven;
+        let goto_true = BhavGoTo::read_options(reader, options, (byte_gotos,))?;
+        let goto_false = BhavGoTo::read_options(reader, options, (byte_gotos,))?;
+        let node_version = if signature < BhavSignature::Five {
+            None
+        } else {
+            let bool = u8::read_options(reader, options, ())?;
+            Some(bool != 0)
+        };
+        let operands = if signature >= BhavSignature::Three {
+            <[u8; 16]>::read_options(reader, options, ())?
+        } else {
+            let first = <[u8; 8]>::read_options(reader, options, ())?;
+            let second = [0u8; 8];
+            [&first[..], &second[..]].concat().try_into().unwrap()
+        };
+        let cache_flags = if signature == BhavSignature::Nine {
+            Some(u8::read_options(reader, options, ())?)
+        } else {
+            None
+        };
+
+        Ok(BhavInstruction {
+            opcode,
+            goto_true,
+            goto_false,
+            node_version,
+            operands,
+            cache_flags,
+        })
     }
 }
 
 impl BinWrite for BhavInstruction {
-    type Args = ();
+    type Args = (BhavSignature,);
 
     fn write_options<W: Write + Seek>(
         &self,
@@ -93,17 +131,95 @@ impl BinWrite for BhavInstruction {
         options: &WriteOptions,
         args: Self::Args,
     ) -> BinResult<()> {
-        todo!()
+        let signature = args.0;
+        let byte_gotos = signature < BhavSignature::Seven;
+        u16::write_options(&self.opcode, writer, options, ())?;
+        BhavGoTo::write_options(&self.goto_true, writer, options, (byte_gotos,))?;
+        BhavGoTo::write_options(&self.goto_false, writer, options, (byte_gotos,))?;
+        if let Some(node_version) = self.node_version {
+            u8::write_options(&(node_version as u8), writer, options, ())?;
+        }
+        if signature >= BhavSignature::Three {
+            <[u8; 16]>::write_options(&self.operands, writer, options, ())?;
+        } else {
+            let first = <[u8; 8]>::try_from(&self.operands[..8]).unwrap();
+            first.write_options(writer, options, ())?;
+        }
+        <Option<u8>>::write_options(&self.cache_flags, writer, options, ())?;
+        Ok(())
     }
 }
 
-#[derive(Debug, PartialEq)]
-#[cfg_attr(test, derive(Arbitrary))]
+#[cfg(test)]
+prop_compose! {
+    fn bhav_instruction_mapper(
+        signature: BhavSignature
+    )(
+        opcode in any::<u16>(),
+        goto_true in any::<BhavGoTo>(),
+        goto_false in any::<BhavGoTo>(),
+        node_version in any::<bool>(),
+        operands_8 in any::<[u8; 8]>(),
+        operands_16 in any::<[u8; 16]>(),
+        cache_flags in any::<u8>(),
+    ) -> BhavInstruction {
+        BhavInstruction {
+            opcode,
+            goto_true,
+            goto_false,
+            node_version: if signature >= BhavSignature::Five {
+                Some(node_version)
+            } else {
+                None
+            },
+            operands: if signature >= BhavSignature::Three {
+                operands_16
+            } else {
+                [&operands_8[..], &[0u8; 8]].concat().try_into().unwrap()
+            },
+            cache_flags: if signature >= BhavSignature::Nine {
+                Some(cache_flags)
+            } else {
+                None
+            },
+        }
+    }
+}
+
+#[cfg(test)]
+impl Arbitrary for BhavInstruction {
+    type Parameters = (BhavSignature,);
+
+    fn arbitrary_with(args: Self::Parameters) -> Self::Strategy {
+        bhav_instruction_mapper(args.0).boxed()
+    }
+
+    type Strategy = BoxedStrategy<Self>;
+}
+
+#[derive(Debug, PartialEq, Clone, Copy)]
 pub enum BhavGoTo {
     Error,
     True,
     False,
     OpNum(u16),
+}
+
+#[cfg(test)]
+impl Arbitrary for BhavGoTo {
+    type Parameters = ();
+
+    fn arbitrary_with(_: Self::Parameters) -> Self::Strategy {
+        prop_oneof![
+            Just(BhavGoTo::Error),
+            Just(BhavGoTo::True),
+            Just(BhavGoTo::False),
+            (0..253u16).prop_map(BhavGoTo::OpNum),
+        ]
+        .boxed()
+    }
+
+    type Strategy = BoxedStrategy<Self>;
 }
 
 impl BhavGoTo {
@@ -159,7 +275,7 @@ impl BinWrite for BhavGoTo {
                 BhavGoTo::False => BhavGoTo::FALSE_BYTE,
                 BhavGoTo::OpNum(num) => *num as u8,
             };
-            u8::write_options(&number, writer, &options, ());
+            u8::write_options(&number, writer, &options, ())?;
             Ok(())
         } else {
             let number = match self {
@@ -168,7 +284,7 @@ impl BinWrite for BhavGoTo {
                 BhavGoTo::False => BhavGoTo::FALSE_WORD,
                 BhavGoTo::OpNum(op) => *op,
             };
-            u16::write_options(&number, writer, &options, ());
+            u16::write_options(&number, writer, &options, ())?;
             Ok(())
         }
     }
@@ -177,7 +293,7 @@ impl BinWrite for BhavGoTo {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::test_helpers::test_parsing;
+    use crate::test_helpers::{test_parsing, test_parsing_bhav_ins};
     use binrw::io::Cursor;
     use paste::paste;
     use test_strategy::proptest;
@@ -298,14 +414,166 @@ mod tests {
         prop_assert_eq!(out, x);
     }
 
-    #[test]
-    fn instruction_parses() {}
+    test_parsing_bhav_ins!(
+        [
+            0x10,
+            0x10,                 // opcode
+            BhavGoTo::ERROR_BYTE, // goto true
+            BhavGoTo::ERROR_BYTE, // goto false
+            0x01,
+            0x02,
+            0x03,
+            0x04,
+            0x05,
+            0x06,
+            0x07,
+            0x08,
+        ],
+        BhavInstruction {
+            opcode: 0x1010,
+            goto_true: BhavGoTo::Error,
+            goto_false: BhavGoTo::Error,
+            node_version: None,
+            operands: [
+                0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                0x00, 0x00,
+            ],
+            cache_flags: None
+        },
+        BhavInstruction,
+        bhav_instruction_1_range,
+        (BhavSignature::Zero,)
+    );
 
-    #[test]
-    fn instruction_writes() {}
+    test_parsing!(
+        [
+            0x10,
+            0x10,                 // opcode
+            BhavGoTo::ERROR_BYTE, // goto true
+            BhavGoTo::ERROR_BYTE, // goto false
+            0x01,
+            0x02,
+            0x03,
+            0x04,
+            0x05,
+            0x06,
+            0x07,
+            0x08,
+            0x09,
+            0x0A,
+            0x0B,
+            0x0C,
+            0x0D,
+            0x0E,
+            0x0F,
+            0x10,
+        ],
+        BhavInstruction {
+            opcode: 0x1010,
+            goto_true: BhavGoTo::Error,
+            goto_false: BhavGoTo::Error,
+            node_version: None,
+            operands: [
+                0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E,
+                0x0F, 0x10,
+            ],
+            cache_flags: None
+        },
+        BhavInstruction,
+        bhav_instruction_2_range,
+        (BhavSignature::Three,)
+    );
 
-    #[test]
-    fn instruction_symmetrical() {}
+    test_parsing!(
+        [
+            0x10,
+            0x10,                 // opcode
+            BhavGoTo::ERROR_BYTE, // goto true
+            BhavGoTo::ERROR_BYTE, // goto false
+            0x00,                 // node version
+            0x01,
+            0x02,
+            0x03,
+            0x04,
+            0x05,
+            0x06,
+            0x07,
+            0x08,
+            0x09,
+            0x0A,
+            0x0B,
+            0x0C,
+            0x0D,
+            0x0E,
+            0x0F,
+            0x10,
+        ],
+        BhavInstruction {
+            opcode: 0x1010,
+            goto_true: BhavGoTo::Error,
+            goto_false: BhavGoTo::Error,
+            node_version: Some(false),
+            operands: [
+                0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E,
+                0x0F, 0x10,
+            ],
+            cache_flags: None
+        },
+        BhavInstruction,
+        bhav_instruction_3_range,
+        (BhavSignature::Five,)
+    );
+
+    test_parsing!(
+        [
+            0x10, 0x10, // opcode
+            0xFE, 0xFF, // goto true
+            0xFE, 0xFF, // goto false
+            0x00, // node version
+            0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E,
+            0x0F, 0x10,
+        ],
+        BhavInstruction {
+            opcode: 0x1010,
+            goto_true: BhavGoTo::False,
+            goto_false: BhavGoTo::False,
+            node_version: Some(false),
+            operands: [
+                0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E,
+                0x0F, 0x10,
+            ],
+            cache_flags: None
+        },
+        BhavInstruction,
+        bhav_instruction_4_range,
+        (BhavSignature::Seven,)
+    );
+
+    test_parsing!(
+        [
+            0x10, 0x10, // opcode
+            0xFE, 0xFF, // goto true
+            0xFE, 0xFF, // goto false
+            0x00, // node version
+            0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E,
+            0x0F, 0x10, // operands
+            0x00, //cache flags
+        ],
+        BhavInstruction {
+            opcode: 0x1010,
+            goto_true: BhavGoTo::False,
+            goto_false: BhavGoTo::False,
+            node_version: Some(false),
+            operands: [
+                0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E,
+                0x0F, 0x10,
+            ],
+            cache_flags: Some(0x00)
+        },
+        BhavInstruction,
+        bhav_instruction_5_range,
+        (BhavSignature::Nine,)
+    );
 
     /*
     test_parsing!(

@@ -34,13 +34,92 @@ macro_rules! test_parsing {
             #[proptest]
             fn [<$name _symmetrical>](x: $intype) {
                 let mut cursor = Cursor::new(vec![]);
-                cursor.write_le(&x).unwrap();
+                cursor.write_le(&x)?;
 
                 let output = cursor.get_ref();
 
                 cursor.set_position(0);
 
-                let out: $intype = cursor.read_le().unwrap();
+                let out: $intype = cursor.read_le()?;
+                prop_assert_eq!(out, x)
+            }
+        }
+    };
+
+    ($data:expr, $types:expr, $intype:ident, $name:ident, $args:expr) => {
+        paste! {
+            #[test]
+            fn [<$name _parse>]() {
+                let pre = $data;
+
+                let actual: $intype = Cursor::new(pre).read_le_args($args).unwrap();
+                let expected = $types;
+
+                assert_eq!(actual, expected);
+            }
+
+            #[test]
+            fn [<$name _write>]() {
+                let pre = $types;
+                let mut cursor = Cursor::new(vec![]);
+                cursor.write_le_args(&pre, $args).unwrap();
+
+                let expected = $data;
+
+                assert_eq!(&cursor.into_inner()[..], expected);
+            }
+
+            #[proptest]
+            fn [<$name _symmetrical>](x: $intype) {
+                let mut cursor = Cursor::new(vec![]);
+                cursor.write_le_args(&x, $args)?;
+
+                let _output = cursor.get_ref();
+
+                cursor.set_position(0);
+
+                let out: $intype = cursor.read_le_args($args)?;
+                prop_assert_eq!(out, x)
+            }
+        }
+    };
+}
+
+//TODO: learn macros better
+macro_rules! test_parsing_bhav_ins {
+    ($data:expr, $types:expr, $intype:ident, $name:ident, $args:expr) => {
+        paste! {
+            #[test]
+            fn [<$name _parse>]() {
+                let pre = $data;
+
+                let actual: $intype = Cursor::new(pre).read_le_args($args).unwrap();
+                let expected = $types;
+
+                assert_eq!(actual, expected);
+            }
+
+            #[test]
+            fn [<$name _write>]() {
+                let pre = $types;
+                let mut cursor = Cursor::new(vec![]);
+                cursor.write_le_args(&pre, $args).unwrap();
+
+                let expected = $data;
+
+                assert_eq!(&cursor.into_inner()[..], expected);
+            }
+
+            #[proptest]
+            fn [<$name _symmetrical>](#[strategy(any_with::<$intype>($args))] x: $intype) {
+                let mut cursor = Cursor::new(vec![]);
+                cursor.write_le_args(&x, $args)?;
+
+                let _output = cursor.get_ref();
+
+                cursor.set_position(0);
+
+                let out: $intype = cursor.read_le_args($args)?;
                 prop_assert_eq!(out, x)
             }
         }
@@ -48,3 +127,4 @@ macro_rules! test_parsing {
 }
 
 pub(crate) use test_parsing;
+pub(crate) use test_parsing_bhav_ins;
