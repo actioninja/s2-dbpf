@@ -16,31 +16,31 @@ use test_strategy::Arbitrary;
 
 #[binrw]
 #[derive(Debug, PartialEq)]
+#[cfg_attr(test, derive(Arbitrary))]
 #[brw(little)]
-struct Bhav {
-    pub file_name: NullString,
+pub struct Bhav {
+    #[br(map(|x: NullString| x.into_string()))]
+    #[bw(map(|x: &String| NullString::from_string(x.clone()) ))]
     #[brw(pad_size_to = 64)]
-    pub header: BhavHeader,
-    #[br(args { count: header.num_instructions as usize, inner: (header.signature,) } )]
-    #[bw(args_raw = (header.signature,))]
+    #[cfg_attr(test, strategy("[\\x01-\\xFF]{1,64}"))] //non-null ascii characters only
+    pub file_name: String,
+    pub signature: BhavSignature,
+    #[br(temp)]
+    #[bw(calc = instructions.len() as u16)]
+    num_instructions: u16,
+    pub tree_type: u8,
+    pub num_parameters: u8,
+    pub num_locals: u8,
+    pub flag: u8,
+    pub tree_version: i32,
+    #[br(args { count: num_instructions as usize, inner: (signature,) } )]
+    #[bw(args_raw = (*signature,))]
     pub instructions: Vec<BhavInstruction>,
 }
 
 #[binrw]
-#[derive(Debug, PartialOrd, PartialEq)]
-#[brw(little)]
-struct BhavHeader {
-    signature: BhavSignature,
-    num_instructions: u16,
-    tree_type: u8,
-    num_parameters: u8,
-    num_locals: u8,
-    flag: u8,
-    tree_version: i32,
-}
-
-#[binrw]
 #[derive(Debug, PartialOrd, PartialEq, Copy, Clone)]
+#[cfg_attr(test, derive(Arbitrary))]
 #[brw(little)]
 pub enum BhavSignature {
     #[brw(magic(0x8000u16))]
@@ -581,18 +581,51 @@ mod tests {
         (BhavSignature::Nine,)
     );
 
-    /*
     test_parsing!(
         [
-            0x07, 0x80, // signature
-            0x03, 0x00, // num instruction
-            0x04, // tree type
-            0x05, // num parameters
-            0x06, // num locals
+            0x54, 0x65, 0x73, 0x74, 0x46, 0x69, 0x6C, 0x65, //TestFile - in ascii bytes
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, // first padding block
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, // second padding block
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, // third padding block
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, // fourth padding block
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, // fifth padding block
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, // sixth padding block
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, // seventh padding block
+            0x07, 0x80, // Signature -- LE
+            0x01, 0x00, // number of instructions -- LE
+            0x01, // tree type
+            0x00, // num parameters
+            0x00, // num locals
+            0x00, // flags
+            0x08, 0x00, 0x00, 0x00, // tree version -- LE i32
+            0x10, 0x10, // opcode -- begin instruction
+            0xFE, 0xFF, // goto true
+            0xFE, 0xFF, // goto false
+            0x00, // node version
+            0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E,
+            0x0F, 0x10,
         ],
-        BhavHeader {},
-        BhavHeader,
-        bhav_header
+        Bhav {
+            file_name: "TestFile".to_string(),
+            signature: BhavSignature::Seven,
+            tree_type: 1,
+            num_parameters: 0,
+            num_locals: 0,
+            flag: 0,
+            tree_version: 8,
+            instructions: vec![BhavInstruction {
+                opcode: 0x1010,
+                goto_true: BhavGoTo::False,
+                goto_false: BhavGoTo::False,
+                node_version: Some(false),
+                operands: vec![
+                    0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D,
+                    0x0E, 0x0F, 0x10,
+                ],
+                cache_flags: None
+            },]
+        },
+        Bhav,
+        bhav
     );
-     */
 }

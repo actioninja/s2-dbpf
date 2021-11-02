@@ -36,7 +36,7 @@ macro_rules! test_parsing {
                 let mut cursor = Cursor::new(vec![]);
                 cursor.write_le(&x)?;
 
-                let output = cursor.get_ref();
+                let _output = cursor.get_ref();
 
                 cursor.set_position(0);
 
