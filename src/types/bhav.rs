@@ -8,6 +8,8 @@ use binrw::*;
 
 #[cfg(test)]
 use proptest::prelude::*;
+#[cfg(test)]
+use proptest::sample::size_range;
 use std::io::{Read, Seek, Write};
 #[cfg(test)]
 use test_strategy::Arbitrary;
@@ -75,7 +77,7 @@ pub struct BhavInstruction {
     pub goto_true: BhavGoTo,
     pub goto_false: BhavGoTo,
     pub node_version: Option<bool>,
-    pub operands: [u8; 16],
+    pub operands: Vec<u8>,
     pub cache_flags: Option<u8>,
 }
 
@@ -99,11 +101,23 @@ impl BinRead for BhavInstruction {
             Some(bool != 0)
         };
         let operands = if signature >= BhavSignature::Three {
-            <[u8; 16]>::read_options(reader, options, ())?
+            <Vec<u8>>::read_options(
+                reader,
+                options,
+                VecArgs {
+                    count: 16,
+                    inner: (),
+                },
+            )?
         } else {
-            let first = <[u8; 8]>::read_options(reader, options, ())?;
-            let second = [0u8; 8];
-            [&first[..], &second[..]].concat().try_into().unwrap()
+            <Vec<u8>>::read_options(
+                reader,
+                options,
+                VecArgs {
+                    count: 8,
+                    inner: (),
+                },
+            )?
         };
         let cache_flags = if signature == BhavSignature::Nine {
             Some(u8::read_options(reader, options, ())?)
@@ -139,12 +153,7 @@ impl BinWrite for BhavInstruction {
         if let Some(node_version) = self.node_version {
             u8::write_options(&(node_version as u8), writer, options, ())?;
         }
-        if signature >= BhavSignature::Three {
-            <[u8; 16]>::write_options(&self.operands, writer, options, ())?;
-        } else {
-            let first = <[u8; 8]>::try_from(&self.operands[..8]).unwrap();
-            first.write_options(writer, options, ())?;
-        }
+        <Vec<u8>>::write_options(&self.operands, writer, options, ())?;
         <Option<u8>>::write_options(&self.cache_flags, writer, options, ())?;
         Ok(())
     }
@@ -159,8 +168,8 @@ prop_compose! {
         goto_true in any::<BhavGoTo>(),
         goto_false in any::<BhavGoTo>(),
         node_version in any::<bool>(),
-        operands_8 in any::<[u8; 8]>(),
-        operands_16 in any::<[u8; 16]>(),
+        operands_8 in any_with::<Vec<u8>>(size_range(8).lift()),
+        operands_16 in any_with::<Vec<u8>>(size_range(16).lift()),
         cache_flags in any::<u8>(),
     ) -> BhavInstruction {
         BhavInstruction {
@@ -175,7 +184,7 @@ prop_compose! {
             operands: if signature >= BhavSignature::Three {
                 operands_16
             } else {
-                [&operands_8[..], &[0u8; 8]].concat().try_into().unwrap()
+                operands_8
             },
             cache_flags: if signature >= BhavSignature::Nine {
                 Some(cache_flags)
@@ -275,7 +284,7 @@ impl BinWrite for BhavGoTo {
                 BhavGoTo::False => BhavGoTo::FALSE_BYTE,
                 BhavGoTo::OpNum(num) => *num as u8,
             };
-            u8::write_options(&number, writer, &options, ())?;
+            u8::write_options(&number, writer, options, ())?;
             Ok(())
         } else {
             let number = match self {
@@ -284,7 +293,7 @@ impl BinWrite for BhavGoTo {
                 BhavGoTo::False => BhavGoTo::FALSE_WORD,
                 BhavGoTo::OpNum(op) => *op,
             };
-            u16::write_options(&number, writer, &options, ())?;
+            u16::write_options(&number, writer, options, ())?;
             Ok(())
         }
     }
@@ -434,10 +443,7 @@ mod tests {
             goto_true: BhavGoTo::Error,
             goto_false: BhavGoTo::Error,
             node_version: None,
-            operands: [
-                0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-                0x00, 0x00,
-            ],
+            operands: vec![0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08],
             cache_flags: None
         },
         BhavInstruction,
@@ -445,7 +451,7 @@ mod tests {
         (BhavSignature::Zero,)
     );
 
-    test_parsing!(
+    test_parsing_bhav_ins!(
         [
             0x10,
             0x10,                 // opcode
@@ -473,7 +479,7 @@ mod tests {
             goto_true: BhavGoTo::Error,
             goto_false: BhavGoTo::Error,
             node_version: None,
-            operands: [
+            operands: vec![
                 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E,
                 0x0F, 0x10,
             ],
@@ -484,7 +490,7 @@ mod tests {
         (BhavSignature::Three,)
     );
 
-    test_parsing!(
+    test_parsing_bhav_ins!(
         [
             0x10,
             0x10,                 // opcode
@@ -513,7 +519,7 @@ mod tests {
             goto_true: BhavGoTo::Error,
             goto_false: BhavGoTo::Error,
             node_version: Some(false),
-            operands: [
+            operands: vec![
                 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E,
                 0x0F, 0x10,
             ],
@@ -524,7 +530,7 @@ mod tests {
         (BhavSignature::Five,)
     );
 
-    test_parsing!(
+    test_parsing_bhav_ins!(
         [
             0x10, 0x10, // opcode
             0xFE, 0xFF, // goto true
@@ -538,7 +544,7 @@ mod tests {
             goto_true: BhavGoTo::False,
             goto_false: BhavGoTo::False,
             node_version: Some(false),
-            operands: [
+            operands: vec![
                 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E,
                 0x0F, 0x10,
             ],
@@ -549,7 +555,7 @@ mod tests {
         (BhavSignature::Seven,)
     );
 
-    test_parsing!(
+    test_parsing_bhav_ins!(
         [
             0x10, 0x10, // opcode
             0xFE, 0xFF, // goto true
@@ -564,7 +570,7 @@ mod tests {
             goto_true: BhavGoTo::False,
             goto_false: BhavGoTo::False,
             node_version: Some(false),
-            operands: [
+            operands: vec![
                 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E,
                 0x0F, 0x10,
             ],
