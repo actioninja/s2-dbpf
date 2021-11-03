@@ -124,7 +124,7 @@ impl FormatKind {
             FormatKind::PoolSurface => "POOL",
             FormatKind::TextureResource => "TXTR",
             FormatKind::AudioFile => "XA",
-            FormatKind::SceneNode => "Scene Node",
+            FormatKind::SceneNode => "5SC",
             FormatKind::ThreeDArray => "3ARY",
             FormatKind::TextureOverlayXML => "XTOL",
             FormatKind::Popups => "POPS",
