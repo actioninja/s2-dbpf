@@ -6,110 +6,6 @@
 
 use binrw::binrw;
 use const_format::formatcp;
-use macro_const::macro_const;
-
-macro_const! {
-    const UI_DATA: u32 = 0x0;
-    const WALL_GRAPH: u32 = 0x0A284D0B;
-    const TRACK_SETTINGS: u32 = 0x0B9EB87E;
-    const LOT_DESCRIPTION: u32 = 0x0BF999E7;
-    const BINARY_INDEX: u32 = 0x0C560F39;
-    const POOL_SURFACE: u32 = 0x0C900FDB;
-    const TEXTURE_RESOURCE: u32 = 0x1C4A276C;
-    const AUDIO_FILE: u32 = 0x2026960B;
-    const SCENE_NODE: u32 = 0x25232B11;
-    const THREE_DARRAY: u32 = 0x2A51171B;
-    const TEXTURE_OVERLAY_XML: u32 = 0x2C1FD8A1;
-    const POPUPS: u32 = 0x2C310F46;
-    const SIM_SCORES: u32 = 0x3053CF74;
-    const BEHAVIOR_CONSTANT: u32 = 0x42434F4E;
-    const BEHAVIOR_FUNCTION: u32 = 0x42484156;
-    const BITMAP_IMAGE: u32 = 0x424D505F;
-    const CATALOG_STRING: u32 = 0x43415453;
-    const IMAGE_LINK: u32 = 0x43494745;
-    const CATALOG_DESCRIPTION: u32 = 0x43545353;
-    const DRAWGROUP: u32 = 0x44475250;
-    const FACE_PROPERTIES: u32 = 0x46414345;
-    const FAMILY_INFORMATION: u32 = 0x46414D49;
-    const FAMILY_DATA: u32 = 0x46414D68;
-    const FUNCTION: u32 = 0x46434E53;
-    const AUDIO_REFERENCE: u32 = 0x46574156;
-    const GLOBAL_DATA: u32 = 0x474C4F42;
-    const HOUSE_DESCRIPTOR: u32 = 0x484F5553;
-    const TEXTURED_MATERIAL: u32 = 0x49596978;
-    const WORLD_DATABASE: u32 = 0x49FF7D76;
-    const LOT_TEXTURE: u32 = 0x4B58975B;
-    const SKIN_TONE_XML: u32 = 0x4C158081;
-    const CINEMATIC_SCENE: u32 = 0x4D51F042;
-    const NEIGHBORHOOD_MEMORY: u32 = 0x4E474248;
-    const NAME_REFERENCE: u32 = 0x4E524546;
-    const NAME_MAP: u32 = 0x4E6D6150;
-    const OBJECT_DATA: u32 = 0x4F424A44;
-    const OBJECT_FUNCTION: u32 = 0x4F424A66;
-    const OBJECT_METADATA: u32 = 0x4F626A4D;
-    const IMAGE_COLOR_PALETTE: u32 = 0x50414C54;
-    const SIM_PERSONAL_INFORMATION: u32 = 0x50455253;
-    const STACK_SCRIPT: u32 = 0x504F5349;
-    const PACKAGE_TOOLKIT: u32 = 0x50544250;
-    const SIM_INFORMATION: u32 = 0x53494D49;
-    const OBJECT_SLOT: u32 = 0x534C4F54;
-    const SPRITES: u32 = 0x53505232;
-    const TEXT_LISTS: u32 = 0x53545223;
-    const TTAT: u32 = 0x54415454;
-    const BEHAVIOR_FUNCTION_LABELS: u32 = 0x54505250;
-    const BEHAVIOR_CONSTANT_LABELS: u32 = 0x5452434E;
-    const BEHAVIOR_FLOWCHART_TREE: u32 = 0x54524545;
-    const PIE_MENU_FUNCTIONS: u32 = 0x54544142;
-    const PIE_MENU_SETTINGS: u32 = 0x54544173;
-    const MATERIAL_OBJECT: u32 = 0x584D544F;
-    const UNKNOWN_OBJECT: u32 = 0x584F424A;
-    const ENVIRONMENT_CUBE_LIGHTING: u32 = 0x6A97042F;
-    const TWO_DARRAY: u32 = 0x6B943B43;
-    const LOT_DEFINITION: u32 = 0x6C589723;
-    const OBJECT: u32 = 0x6F626A74;
-    const HITLIST: u32 = 0x7B1ACFCD;
-    const GEOMETRIC_NODE: u32 = 0x7BA3838C;
-    const LIGHTMAP: u32 = 0x856DDBAC;
-    const WALL_LAYER: u32 = 0x8A84D7B0;
-    const UNKNOWN1: u32 = 0x8B0C79D6;
-    const JPEG_IMAGE: u32 = 0x8C3CE95A;
-    const FAMILY_TIES: u32 = 0x8C870743;
-    const PREDICTIVE_MAPS: u32 = 0x8CC0A14B;
-    const SOUND_EFFECTS: u32 = 0x8DB5E4C2;
-    const UNKNOWN2: u32 = 0x9D796DB4;
-    const SIM_DESCRIPTION: u32 = 0xAACE2EFB;
-    const FENCE_POST_LAYER: u32 = 0xAB4BA572;
-    const ROOF: u32 = 0xAB9406AA;
-    const LOT_TERRAIN_GEOMETRY: u32 = 0xABCB5DA4;
-    const NEIGHBORHOOD_TERRAIN: u32 = 0xABD0DC63;
-    const LINEAR_FOG_LIGHTING: u32 = 0xAC06A66F;
-    const DRAW_STATE_LIGHTING: u32 = 0xAC06A676;
-    const GEOMETRIC_DATA_CONTAINER: u32 = 0xAC4F8687;
-    const THREE_DREFERENCE: u32 = 0xAC506764;
-    const ID_NUMBER: u32 = 0xAC8A7A2E;
-    const WEATHER_INFO: u32 = 0xB21BE28B;
-    const TSSG_SYSTEM: u32 = 0xBA353CE1;
-    const LIGHT: u32 = 0xC9C81B9B;
-    const STRING_MAP: u32 = 0xCAC4FC40;
-    const VERTEX_LAYER: u32 = 0xCB4387A1;
-    const UNKNOWN3: u32 = 0xCC2A6A34;
-    const SIM_RELATIONS: u32 = 0xCC364C2A;
-    const UNKNOWN4: u32 = 0xCC8A6A69;
-    const FACIAL_STRUCTURE: u32 = 0xCCCEF852;
-    const MAXIS_MATERIAL_SHADER: u32 = 0xCD7FE87A;
-    const SIM_WANTS_AND_FEARS: u32 = 0xCD95548E;
-    const CONTENT_REGISTRY: u32 = 0xCDB467B8;
-    const CREATION_RESOURCE: u32 = 0xE519C933;
-    const DIRECTORY: u32 = 0xE86B1EEF;
-    const EFFECTS_RESOURCE_TREE: u32 = 0xEA5118B0;
-    const PROPERTY_SET: u32 = 0xEBCF3E27;
-    const VERSION_INFORMATION: u32 = 0xEBFEE342;
-    const NEIGHBORDHOOD_VIEW: u32 = 0xEC44BDDC;
-    const LARGE_IMAGE: u32 = 0xED534136;
-    const SINGULAR_LOT_OBJECT: u32 = 0xFA1C39F7;
-    const ANIMATION: u32 = 0xFB00791E;
-    const SHAPE: u32 = 0xFC6EB1F7;
-}
 
 #[binrw]
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
@@ -126,6 +22,10 @@ pub enum FormatKind {
     BinaryIndex,
     #[brw(magic(0x0C900FDBu32))]
     PoolSurface,
+    #[brw(magic(0x1C4A276Cu32))]
+    TextureResource,
+    #[brw(magic(0x2026960Bu32))]
+    AudioFile,
     #[brw(magic(0x25232B11u32))]
     SceneNode,
     #[brw(magic(0x2A51171Bu32))]
@@ -136,93 +36,180 @@ pub enum FormatKind {
     Popups,
     #[brw(magic(0x3053CF74u32))]
     SimScores,
-    BehaviorConstant = 0x42434F4E,
-    BehaviorFunction = 0x42484156,
-    BitmapImage = 0x424D505F,
-    CatalogString = 0x43415453,
-    ImageLink = 0x43494745,
-    CatalogDescription = 0x43545353,
-    Drawgroup = 0x44475250,
-    FaceProperties = 0x46414345,
-    FamilyInformation = 0x46414D49,
-    FamilyData = 0x46414D68,
-    Function = 0x46434E53,
-    AudioReference = 0x46574156,
-    GlobalData = 0x474C4F42,
-    HouseDescriptor = 0x484F5553,
-    TexturedMaterial = 0x49596978,
-    WorldDatabase = 0x49FF7D76,
-    LotTexture = 0x4B58975B,
-    SkinToneXml = 0x4C158081,
-    CinematicScene = 0x4D51F042,
-    NeighborhoodMemory = 0x4E474248,
-    NameReference = 0x4E524546,
-    NameMap = 0x4E6D6150,
-    ObjectData = 0x4F424A44,
-    ObjectFunction = 0x4F424A66,
-    ObjectMetadata = 0x4F626A4D,
-    ImageColorPalette = 0x50414C54,
-    SimPersonalInformation = 0x50455253,
-    StackScript = 0x504F5349,
-    PackageToolkit = 0x50544250,
-    SimInformation = 0x53494D49,
-    ObjectSlot = 0x534C4F54,
-    Sprites = 0x53505232,
-    TextLists = 0x53545223,
-    TTAT = 0x54415454,
-    BehaviorFunctionLabels = 0x54505250,
-    BehaviorConstantLabels = 0x5452434E,
-    BehaviorFlowchartTree = 0x54524545,
-    PieMenuFunctions = 0x54544142,
-    PieMenuSettings = 0x54544173,
-    MaterialObject = 0x584D544F,
-    UnknownObject = 0x584F424A,
-    EnvironmentCubeLighting = 0x6A97042F,
-    TwoDArray = 0x6B943B43,
-    LotDefinition = 0x6C589723,
-    Object = 0x6F626A74,
-    Hitlist = 0x7B1ACFCD,
-    GeometricNode = 0x7BA3838C,
-    Lightmap = 0x856DDBAC,
-    WallLayer = 0x8A84D7B0,
-    Unknown1 = 0x8B0C79D6,
-    JpegImage = 0x8C3CE95A,
-    FamilyTies = 0x8C870743,
-    PredictiveMaps = 0x8CC0A14B,
-    SoundEffects = 0x8DB5E4C2,
-    Unknown2 = 0x9D796DB4,
-    SimDescription = 0xAACE2EFB,
-    FencePostLayer = 0xAB4BA572,
-    Roof = 0xAB9406AA,
-    LotTerrainGeometry = 0xABCB5DA4,
-    NeighborhoodTerrain = 0xABD0DC63,
-    LinearFogLighting = 0xAC06A66F,
-    DrawStateLighting = 0xAC06A676,
-    GeometricDataContainer = 0xAC4F8687,
-    ThreeDReference = 0xAC506764,
-    IdNumber = 0xAC8A7A2E,
-    WeatherInfo = 0xB21BE28B,
-    TssgSystem = 0xBA353CE1,
-    Light = 0xC9C81B9B,
-    StringMap = 0xCAC4FC40,
-    VertexLayer = 0xCB4387A1,
-    Unknown3 = 0xCC2A6A34,
-    SimRelations = 0xCC364C2A,
-    Unknown4 = 0xCC8A6A69,
-    FacialStructure = 0xCCCEF852,
-    MaxisMaterialShader = 0xCD7FE87A,
-    SimWantsAndFears = 0xCD95548E,
-    ContentRegistry = 0xCDB467B8,
-    CreationResource = 0xE519C933,
-    Directory = 0xE86B1EEF,
-    EffectsResourceTree = 0xEA5118B0,
-    PropertySet = 0xEBCF3E27,
-    VersionInformation = 0xEBFEE342,
-    NeighbordhoodView = 0xEC44BDDC,
-    LargeImage = 0xED534136,
-    SingularLotObject = 0xFA1C39F7,
-    Animation = 0xFB00791E,
-    Shape = 0xFC6EB1F7,
+    #[brw(magic(0x42434F4Eu32))]
+    BehaviorConstant,
+    #[brw(magic(0x42484156u32))]
+    BehaviorFunction,
+    #[brw(magic(0x424D505Fu32))]
+    BitmapImage,
+    #[brw(magic(0x43415453u32))]
+    CatalogString,
+    #[brw(magic(0x43494745u32))]
+    ImageLink,
+    #[brw(magic(0x43545353u32))]
+    CatalogDescription,
+    #[brw(magic(0x44475250u32))]
+    Drawgroup,
+    #[brw(magic(0x46414345u32))]
+    FaceProperties,
+    #[brw(magic(0x46414D49u32))]
+    FamilyInformation,
+    #[brw(magic(0x46414D68u32))]
+    FamilyData,
+    #[brw(magic(0x46434E53u32))]
+    Function,
+    #[brw(magic(0x46574156u32))]
+    AudioReference,
+    #[brw(magic(0x474C4F42u32))]
+    GlobalData,
+    #[brw(magic(0x484F5553u32))]
+    HouseDescriptor,
+    #[brw(magic(0x49596978u32))]
+    TexturedMaterial,
+    #[brw(magic(0x49FF7D76u32))]
+    WorldDatabase,
+    #[brw(magic(0x4B58975Bu32))]
+    LotTexture,
+    #[brw(magic(0x4C158081u32))]
+    SkinToneXml,
+    #[brw(magic(0x4D51F042u32))]
+    CinematicScene,
+    #[brw(magic(0x4E474248u32))]
+    NeighborhoodMemory,
+    #[brw(magic(0x4E524546u32))]
+    NameReference,
+    #[brw(magic(0x4E6D6150u32))]
+    NameMap,
+    #[brw(magic(0x4F424A44u32))]
+    ObjectData,
+    #[brw(magic(0x4F424A66u32))]
+    ObjectFunction,
+    #[brw(magic(0x4F626A4Du32))]
+    ObjectMetadata,
+    #[brw(magic(0x50414C54u32))]
+    ImageColorPalette,
+    #[brw(magic(0x50455253u32))]
+    SimPersonalInformation,
+    #[brw(magic(0x504F5349u32))]
+    StackScript,
+    #[brw(magic(0x50544250u32))]
+    PackageToolkit,
+    #[brw(magic(0x53494D49u32))]
+    SimInformation,
+    #[brw(magic(0x534C4F54u32))]
+    ObjectSlot,
+    #[brw(magic(0x53505232u32))]
+    Sprites,
+    #[brw(magic(0x53545223u32))]
+    TextLists,
+    #[brw(magic(0x54415454u32))]
+    TTAT,
+    #[brw(magic(0x54505250u32))]
+    BehaviorFunctionLabels,
+    #[brw(magic(0x5452434Eu32))]
+    BehaviorConstantLabels,
+    #[brw(magic(0x54524545u32))]
+    BehaviorFlowchartTree,
+    #[brw(magic(0x54544142u32))]
+    PieMenuFunctions,
+    #[brw(magic(0x54544173u32))]
+    PieMenuSettings,
+    #[brw(magic(0x584D544Fu32))]
+    MaterialObject,
+    #[brw(magic(0x584F424Au32))]
+    UnknownObject,
+    #[brw(magic(0x6A97042Fu32))]
+    EnvironmentCubeLighting,
+    #[brw(magic(0x6B943B43u32))]
+    TwoDArray,
+    #[brw(magic(0x6C589723u32))]
+    LotDefinition,
+    #[brw(magic(0x6F626A74u32))]
+    Object,
+    #[brw(magic(0x7B1ACFCDu32))]
+    Hitlist,
+    #[brw(magic(0x7BA3838Cu32))]
+    GeometricNode,
+    #[brw(magic(0x856DDBACu32))]
+    Lightmap,
+    #[brw(magic(0x8A84D7B0u32))]
+    WallLayer,
+    #[brw(magic(0x8B0C79D6u32))]
+    Unknown1,
+    #[brw(magic(0x8C3CE95Au32))]
+    JpegImage,
+    #[brw(magic(0x8C870743u32))]
+    FamilyTies,
+    #[brw(magic(0x8CC0A14Bu32))]
+    PredictiveMaps,
+    #[brw(magic(0x8DB5E4C2u32))]
+    SoundEffects,
+    #[brw(magic(0x9D796DB4u32))]
+    Unknown2,
+    #[brw(magic(0xAACE2EFBu32))]
+    SimDescription,
+    #[brw(magic(0xAB4BA572u32))]
+    FencePostLayer,
+    #[brw(magic(0xAB9406AAu32))]
+    Roof,
+    #[brw(magic(0xABCB5DA4u32))]
+    LotTerrainGeometry,
+    #[brw(magic(0xABD0DC63u32))]
+    NeighborhoodTerrain,
+    #[brw(magic(0xAC06A66Fu32))]
+    LinearFogLighting,
+    #[brw(magic(0xAC06A676u32))]
+    DrawStateLighting,
+    #[brw(magic(0xAC4F8687u32))]
+    GeometricDataContainer,
+    #[brw(magic(0xAC506764u32))]
+    ThreeDReference,
+    #[brw(magic(0xAC8A7A2Eu32))]
+    IdNumber,
+    #[brw(magic(0xB21BE28Bu32))]
+    WeatherInfo,
+    #[brw(magic(0xBA353CE1u32))]
+    TssgSystem,
+    #[brw(magic(0xC9C81B9Bu32))]
+    Light,
+    #[brw(magic(0xCAC4FC40u32))]
+    StringMap,
+    #[brw(magic(0xCB4387A1u32))]
+    VertexLayer,
+    #[brw(magic(0xCC2A6A34u32))]
+    Unknown3,
+    #[brw(magic(0xCC364C2Au32))]
+    SimRelations,
+    #[brw(magic(0xCC8A6A69u32))]
+    Unknown4,
+    #[brw(magic(0xCCCEF852u32))]
+    FacialStructure,
+    #[brw(magic(0xCD7FE87Au32))]
+    MaxisMaterialShader,
+    #[brw(magic(0xCD95548Eu32))]
+    SimWantsAndFears,
+    #[brw(magic(0xCDB467B8u32))]
+    ContentRegistry,
+    #[brw(magic(0xE519C933u32))]
+    CreationResource,
+    #[brw(magic(0xE86B1EEFu32))]
+    Directory,
+    #[brw(magic(0xEA5118B0u32))]
+    EffectsResourceTree,
+    #[brw(magic(0xEBCF3E27u32))]
+    PropertySet,
+    #[brw(magic(0xEBFEE342u32))]
+    VersionInformation,
+    #[brw(magic(0xEC44BDDCu32))]
+    NeighborhoodView,
+    #[brw(magic(0xED534136u32))]
+    LargeImage,
+    #[brw(magic(0xFA1C39F7u32))]
+    SingularLotObject,
+    #[brw(magic(0xFB00791Eu32))]
+    Animation,
+    #[brw(magic(0xFC6EB1F7u32))]
+    Shape,
 }
 
 impl FormatKind {
@@ -323,7 +310,7 @@ impl FormatKind {
             FormatKind::EffectsResourceTree => "FX",
             FormatKind::PropertySet => "GZPS",
             FormatKind::VersionInformation => "VERS",
-            FormatKind::NeighbordhoodView => "NHVW",
+            FormatKind::NeighborhoodView => "NHVW",
             FormatKind::LargeImage => "LIFO",
             FormatKind::SingularLotObject => "OBJT",
             FormatKind::Animation => "ANIM",
@@ -344,7 +331,7 @@ impl FormatKind {
             FormatKind::SceneNode => "5SC",
             FormatKind::ThreeDArray => "3D Array",
             FormatKind::TextureOverlayXML => "Texture Overlay XML",
-            FormatKind::Popups => "POPUPS",
+            FormatKind::Popups => "Popups",
             FormatKind::SimScores => "Sim: Scores",
             FormatKind::BehaviorConstant => "Behavior Constant",
             FormatKind::BehaviorFunction => "Behavior Function",
@@ -352,7 +339,7 @@ impl FormatKind {
             FormatKind::CatalogString => "Catalog String",
             FormatKind::ImageLink => "Image Link",
             FormatKind::CatalogDescription => "Catalog Description",
-            FormatKind::Drawgroup => "DRAWGROUP",
+            FormatKind::Drawgroup => "Drawgroup",
             FormatKind::FaceProperties => "Face Properties",
             FormatKind::FamilyInformation => "Family Information",
             FormatKind::FamilyData => "Family Data",
@@ -368,16 +355,16 @@ impl FormatKind {
             FormatKind::NeighborhoodMemory => "Neighborhood/Memory",
             FormatKind::NameReference => "Name Reference",
             FormatKind::NameMap => "Name Map",
-            FormatKind::ObjectData => "OBJECT Data",
-            FormatKind::ObjectFunction => "OBJECT Functions",
-            FormatKind::ObjectMetadata => "OBJECT Metadata Imposters",
+            FormatKind::ObjectData => "Object Data",
+            FormatKind::ObjectFunction => "Object Functions",
+            FormatKind::ObjectMetadata => "Object Metadata Imposters",
             FormatKind::ImageColorPalette => "Image Color Palette",
             FormatKind::SimPersonalInformation => "Sim Personal Information",
             FormatKind::StackScript => "Stack Script",
             FormatKind::PackageToolkit => "Package Toolkit",
             FormatKind::SimInformation => "Sim Information",
-            FormatKind::ObjectSlot => "OBJECT Slot",
-            FormatKind::Sprites => "SPRITES",
+            FormatKind::ObjectSlot => "Object Slot",
+            FormatKind::Sprites => "Sprites",
             FormatKind::TextLists => "Text Lists",
             FormatKind::TTAT => "TTAT",
             FormatKind::BehaviorFunctionLabels => "Behavior Function Labels",
@@ -385,25 +372,25 @@ impl FormatKind {
             FormatKind::BehaviorFlowchartTree => "Behavior Flowchart Tree",
             FormatKind::PieMenuFunctions => "Pie Menu Functions",
             FormatKind::PieMenuSettings => "Pie Menu Settings",
-            FormatKind::MaterialObject => "Material OBJECT",
-            FormatKind::UnknownObject => "X Unknown OBJECT",
+            FormatKind::MaterialObject => "Material Object",
+            FormatKind::UnknownObject => "X Unknown Object",
             FormatKind::EnvironmentCubeLighting => "Environment Cube Lighting",
             FormatKind::TwoDArray => "2D Array",
             FormatKind::LotDefinition => "Lot Definition",
-            FormatKind::Object => "OBJECT",
-            FormatKind::Hitlist => "HITLIST",
+            FormatKind::Object => "Object",
+            FormatKind::Hitlist => "Hitlist",
             FormatKind::GeometricNode => "Geometric Node",
-            FormatKind::Lightmap => "LIGHTMAP",
+            FormatKind::Lightmap => "Lightmap",
             FormatKind::WallLayer => "Wall Layer",
-            FormatKind::Unknown1 => formatcp!("Unknown 1 ({:#x})", FormatKind::Unknown1 as u32),
+            FormatKind::Unknown1 => formatcp!("Unknown 1 ({:#x})", FormatKind::Unknown1.id()),
             FormatKind::JpegImage => "JPEG Image",
             FormatKind::FamilyTies => "Family Ties",
             FormatKind::PredictiveMaps => "Predictive Maps",
             FormatKind::SoundEffects => "Sound Effects",
-            FormatKind::Unknown2 => formatcp!("Unknown 2 ({:#x})", FormatKind::Unknown2 as u32),
+            FormatKind::Unknown2 => formatcp!("Unknown 2 ({:#x})", FormatKind::Unknown2.id()),
             FormatKind::SimDescription => "Sim Description",
             FormatKind::FencePostLayer => "Fence Post Layer",
-            FormatKind::Roof => "ROOF",
+            FormatKind::Roof => "Roof",
             FormatKind::LotTerrainGeometry => "Lot Terrain Geometry",
             FormatKind::NeighborhoodTerrain => "Neighborhood Terrain",
             FormatKind::LinearFogLighting => "Linear Fog Lighting",
@@ -413,26 +400,131 @@ impl FormatKind {
             FormatKind::IdNumber => "ID Number",
             FormatKind::WeatherInfo => "Weather Info",
             FormatKind::TssgSystem => "TSSG System",
-            FormatKind::Light => "LIGHT",
+            FormatKind::Light => "Light",
             FormatKind::StringMap => "String Map",
             FormatKind::VertexLayer => "Vertex Layer",
-            FormatKind::Unknown3 => formatcp!("Unknown 3 ({:#x})", FormatKind::Unknown3 as u32),
+            FormatKind::Unknown3 => formatcp!("Unknown 3 ({:#x})", FormatKind::Unknown3.id()),
             FormatKind::SimRelations => "Sim Relations",
-            FormatKind::Unknown4 => formatcp!("Unknown 4 ({:#x})", FormatKind::Unknown4 as u32),
+            FormatKind::Unknown4 => formatcp!("Unknown 4 ({:#x})", FormatKind::Unknown4.id()),
             FormatKind::FacialStructure => "Facial Structure",
             FormatKind::MaxisMaterialShader => "Maxis Material Shader",
             FormatKind::SimWantsAndFears => "Sim Wants and Fears",
             FormatKind::ContentRegistry => "Content Registry",
             FormatKind::CreationResource => "Creation Resource",
-            FormatKind::Directory => "DIRECTORY of Compressed Files",
+            FormatKind::Directory => "Directory of Compressed Files",
             FormatKind::EffectsResourceTree => "Effects Resource Tree",
             FormatKind::PropertySet => "Property Set",
             FormatKind::VersionInformation => "Version Information",
-            FormatKind::NeighbordhoodView => "Neighborhood View",
+            FormatKind::NeighborhoodView => "Neighborhood View",
             FormatKind::LargeImage => "Large Image",
-            FormatKind::SingularLotObject => "Singular Lot OBJECT",
+            FormatKind::SingularLotObject => "Singular Lot Object",
             FormatKind::Animation => "animation",
-            FormatKind::Shape => "SHAPE",
+            FormatKind::Shape => "Shape",
         };
+    }
+
+    const fn id(&self) -> u32 {
+        match self {
+            FormatKind::UiData => 0x0,
+            FormatKind::WallGraph => 0x0A284D0B,
+            FormatKind::TrackSettings => 0x0B9EB87E,
+            FormatKind::LotDescription => 0x0BF999E7,
+            FormatKind::BinaryIndex => 0x0C560F39,
+            FormatKind::PoolSurface => 0x0C900FDB,
+            FormatKind::TextureResource => 0x1C4A276C,
+            FormatKind::AudioFile => 0x2026960B,
+            FormatKind::SceneNode => 0x25232B11,
+            FormatKind::ThreeDArray => 0x2A51171B,
+            FormatKind::TextureOverlayXML => 0x2C1FD8A1,
+            FormatKind::Popups => 0x2C310F46,
+            FormatKind::SimScores => 0x3053CF74,
+            FormatKind::BehaviorConstant => 0x42434F4E,
+            FormatKind::BehaviorFunction => 0x42484156,
+            FormatKind::BitmapImage => 0x424D505F,
+            FormatKind::CatalogString => 0x43415453,
+            FormatKind::ImageLink => 0x43494745,
+            FormatKind::CatalogDescription => 0x43545353,
+            FormatKind::Drawgroup => 0x44475250,
+            FormatKind::FaceProperties => 0x46414345,
+            FormatKind::FamilyInformation => 0x46414D49,
+            FormatKind::FamilyData => 0x46414D68,
+            FormatKind::Function => 0x46434E53,
+            FormatKind::AudioReference => 0x46574156,
+            FormatKind::GlobalData => 0x474C4F42,
+            FormatKind::HouseDescriptor => 0x484F5553,
+            FormatKind::TexturedMaterial => 0x49596978,
+            FormatKind::WorldDatabase => 0x49FF7D76,
+            FormatKind::LotTexture => 0x4B58975B,
+            FormatKind::SkinToneXml => 0x4C158081,
+            FormatKind::CinematicScene => 0x4D51F042,
+            FormatKind::NeighborhoodMemory => 0x4E474248,
+            FormatKind::NameReference => 0x4E524546,
+            FormatKind::NameMap => 0x4E6D6150,
+            FormatKind::ObjectData => 0x4F424A44,
+            FormatKind::ObjectFunction => 0x4F424A66,
+            FormatKind::ObjectMetadata => 0x4F626A4D,
+            FormatKind::ImageColorPalette => 0x50414C54,
+            FormatKind::SimPersonalInformation => 0x50455253,
+            FormatKind::StackScript => 0x504F5349,
+            FormatKind::PackageToolkit => 0x50544250,
+            FormatKind::SimInformation => 0x53494D49,
+            FormatKind::ObjectSlot => 0x534C4F54,
+            FormatKind::Sprites => 0x53505232,
+            FormatKind::TextLists => 0x53545223,
+            FormatKind::TTAT => 0x54415454,
+            FormatKind::BehaviorFunctionLabels => 0x54505250,
+            FormatKind::BehaviorConstantLabels => 0x5452434E,
+            FormatKind::BehaviorFlowchartTree => 0x54524545,
+            FormatKind::PieMenuFunctions => 0x54544142,
+            FormatKind::PieMenuSettings => 0x54544173,
+            FormatKind::MaterialObject => 0x584D544F,
+            FormatKind::UnknownObject => 0x584F424A,
+            FormatKind::EnvironmentCubeLighting => 0x6A97042F,
+            FormatKind::TwoDArray => 0x6B943B43,
+            FormatKind::LotDefinition => 0x6C589723,
+            FormatKind::Object => 0x6F626A74,
+            FormatKind::Hitlist => 0x7B1ACFCD,
+            FormatKind::GeometricNode => 0x7BA3838C,
+            FormatKind::Lightmap => 0x856DDBAC,
+            FormatKind::WallLayer => 0x8A84D7B0,
+            FormatKind::Unknown1 => 0x8B0C79D6,
+            FormatKind::JpegImage => 0x8C3CE95A,
+            FormatKind::FamilyTies => 0x8C870743,
+            FormatKind::PredictiveMaps => 0x8CC0A14B,
+            FormatKind::SoundEffects => 0x8DB5E4C2,
+            FormatKind::Unknown2 => 0x9D796DB4,
+            FormatKind::SimDescription => 0xAACE2EFB,
+            FormatKind::FencePostLayer => 0xAB4BA572,
+            FormatKind::Roof => 0xAB9406AA,
+            FormatKind::LotTerrainGeometry => 0xABCB5DA4,
+            FormatKind::NeighborhoodTerrain => 0xABD0DC63,
+            FormatKind::LinearFogLighting => 0xAC06A66F,
+            FormatKind::DrawStateLighting => 0xAC06A676,
+            FormatKind::GeometricDataContainer => 0xAC4F8687,
+            FormatKind::ThreeDReference => 0xAC506764,
+            FormatKind::IdNumber => 0xAC8A7A2E,
+            FormatKind::WeatherInfo => 0xB21BE28B,
+            FormatKind::TssgSystem => 0xBA353CE1,
+            FormatKind::Light => 0xC9C81B9B,
+            FormatKind::StringMap => 0xCAC4FC40,
+            FormatKind::VertexLayer => 0xCB4387A1,
+            FormatKind::Unknown3 => 0xCC2A6A34,
+            FormatKind::SimRelations => 0xCC364C2A,
+            FormatKind::Unknown4 => 0xCC8A6A69,
+            FormatKind::FacialStructure => 0xCCCEF852,
+            FormatKind::MaxisMaterialShader => 0xCD7FE87A,
+            FormatKind::SimWantsAndFears => 0xCD95548E,
+            FormatKind::ContentRegistry => 0xCDB467B8,
+            FormatKind::CreationResource => 0xE519C933,
+            FormatKind::Directory => 0xE86B1EEF,
+            FormatKind::EffectsResourceTree => 0xEA5118B0,
+            FormatKind::PropertySet => 0xEBCF3E27,
+            FormatKind::VersionInformation => 0xEBFEE342,
+            FormatKind::NeighborhoodView => 0xEC44BDDC,
+            FormatKind::LargeImage => 0xED534136,
+            FormatKind::SingularLotObject => 0xFA1C39F7,
+            FormatKind::Animation => 0xFB00791E,
+            FormatKind::Shape => 0xFC6EB1F7,
+        }
     }
 }
