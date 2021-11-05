@@ -7,6 +7,8 @@
 use binrw::*;
 
 #[cfg(test)]
+use proptest::collection::vec;
+#[cfg(test)]
 use proptest::prelude::*;
 #[cfg(test)]
 use proptest::sample::size_range;
@@ -35,6 +37,8 @@ pub struct Bhav {
     pub tree_version: i32,
     #[br(args { count: num_instructions as usize, inner: (signature,) } )]
     #[bw(args_raw = (*signature,))]
+    #[cfg_attr(test, strategy(vec(any_with::<BhavInstruction>((#signature,)), (0..100))))]
+    //non-null ascii characters only
     pub instructions: Vec<BhavInstruction>,
 }
 

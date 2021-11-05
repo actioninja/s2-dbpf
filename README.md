@@ -31,7 +31,7 @@ Currently heavily work in progress and not ready for usage.
 | POPS | No | No | No |
 | SCOR | No | No | No |
 | BCON | No | No | No |
-| BHAV | No | No | No |
+| BHAV | Yes | No | No |
 | BMP  | No | No | No |
 | CATS | No | No | No |
 | CIGE | No | No | No |
