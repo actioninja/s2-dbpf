@@ -5,13 +5,13 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 use crate::constants::data_kinds::FormatKind;
-use binrw::*;
+use binrw::binrw;
 
 #[binrw]
 #[derive(Debug, PartialEq)]
-#[brw(import(number_of_files: u32))]
+#[brw(import(_number_of_files: u32))]
 pub struct Dir {
-    #[br(count = number_of_files)]
+    #[br(count = _number_of_files)]
     entries: Vec<DirEntry>,
 }
 

@@ -6,19 +6,18 @@
 
 use crate::helpers::{copy_within_slice, U24};
 use binrw::io::Cursor;
-use binrw::*;
+use binrw::{binrw, BinRead};
 use debug_print::debug_println as dprintln;
 use std::str;
 
 const MAGIC_QFS_ID: u16 = 0x10FB;
-const COMPRESSION_HEADER_SIZE: u32 = 9;
 
 #[binrw]
 #[brw(little)]
 #[derive(PartialOrd, PartialEq, Debug)]
 struct CompressionHeader {
     compressed_size: u32,
-    #[brw(big, magic = 0x10FBu16)]
+    #[brw(big, magic = 0x10FB_u16)]
     #[br(map = |x: U24| *x)]
     #[bw(map = |x: &u32| U24(*x))]
     uncompressed_size: u32,
@@ -53,8 +52,9 @@ impl CompressedFile {
         }
     }
 
-    /// Decompresses the data in the CompressedFile, yielding a Vec<u8>
+    /// Decompresses the data in the `CompressedFile`, yielding a Vec<u8>
     /// This shouldn't be able to fail, data is already checked to be compressed
+    #[must_use]
     pub fn decompress(&self) -> Vec<u8> {
         let comp_buf = &self.data;
         //Pre-allocate the decompression buffer to avoid having to resize a vec during the process
@@ -127,8 +127,8 @@ impl CompressedFile {
                     comp_pos += 2;
                     let num_plain_text: usize = (control_slice[0] & 0b0000_0011) as usize;
 
-                    let offset = (((((control_slice[0] & 0b0110_0000) as u16) << 3)
-                        | (control_slice[1] as u16))
+                    let offset = (((u16::from(control_slice[0] & 0b0110_0000) << 3)
+                        | u16::from(control_slice[1]))
                         + 1) as usize;
                     let number_copy_offset = (((control_slice[0] & 0b0001_1100) >> 2) + 3) as usize;
 
@@ -149,8 +149,8 @@ impl CompressedFile {
 
                     let num_plain_text: usize = ((control_slice[1] & 0b1100_0000) >> 6) as usize;
 
-                    let offset: usize = (((((control_slice[1] & 0b0011_1111) as u16) << 8)
-                        | (control_slice[2] as u16))
+                    let offset: usize = (((u16::from(control_slice[1] & 0b0011_1111) << 8)
+                        | u16::from(control_slice[2]))
                         + 1) as usize;
                     let num_to_copy: usize = ((control_slice[0] & 0b0011_1111) + 4) as usize;
 
@@ -171,12 +171,12 @@ impl CompressedFile {
 
                     let num_plain_text: usize = (control_slice[0] & 0b0000_0011) as usize;
 
-                    let offset: usize = ((((control_slice[0] & 0b0001_0000) as u32) << 12)
-                        | ((control_slice[1] as u32) << 8)
-                        | (control_slice[2] as u32) + 1)
+                    let offset: usize = ((u32::from(control_slice[0] & 0b0001_0000) << 12)
+                        | (u32::from(control_slice[1]) << 8)
+                        | (u32::from(control_slice[2]) + 1))
                         as usize;
-                    let num_to_copy: usize = ((((control_slice[0] & 0b0000_1100) as u16) << 6)
-                        | (control_slice[3] as u16) + 5)
+                    let num_to_copy: usize = ((u16::from(control_slice[0] & 0b0000_1100) << 6)
+                        | (u16::from(control_slice[3]) + 5))
                         as usize;
 
                     (Some(num_plain_text), Some((offset, num_to_copy)))
@@ -260,12 +260,12 @@ impl TryFrom<&Vec<u8>> for CompressedFile {
     /// returns `Err("Data is not compressed; use \"CompressedFile::compress\")`
     /// if the data isn't compressed, slower `compress()` call is needed
     fn try_from(in_vec: &Vec<u8>) -> Result<Self, Self::Error> {
-        if &in_vec[4..=5] == MAGIC_QFS_ID.to_be_bytes() {
+        if in_vec[4..=5] == MAGIC_QFS_ID.to_be_bytes() {
             let mut reader = Cursor::new(in_vec);
             let val = CompressedFile::read(&mut reader).unwrap();
             Ok(val)
         } else {
-            return Err("Data is not compressed; use \"CompressedFile::compress\"");
+            Err("Data is not compressed; use \"CompressedFile::compress\"")
         }
     }
 }
@@ -308,7 +308,7 @@ mod tests {
             0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
             0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
         ];
-        assert_eq!(decompressed, expected)
+        assert_eq!(decompressed, expected);
     }
 
     //#[test]
@@ -318,6 +318,6 @@ mod tests {
         let compressed = CompressedFile::compress(&test_vec);
         let decompressed = compressed.unwrap().decompress();
 
-        assert_eq!(test_vec, decompressed)
+        assert_eq!(test_vec, decompressed);
     }
 }
