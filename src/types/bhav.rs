@@ -38,7 +38,6 @@ pub struct Bhav {
     #[br(args { count: num_instructions as usize, inner: (signature,) } )]
     #[bw(args_raw = (*signature,))]
     #[cfg_attr(test, strategy(vec(any_with::<BhavInstruction>((#signature,)), (0..100))))]
-    //non-null ascii characters only
     pub instructions: Vec<BhavInstruction>,
 }
 
