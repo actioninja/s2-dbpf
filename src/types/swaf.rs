@@ -4,7 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.                   /
 ////////////////////////////////////////////////////////////////////////////////
 
-use binrw::*;
+use binrw::binrw;
 #[cfg(test)]
 use proptest::prelude::*;
 #[cfg(test)]
@@ -16,7 +16,7 @@ use test_strategy::Arbitrary;
 pub struct Swaf {
     pub version: SwafVersion,
     #[br(if(version != SwafVersion::One), temp)]
-    #[bw(calc = if let Some(lifetime_want_vec) = lifetime_wants { Some(lifetime_want_vec.len() as u32) } else { None })]
+    #[bw(calc = lifetime_wants.as_ref().map(|lifetime_want_vec| lifetime_want_vec.len() as u32))]
     lifetime_want_count: Option<u32>,
     #[br(if(version != SwafVersion::One))]
     #[br(count = if let Some(count) = lifetime_want_count { count } else { 0 } )]
@@ -107,11 +107,11 @@ impl Arbitrary for Swaf {
 #[cfg_attr(test, derive(Arbitrary))]
 #[brw(little)]
 pub enum SwafVersion {
-    #[brw(magic(0x01u32))]
+    #[brw(magic(0x01_u32))]
     One,
-    #[brw(magic(0x05u32))]
+    #[brw(magic(0x05_u32))]
     Five,
-    #[brw(magic(0x06u32))]
+    #[brw(magic(0x06_u32))]
     Six,
 }
 
@@ -210,11 +210,11 @@ impl Arbitrary for WantRecord {
 #[cfg_attr(test, derive(Arbitrary))]
 #[brw(little)]
 pub enum WantRecordVersion {
-    #[brw(magic(0x07u32))]
+    #[brw(magic(0x07_u32))]
     Seven,
-    #[brw(magic(0x08u32))]
+    #[brw(magic(0x08_u32))]
     Eight,
-    #[brw(magic(0x09u32))]
+    #[brw(magic(0x09_u32))]
     Nine,
 }
 
@@ -223,17 +223,17 @@ pub enum WantRecordVersion {
 #[cfg_attr(test, derive(Arbitrary))]
 #[brw(little)]
 pub enum WantType {
-    #[brw(magic(0x00u8))]
+    #[brw(magic(0x00_u8))]
     None,
-    #[brw(magic(0x01u8))]
+    #[brw(magic(0x01_u8))]
     Sim(u16),
-    #[brw(magic(0x02u8))]
+    #[brw(magic(0x02_u8))]
     Object(u32),
-    #[brw(magic(0x03u8))]
+    #[brw(magic(0x03_u8))]
     Category(u32),
-    #[brw(magic(0x04u8))]
+    #[brw(magic(0x04_u8))]
     Skill(u16),
-    #[brw(magic(0x05u8))]
+    #[brw(magic(0x05_u8))]
     Career(u32),
 }
 

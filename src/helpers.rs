@@ -4,7 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.                   /
 ////////////////////////////////////////////////////////////////////////////////
 
-use binrw::*;
+use binrw::{BinRead, BinResult, BinWrite, ReadOptions, WriteOptions};
 use std::io::{Read, Seek, Write};
 use std::ops::Deref;
 
@@ -22,9 +22,9 @@ impl BinRead for U24 {
         let mut buf: [u8; 3] = [0; 3];
         reader.read_exact(&mut buf)?;
 
-        Ok(U24((buf[0] as u32) << 16
-            | (buf[1] as u32) << 8
-            | (buf[2] as u32)))
+        Ok(U24(u32::from(buf[0]) << 16
+            | u32::from(buf[1]) << 8
+            | u32::from(buf[2])))
     }
 }
 

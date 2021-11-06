@@ -4,7 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.                   /
 ////////////////////////////////////////////////////////////////////////////////
 
-use binrw::*;
+use binrw::{BinRead, BinResult, BinWrite, NullString, ReadOptions, VecArgs, WriteOptions, binrw};
 
 #[cfg(test)]
 use proptest::collection::vec;
@@ -21,7 +21,7 @@ use test_strategy::Arbitrary;
 #[cfg_attr(test, derive(Arbitrary))]
 #[brw(little)]
 pub struct Bhav {
-    #[br(map(|x: NullString| x.into_string()))]
+    #[br(map(binrw::NullString::into_string))]
     #[bw(map(|x: &String| NullString::from_string(x.clone()) ))]
     #[brw(pad_size_to = 64)]
     #[cfg_attr(test, strategy("[\\x01-\\xFF]{1,64}"))] //non-null ascii characters only
@@ -46,25 +46,25 @@ pub struct Bhav {
 #[cfg_attr(test, derive(Arbitrary))]
 #[brw(little)]
 pub enum BhavSignature {
-    #[brw(magic(0x8000u16))]
+    #[brw(magic(0x8000_u16))]
     Zero,
-    #[brw(magic(0x8001u16))]
+    #[brw(magic(0x8001_u16))]
     One,
-    #[brw(magic(0x8002u16))]
+    #[brw(magic(0x8002_u16))]
     Two,
-    #[brw(magic(0x8003u16))]
+    #[brw(magic(0x8003_u16))]
     Three,
-    #[brw(magic(0x8004u16))]
+    #[brw(magic(0x8004_u16))]
     Four,
-    #[brw(magic(0x8005u16))]
+    #[brw(magic(0x8005_u16))]
     Five,
-    #[brw(magic(0x8006u16))]
+    #[brw(magic(0x8006_u16))]
     Six,
-    #[brw(magic(0x8007u16))]
+    #[brw(magic(0x8007_u16))]
     Seven,
-    #[brw(magic(0x8008u16))]
+    #[brw(magic(0x8008_u16))]
     Eight,
-    #[brw(magic(0x8009u16))]
+    #[brw(magic(0x8009_u16))]
     Nine,
 }
 
@@ -257,7 +257,7 @@ impl BinRead for BhavGoTo {
                 BhavGoTo::ERROR_BYTE => Ok(BhavGoTo::Error),
                 BhavGoTo::TRUE_BYTE => Ok(BhavGoTo::True),
                 BhavGoTo::FALSE_BYTE => Ok(BhavGoTo::False),
-                _ => Ok(BhavGoTo::OpNum(byte as u16)),
+                _ => Ok(BhavGoTo::OpNum(u16::from(byte))),
             }
         } else {
             let short = u16::read_options(reader, options, ())?;

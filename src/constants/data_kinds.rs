@@ -10,211 +10,211 @@ use const_format::formatcp;
 #[binrw]
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub enum FormatKind {
-    #[brw(magic(0x00000000u32))]
+    #[brw(magic(0x0000_0000_u32))]
     UiData = 0x0,
-    #[brw(magic(0x0A284D0Bu32))]
+    #[brw(magic(0x0A28_4D0B_u32))]
     WallGraph,
-    #[brw(magic(0x0B9EB87Eu32))]
+    #[brw(magic(0x0B9E_B87E_u32))]
     TrackSettings,
-    #[brw(magic(0x0BF999E7u32))]
+    #[brw(magic(0x0BF9_99E7_u32))]
     LotDescription,
-    #[brw(magic(0x0C560F39u32))]
+    #[brw(magic(0x0C56_0F39_u32))]
     BinaryIndex,
-    #[brw(magic(0x0C900FDBu32))]
+    #[brw(magic(0x0C90_0FDB_u32))]
     PoolSurface,
-    #[brw(magic(0x1C4A276Cu32))]
+    #[brw(magic(0x1C4A_276C_u32))]
     TextureResource,
-    #[brw(magic(0x2026960Bu32))]
+    #[brw(magic(0x2026_960B_u32))]
     AudioFile,
-    #[brw(magic(0x25232B11u32))]
+    #[brw(magic(0x2523_2B11_u32))]
     SceneNode,
-    #[brw(magic(0x2A51171Bu32))]
+    #[brw(magic(0x2A51_171B_u32))]
     ThreeDArray,
-    #[brw(magic(0x2C1FD8A1u32))]
+    #[brw(magic(0x2C1F_D8A1_u32))]
     TextureOverlayXML,
-    #[brw(magic(0x2C310F46u32))]
+    #[brw(magic(0x2C31_0F46_u32))]
     Popups,
-    #[brw(magic(0x3053CF74u32))]
+    #[brw(magic(0x3053_CF74_u32))]
     SimScores,
-    #[brw(magic(0x42434F4Eu32))]
+    #[brw(magic(0x4243_4F4E_u32))]
     BehaviorConstant,
-    #[brw(magic(0x42484156u32))]
+    #[brw(magic(0x4248_4156_u32))]
     BehaviorFunction,
-    #[brw(magic(0x424D505Fu32))]
+    #[brw(magic(0x424D_505F_u32))]
     BitmapImage,
-    #[brw(magic(0x43415453u32))]
+    #[brw(magic(0x4341_5453_u32))]
     CatalogString,
-    #[brw(magic(0x43494745u32))]
+    #[brw(magic(0x4349_4745_u32))]
     ImageLink,
-    #[brw(magic(0x43545353u32))]
+    #[brw(magic(0x4354_5353_u32))]
     CatalogDescription,
-    #[brw(magic(0x44475250u32))]
+    #[brw(magic(0x4447_5250_u32))]
     Drawgroup,
-    #[brw(magic(0x46414345u32))]
+    #[brw(magic(0x4641_4345_u32))]
     FaceProperties,
-    #[brw(magic(0x46414D49u32))]
+    #[brw(magic(0x4641_4D49_u32))]
     FamilyInformation,
-    #[brw(magic(0x46414D68u32))]
+    #[brw(magic(0x4641_4D68_u32))]
     FamilyData,
-    #[brw(magic(0x46434E53u32))]
+    #[brw(magic(0x4643_4E53_u32))]
     Function,
-    #[brw(magic(0x46574156u32))]
+    #[brw(magic(0x4657_4156_u32))]
     AudioReference,
-    #[brw(magic(0x474C4F42u32))]
+    #[brw(magic(0x474C_4F42_u32))]
     GlobalData,
-    #[brw(magic(0x484F5553u32))]
+    #[brw(magic(0x484F_5553_u32))]
     HouseDescriptor,
-    #[brw(magic(0x49596978u32))]
+    #[brw(magic(0x4959_6978_u32))]
     TexturedMaterial,
-    #[brw(magic(0x49FF7D76u32))]
+    #[brw(magic(0x49FF_7D76_u32))]
     WorldDatabase,
-    #[brw(magic(0x4B58975Bu32))]
+    #[brw(magic(0x4B58_975B_u32))]
     LotTexture,
-    #[brw(magic(0x4C158081u32))]
+    #[brw(magic(0x4C15_8081_u32))]
     SkinToneXml,
-    #[brw(magic(0x4D51F042u32))]
+    #[brw(magic(0x4D51_F042_u32))]
     CinematicScene,
-    #[brw(magic(0x4E474248u32))]
+    #[brw(magic(0x4E47_4248_u32))]
     NeighborhoodMemory,
-    #[brw(magic(0x4E524546u32))]
+    #[brw(magic(0x4E52_4546_u32))]
     NameReference,
-    #[brw(magic(0x4E6D6150u32))]
+    #[brw(magic(0x4E6D_6150_u32))]
     NameMap,
-    #[brw(magic(0x4F424A44u32))]
+    #[brw(magic(0x4F42_4A44_u32))]
     ObjectData,
-    #[brw(magic(0x4F424A66u32))]
+    #[brw(magic(0x4F42_4A66_u32))]
     ObjectFunction,
-    #[brw(magic(0x4F626A4Du32))]
+    #[brw(magic(0x4F62_6A4D_u32))]
     ObjectMetadata,
-    #[brw(magic(0x50414C54u32))]
+    #[brw(magic(0x5041_4C54_u32))]
     ImageColorPalette,
-    #[brw(magic(0x50455253u32))]
+    #[brw(magic(0x5045_5253_u32))]
     SimPersonalInformation,
-    #[brw(magic(0x504F5349u32))]
+    #[brw(magic(0x504F_5349_u32))]
     StackScript,
-    #[brw(magic(0x50544250u32))]
+    #[brw(magic(0x5054_4250_u32))]
     PackageToolkit,
-    #[brw(magic(0x53494D49u32))]
+    #[brw(magic(0x5349_4D49_u32))]
     SimInformation,
-    #[brw(magic(0x534C4F54u32))]
+    #[brw(magic(0x534C_4F54_u32))]
     ObjectSlot,
-    #[brw(magic(0x53505232u32))]
+    #[brw(magic(0x5350_5232_u32))]
     Sprites,
-    #[brw(magic(0x53545223u32))]
+    #[brw(magic(0x5354_5223_u32))]
     TextLists,
-    #[brw(magic(0x54415454u32))]
+    #[brw(magic(0x5441_5454_u32))]
     TTAT,
-    #[brw(magic(0x54505250u32))]
+    #[brw(magic(0x5450_5250_u32))]
     BehaviorFunctionLabels,
-    #[brw(magic(0x5452434Eu32))]
+    #[brw(magic(0x5452_434E_u32))]
     BehaviorConstantLabels,
-    #[brw(magic(0x54524545u32))]
+    #[brw(magic(0x5452_4545_u32))]
     BehaviorFlowchartTree,
-    #[brw(magic(0x54544142u32))]
+    #[brw(magic(0x5454_4142_u32))]
     PieMenuFunctions,
-    #[brw(magic(0x54544173u32))]
+    #[brw(magic(0x5454_4173_u32))]
     PieMenuSettings,
-    #[brw(magic(0x584D544Fu32))]
+    #[brw(magic(0x584D_544F_u32))]
     MaterialObject,
-    #[brw(magic(0x584F424Au32))]
+    #[brw(magic(0x584F_424A_u32))]
     UnknownObject,
-    #[brw(magic(0x6A97042Fu32))]
+    #[brw(magic(0x6A97_042F_u32))]
     EnvironmentCubeLighting,
-    #[brw(magic(0x6B943B43u32))]
+    #[brw(magic(0x6B94_3B43_u32))]
     TwoDArray,
-    #[brw(magic(0x6C589723u32))]
+    #[brw(magic(0x6C58_9723_u32))]
     LotDefinition,
-    #[brw(magic(0x6F626A74u32))]
+    #[brw(magic(0x6F62_6A74_u32))]
     Object,
-    #[brw(magic(0x7B1ACFCDu32))]
+    #[brw(magic(0x7B1A_CFCD_u32))]
     Hitlist,
-    #[brw(magic(0x7BA3838Cu32))]
+    #[brw(magic(0x7BA3_838C_u32))]
     GeometricNode,
-    #[brw(magic(0x856DDBACu32))]
+    #[brw(magic(0x856D_DBAC_u32))]
     Lightmap,
-    #[brw(magic(0x8A84D7B0u32))]
+    #[brw(magic(0x8A84_D7B0_u32))]
     WallLayer,
-    #[brw(magic(0x8B0C79D6u32))]
+    #[brw(magic(0x8B0C_79D6_u32))]
     Unknown1,
-    #[brw(magic(0x8C3CE95Au32))]
+    #[brw(magic(0x8C3C_E95A_u32))]
     JpegImage,
-    #[brw(magic(0x8C870743u32))]
+    #[brw(magic(0x8C87_0743_u32))]
     FamilyTies,
-    #[brw(magic(0x8CC0A14Bu32))]
+    #[brw(magic(0x8CC0_A14B_u32))]
     PredictiveMaps,
-    #[brw(magic(0x8DB5E4C2u32))]
+    #[brw(magic(0x8DB5_E4C2_u32))]
     SoundEffects,
-    #[brw(magic(0x9D796DB4u32))]
+    #[brw(magic(0x9D79_6DB4_u32))]
     Unknown2,
-    #[brw(magic(0xAACE2EFBu32))]
+    #[brw(magic(0xAACE_2EFB_u32))]
     SimDescription,
-    #[brw(magic(0xAB4BA572u32))]
+    #[brw(magic(0xAB4B_A572_u32))]
     FencePostLayer,
-    #[brw(magic(0xAB9406AAu32))]
+    #[brw(magic(0xAB94_06AA_u32))]
     Roof,
-    #[brw(magic(0xABCB5DA4u32))]
+    #[brw(magic(0xABCB_5DA4_u32))]
     LotTerrainGeometry,
-    #[brw(magic(0xABD0DC63u32))]
+    #[brw(magic(0xABD0_DC63_u32))]
     NeighborhoodTerrain,
-    #[brw(magic(0xAC06A66Fu32))]
+    #[brw(magic(0xAC06_A66F_u32))]
     LinearFogLighting,
-    #[brw(magic(0xAC06A676u32))]
+    #[brw(magic(0xAC06_A676_u32))]
     DrawStateLighting,
-    #[brw(magic(0xAC4F8687u32))]
+    #[brw(magic(0xAC4F_8687_u32))]
     GeometricDataContainer,
-    #[brw(magic(0xAC506764u32))]
+    #[brw(magic(0xAC50_6764_u32))]
     ThreeDReference,
-    #[brw(magic(0xAC8A7A2Eu32))]
+    #[brw(magic(0xAC8A_7A2E_u32))]
     IdNumber,
-    #[brw(magic(0xB21BE28Bu32))]
+    #[brw(magic(0xB21B_E28B_u32))]
     WeatherInfo,
-    #[brw(magic(0xBA353CE1u32))]
+    #[brw(magic(0xBA35_3CE1_u32))]
     TssgSystem,
-    #[brw(magic(0xC9C81B9Bu32))]
+    #[brw(magic(0xC9C8_1B9B_u32))]
     Light,
-    #[brw(magic(0xCAC4FC40u32))]
+    #[brw(magic(0xCAC4_FC40_u32))]
     StringMap,
-    #[brw(magic(0xCB4387A1u32))]
+    #[brw(magic(0xCB43_87A1_u32))]
     VertexLayer,
-    #[brw(magic(0xCC2A6A34u32))]
+    #[brw(magic(0xCC2A_6A34_u32))]
     Unknown3,
-    #[brw(magic(0xCC364C2Au32))]
+    #[brw(magic(0xCC36_4C2A_u32))]
     SimRelations,
-    #[brw(magic(0xCC8A6A69u32))]
+    #[brw(magic(0xCC8A_6A69_u32))]
     Unknown4,
-    #[brw(magic(0xCCCEF852u32))]
+    #[brw(magic(0xCCCE_F852_u32))]
     FacialStructure,
-    #[brw(magic(0xCD7FE87Au32))]
+    #[brw(magic(0xCD7F_E87A_u32))]
     MaxisMaterialShader,
-    #[brw(magic(0xCD95548Eu32))]
+    #[brw(magic(0xCD95_548E_u32))]
     SimWantsAndFears,
-    #[brw(magic(0xCDB467B8u32))]
+    #[brw(magic(0xCDB4_67B8_u32))]
     ContentRegistry,
-    #[brw(magic(0xE519C933u32))]
+    #[brw(magic(0xE519_C933_u32))]
     CreationResource,
-    #[brw(magic(0xE86B1EEFu32))]
+    #[brw(magic(0xE86B_1EEF_u32))]
     Directory,
-    #[brw(magic(0xEA5118B0u32))]
+    #[brw(magic(0xEA51_18B0_u32))]
     EffectsResourceTree,
-    #[brw(magic(0xEBCF3E27u32))]
+    #[brw(magic(0xEBCF_3E27_u32))]
     PropertySet,
-    #[brw(magic(0xEBFEE342u32))]
+    #[brw(magic(0xEBFE_E342_u32))]
     VersionInformation,
-    #[brw(magic(0xEC44BDDCu32))]
+    #[brw(magic(0xEC44_BDDC_u32))]
     NeighborhoodView,
-    #[brw(magic(0xED534136u32))]
+    #[brw(magic(0xED53_4136_u32))]
     LargeImage,
-    #[brw(magic(0xFA1C39F7u32))]
+    #[brw(magic(0xFA1C_39F7_u32))]
     SingularLotObject,
-    #[brw(magic(0xFB00791Eu32))]
+    #[brw(magic(0xFB00_791E_u32))]
     Animation,
-    #[brw(magic(0xFC6EB1F7u32))]
+    #[brw(magic(0xFC6E_B1F7_u32))]
     Shape,
 }
 
 impl FormatKind {
     const fn short_name(&self) -> &str {
-        return match self {
+        match self {
             FormatKind::UiData => "UI",
             FormatKind::WallGraph => "WGRA",
             FormatKind::TrackSettings => "TRKS",
@@ -315,11 +315,11 @@ impl FormatKind {
             FormatKind::SingularLotObject => "OBJT",
             FormatKind::Animation => "ANIM",
             FormatKind::Shape => "SHPE",
-        };
+        }
     }
 
     const fn long_name(&self) -> &str {
-        return match self {
+        match self {
             FormatKind::UiData => "UI Data",
             FormatKind::WallGraph => "Wall Graph",
             FormatKind::TrackSettings => "Track Settings",
@@ -420,111 +420,111 @@ impl FormatKind {
             FormatKind::SingularLotObject => "Singular Lot Object",
             FormatKind::Animation => "animation",
             FormatKind::Shape => "Shape",
-        };
+        }
     }
 
     const fn id(&self) -> u32 {
         match self {
             FormatKind::UiData => 0x0,
-            FormatKind::WallGraph => 0x0A284D0B,
-            FormatKind::TrackSettings => 0x0B9EB87E,
-            FormatKind::LotDescription => 0x0BF999E7,
-            FormatKind::BinaryIndex => 0x0C560F39,
-            FormatKind::PoolSurface => 0x0C900FDB,
-            FormatKind::TextureResource => 0x1C4A276C,
-            FormatKind::AudioFile => 0x2026960B,
-            FormatKind::SceneNode => 0x25232B11,
-            FormatKind::ThreeDArray => 0x2A51171B,
-            FormatKind::TextureOverlayXML => 0x2C1FD8A1,
-            FormatKind::Popups => 0x2C310F46,
-            FormatKind::SimScores => 0x3053CF74,
-            FormatKind::BehaviorConstant => 0x42434F4E,
-            FormatKind::BehaviorFunction => 0x42484156,
-            FormatKind::BitmapImage => 0x424D505F,
-            FormatKind::CatalogString => 0x43415453,
-            FormatKind::ImageLink => 0x43494745,
-            FormatKind::CatalogDescription => 0x43545353,
-            FormatKind::Drawgroup => 0x44475250,
-            FormatKind::FaceProperties => 0x46414345,
-            FormatKind::FamilyInformation => 0x46414D49,
-            FormatKind::FamilyData => 0x46414D68,
-            FormatKind::Function => 0x46434E53,
-            FormatKind::AudioReference => 0x46574156,
-            FormatKind::GlobalData => 0x474C4F42,
-            FormatKind::HouseDescriptor => 0x484F5553,
-            FormatKind::TexturedMaterial => 0x49596978,
-            FormatKind::WorldDatabase => 0x49FF7D76,
-            FormatKind::LotTexture => 0x4B58975B,
-            FormatKind::SkinToneXml => 0x4C158081,
-            FormatKind::CinematicScene => 0x4D51F042,
-            FormatKind::NeighborhoodMemory => 0x4E474248,
-            FormatKind::NameReference => 0x4E524546,
-            FormatKind::NameMap => 0x4E6D6150,
-            FormatKind::ObjectData => 0x4F424A44,
-            FormatKind::ObjectFunction => 0x4F424A66,
-            FormatKind::ObjectMetadata => 0x4F626A4D,
-            FormatKind::ImageColorPalette => 0x50414C54,
-            FormatKind::SimPersonalInformation => 0x50455253,
-            FormatKind::StackScript => 0x504F5349,
-            FormatKind::PackageToolkit => 0x50544250,
-            FormatKind::SimInformation => 0x53494D49,
-            FormatKind::ObjectSlot => 0x534C4F54,
-            FormatKind::Sprites => 0x53505232,
-            FormatKind::TextLists => 0x53545223,
-            FormatKind::TTAT => 0x54415454,
-            FormatKind::BehaviorFunctionLabels => 0x54505250,
-            FormatKind::BehaviorConstantLabels => 0x5452434E,
-            FormatKind::BehaviorFlowchartTree => 0x54524545,
-            FormatKind::PieMenuFunctions => 0x54544142,
-            FormatKind::PieMenuSettings => 0x54544173,
-            FormatKind::MaterialObject => 0x584D544F,
-            FormatKind::UnknownObject => 0x584F424A,
-            FormatKind::EnvironmentCubeLighting => 0x6A97042F,
-            FormatKind::TwoDArray => 0x6B943B43,
-            FormatKind::LotDefinition => 0x6C589723,
-            FormatKind::Object => 0x6F626A74,
-            FormatKind::Hitlist => 0x7B1ACFCD,
-            FormatKind::GeometricNode => 0x7BA3838C,
-            FormatKind::Lightmap => 0x856DDBAC,
-            FormatKind::WallLayer => 0x8A84D7B0,
-            FormatKind::Unknown1 => 0x8B0C79D6,
-            FormatKind::JpegImage => 0x8C3CE95A,
-            FormatKind::FamilyTies => 0x8C870743,
-            FormatKind::PredictiveMaps => 0x8CC0A14B,
-            FormatKind::SoundEffects => 0x8DB5E4C2,
-            FormatKind::Unknown2 => 0x9D796DB4,
-            FormatKind::SimDescription => 0xAACE2EFB,
-            FormatKind::FencePostLayer => 0xAB4BA572,
-            FormatKind::Roof => 0xAB9406AA,
-            FormatKind::LotTerrainGeometry => 0xABCB5DA4,
-            FormatKind::NeighborhoodTerrain => 0xABD0DC63,
-            FormatKind::LinearFogLighting => 0xAC06A66F,
-            FormatKind::DrawStateLighting => 0xAC06A676,
-            FormatKind::GeometricDataContainer => 0xAC4F8687,
-            FormatKind::ThreeDReference => 0xAC506764,
-            FormatKind::IdNumber => 0xAC8A7A2E,
-            FormatKind::WeatherInfo => 0xB21BE28B,
-            FormatKind::TssgSystem => 0xBA353CE1,
-            FormatKind::Light => 0xC9C81B9B,
-            FormatKind::StringMap => 0xCAC4FC40,
-            FormatKind::VertexLayer => 0xCB4387A1,
-            FormatKind::Unknown3 => 0xCC2A6A34,
-            FormatKind::SimRelations => 0xCC364C2A,
-            FormatKind::Unknown4 => 0xCC8A6A69,
-            FormatKind::FacialStructure => 0xCCCEF852,
-            FormatKind::MaxisMaterialShader => 0xCD7FE87A,
-            FormatKind::SimWantsAndFears => 0xCD95548E,
-            FormatKind::ContentRegistry => 0xCDB467B8,
-            FormatKind::CreationResource => 0xE519C933,
-            FormatKind::Directory => 0xE86B1EEF,
-            FormatKind::EffectsResourceTree => 0xEA5118B0,
-            FormatKind::PropertySet => 0xEBCF3E27,
-            FormatKind::VersionInformation => 0xEBFEE342,
-            FormatKind::NeighborhoodView => 0xEC44BDDC,
-            FormatKind::LargeImage => 0xED534136,
-            FormatKind::SingularLotObject => 0xFA1C39F7,
-            FormatKind::Animation => 0xFB00791E,
-            FormatKind::Shape => 0xFC6EB1F7,
+            FormatKind::WallGraph => 0x0A28_4D0B,
+            FormatKind::TrackSettings => 0x0B9E_B87E,
+            FormatKind::LotDescription => 0x0BF9_99E7,
+            FormatKind::BinaryIndex => 0x0C56_0F39,
+            FormatKind::PoolSurface => 0x0C90_0FDB,
+            FormatKind::TextureResource => 0x1C4A_276C,
+            FormatKind::AudioFile => 0x2026_960B,
+            FormatKind::SceneNode => 0x2523_2B11,
+            FormatKind::ThreeDArray => 0x2A51_171B,
+            FormatKind::TextureOverlayXML => 0x2C1F_D8A1,
+            FormatKind::Popups => 0x2C31_0F46,
+            FormatKind::SimScores => 0x3053_CF74,
+            FormatKind::BehaviorConstant => 0x4243_4F4E,
+            FormatKind::BehaviorFunction => 0x4248_4156,
+            FormatKind::BitmapImage => 0x424D_505F,
+            FormatKind::CatalogString => 0x4341_5453,
+            FormatKind::ImageLink => 0x4349_4745,
+            FormatKind::CatalogDescription => 0x4354_5353,
+            FormatKind::Drawgroup => 0x4447_5250,
+            FormatKind::FaceProperties => 0x4641_4345,
+            FormatKind::FamilyInformation => 0x4641_4D49,
+            FormatKind::FamilyData => 0x4641_4D68,
+            FormatKind::Function => 0x4643_4E53,
+            FormatKind::AudioReference => 0x4657_4156,
+            FormatKind::GlobalData => 0x474C_4F42,
+            FormatKind::HouseDescriptor => 0x484F_5553,
+            FormatKind::TexturedMaterial => 0x4959_6978,
+            FormatKind::WorldDatabase => 0x49FF_7D76,
+            FormatKind::LotTexture => 0x4B58_975B,
+            FormatKind::SkinToneXml => 0x4C15_8081,
+            FormatKind::CinematicScene => 0x4D51_F042,
+            FormatKind::NeighborhoodMemory => 0x4E47_4248,
+            FormatKind::NameReference => 0x4E52_4546,
+            FormatKind::NameMap => 0x4E6D_6150,
+            FormatKind::ObjectData => 0x4F42_4A44,
+            FormatKind::ObjectFunction => 0x4F42_4A66,
+            FormatKind::ObjectMetadata => 0x4F62_6A4D,
+            FormatKind::ImageColorPalette => 0x5041_4C54,
+            FormatKind::SimPersonalInformation => 0x5045_5253,
+            FormatKind::StackScript => 0x504F_5349,
+            FormatKind::PackageToolkit => 0x5054_4250,
+            FormatKind::SimInformation => 0x5349_4D49,
+            FormatKind::ObjectSlot => 0x534C_4F54,
+            FormatKind::Sprites => 0x5350_5232,
+            FormatKind::TextLists => 0x5354_5223,
+            FormatKind::TTAT => 0x5441_5454,
+            FormatKind::BehaviorFunctionLabels => 0x5450_5250,
+            FormatKind::BehaviorConstantLabels => 0x5452_434E,
+            FormatKind::BehaviorFlowchartTree => 0x5452_4545,
+            FormatKind::PieMenuFunctions => 0x5454_4142,
+            FormatKind::PieMenuSettings => 0x5454_4173,
+            FormatKind::MaterialObject => 0x584D_544F,
+            FormatKind::UnknownObject => 0x584F_424A,
+            FormatKind::EnvironmentCubeLighting => 0x6A97_042F,
+            FormatKind::TwoDArray => 0x6B94_3B43,
+            FormatKind::LotDefinition => 0x6C58_9723,
+            FormatKind::Object => 0x6F62_6A74,
+            FormatKind::Hitlist => 0x7B1A_CFCD,
+            FormatKind::GeometricNode => 0x7BA3_838C,
+            FormatKind::Lightmap => 0x856D_DBAC,
+            FormatKind::WallLayer => 0x8A84_D7B0,
+            FormatKind::Unknown1 => 0x8B0C_79D6,
+            FormatKind::JpegImage => 0x8C3C_E95A,
+            FormatKind::FamilyTies => 0x8C87_0743,
+            FormatKind::PredictiveMaps => 0x8CC0_A14B,
+            FormatKind::SoundEffects => 0x8DB5_E4C2,
+            FormatKind::Unknown2 => 0x9D79_6DB4,
+            FormatKind::SimDescription => 0xAACE_2EFB,
+            FormatKind::FencePostLayer => 0xAB4B_A572,
+            FormatKind::Roof => 0xAB94_06AA,
+            FormatKind::LotTerrainGeometry => 0xABCB_5DA4,
+            FormatKind::NeighborhoodTerrain => 0xABD0_DC63,
+            FormatKind::LinearFogLighting => 0xAC06_A66F,
+            FormatKind::DrawStateLighting => 0xAC06_A676,
+            FormatKind::GeometricDataContainer => 0xAC4F_8687,
+            FormatKind::ThreeDReference => 0xAC50_6764,
+            FormatKind::IdNumber => 0xAC8A_7A2E,
+            FormatKind::WeatherInfo => 0xB21B_E28B,
+            FormatKind::TssgSystem => 0xBA35_3CE1,
+            FormatKind::Light => 0xC9C8_1B9B,
+            FormatKind::StringMap => 0xCAC4_FC40,
+            FormatKind::VertexLayer => 0xCB43_87A1,
+            FormatKind::Unknown3 => 0xCC2A_6A34,
+            FormatKind::SimRelations => 0xCC36_4C2A,
+            FormatKind::Unknown4 => 0xCC8A_6A69,
+            FormatKind::FacialStructure => 0xCCCE_F852,
+            FormatKind::MaxisMaterialShader => 0xCD7F_E87A,
+            FormatKind::SimWantsAndFears => 0xCD95_548E,
+            FormatKind::ContentRegistry => 0xCDB4_67B8,
+            FormatKind::CreationResource => 0xE519_C933,
+            FormatKind::Directory => 0xE86B_1EEF,
+            FormatKind::EffectsResourceTree => 0xEA51_18B0,
+            FormatKind::PropertySet => 0xEBCF_3E27,
+            FormatKind::VersionInformation => 0xEBFE_E342,
+            FormatKind::NeighborhoodView => 0xEC44_BDDC,
+            FormatKind::LargeImage => 0xED53_4136,
+            FormatKind::SingularLotObject => 0xFA1C_39F7,
+            FormatKind::Animation => 0xFB00_791E,
+            FormatKind::Shape => 0xFC6E_B1F7,
         }
     }
 }
