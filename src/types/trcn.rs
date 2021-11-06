@@ -4,7 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.                   /
 ////////////////////////////////////////////////////////////////////////////////
 
-use binrw::*;
+use binrw::{binrw, NullString};
 
 #[binrw]
 #[derive(Debug, PartialEq)]
@@ -28,7 +28,7 @@ struct BconLabel {
     id_number: u32,
     name_length: u8,
     #[br(count(name_length as usize), try_map = String::from_utf8)]
-    #[bw(map = |x: &String| x.as_bytes())]
+    #[bw(map = std::string::String::as_bytes)]
     name: String,
     default_value: i16,
     min_value: i16,
