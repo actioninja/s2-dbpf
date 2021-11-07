@@ -243,6 +243,7 @@ mod tests {
     use super::*;
     use crate::test_helpers::test_parsing;
     use binrw::io::Cursor;
+    use binrw::{BinReaderExt, BinWriterExt};
     use paste::paste;
     use test_strategy::proptest;
 

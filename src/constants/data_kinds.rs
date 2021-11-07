@@ -213,7 +213,8 @@ pub enum FormatKind {
 }
 
 impl FormatKind {
-    const fn short_name(self) -> &'static str {
+    #[must_use]
+    pub const fn short_name(self) -> &'static str {
         match self {
             FormatKind::UiData => "UI",
             FormatKind::WallGraph => "WGRA",
@@ -318,7 +319,8 @@ impl FormatKind {
         }
     }
 
-    const fn long_name(self) -> &'static str {
+    #[must_use]
+    pub const fn long_name(self) -> &'static str {
         match self {
             FormatKind::UiData => "UI Data",
             FormatKind::WallGraph => "Wall Graph",
@@ -423,7 +425,8 @@ impl FormatKind {
         }
     }
 
-    const fn id(self) -> u32 {
+    #[must_use]
+    pub const fn id(self) -> u32 {
         match self {
             FormatKind::UiData => 0x0,
             FormatKind::WallGraph => 0x0A28_4D0B,

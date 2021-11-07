@@ -338,17 +338,17 @@ mod tests {
         assert_eq!(false_short, GoTo::False);
         assert_eq!(cursor.position(), 2);
 
-        let mut cursor = Cursor::new([0xFDu8, 0xFFu8]);
+        let mut cursor = Cursor::new([0xFD_u8, 0xFF_u8]);
         let true_short: GoTo = cursor.read_le_args((false,)).unwrap();
         assert_eq!(true_short, GoTo::True);
         assert_eq!(cursor.position(), 2);
 
-        let mut cursor = Cursor::new([0xFCu8, 0xFFu8]);
+        let mut cursor = Cursor::new([0xFC_u8, 0xFF_u8]);
         let true_short: GoTo = cursor.read_le_args((false,)).unwrap();
         assert_eq!(true_short, GoTo::Error);
         assert_eq!(cursor.position(), 2);
 
-        let mut cursor = Cursor::new([0x10u8, 0x10u8]);
+        let mut cursor = Cursor::new([0x10_u8, 0x10_u8]);
         let some_short: GoTo = cursor.read_le_args((false,)).unwrap();
         assert_eq!(some_short, GoTo::OpNum(0x1010));
         assert_eq!(cursor.position(), 2);
@@ -361,28 +361,28 @@ mod tests {
             .write_le_args(&GoTo::False, (true,))
             .unwrap();
 
-        assert_eq!(&writer_false_byte.into_inner()[..], [0xFFu8]);
+        assert_eq!(&writer_false_byte.into_inner()[..], [0xFF_u8]);
 
         let mut writer_true_byte = Cursor::new(vec![]);
         writer_true_byte
             .write_le_args(&GoTo::True, (true,))
             .unwrap();
 
-        assert_eq!(&writer_true_byte.into_inner()[..], [0xFEu8]);
+        assert_eq!(&writer_true_byte.into_inner()[..], [0xFE_u8]);
 
         let mut writer_error_byte = Cursor::new(vec![]);
         writer_error_byte
             .write_le_args(&GoTo::Error, (true,))
             .unwrap();
 
-        assert_eq!(&writer_error_byte.into_inner()[..], [0xFDu8]);
+        assert_eq!(&writer_error_byte.into_inner()[..], [0xFD_u8]);
 
         let mut writer_opnum_byte = Cursor::new(vec![]);
         writer_opnum_byte
             .write_le_args(&GoTo::OpNum(0x10), (true,))
             .unwrap();
 
-        assert_eq!(&writer_opnum_byte.into_inner()[..], [0x10u8]);
+        assert_eq!(&writer_opnum_byte.into_inner()[..], [0x10_u8]);
 
         // shorts
 
@@ -391,28 +391,28 @@ mod tests {
             .write_le_args(&GoTo::False, (false,))
             .unwrap();
 
-        assert_eq!(&writer_false_short.into_inner()[..], [0xFEu8, 0xFFu8]);
+        assert_eq!(&writer_false_short.into_inner()[..], [0xFE_u8, 0xFF_u8]);
 
         let mut writer_true_short = Cursor::new(vec![]);
         writer_true_short
             .write_le_args(&GoTo::True, (false,))
             .unwrap();
 
-        assert_eq!(&writer_true_short.into_inner()[..], [0xFDu8, 0xFFu8]);
+        assert_eq!(&writer_true_short.into_inner()[..], [0xFD_u8, 0xFF_u8]);
 
         let mut writer_error_short = Cursor::new(vec![]);
         writer_error_short
             .write_le_args(&GoTo::Error, (false,))
             .unwrap();
 
-        assert_eq!(&writer_error_short.into_inner()[..], [0xFCu8, 0xFFu8]);
+        assert_eq!(&writer_error_short.into_inner()[..], [0xFC_u8, 0xFF_u8]);
 
         let mut writer_opnum_short = Cursor::new(vec![]);
         writer_opnum_short
             .write_le_args(&GoTo::OpNum(0x1010), (false,))
             .unwrap();
 
-        assert_eq!(&writer_opnum_short.into_inner()[..], [0x10u8, 0x10u8]);
+        assert_eq!(&writer_opnum_short.into_inner()[..], [0x10_u8, 0x10_u8]);
     }
 
     #[proptest]
