@@ -9,9 +9,9 @@ use binrw::binrw;
 
 #[binrw]
 #[derive(Debug, PartialEq)]
-#[brw(import(_number_of_files: u32))]
+#[br(import(number_of_files: u32))]
 pub struct Dir {
-    #[br(count = _number_of_files)]
+    #[br(count = number_of_files)]
     entries: Vec<DirEntry>,
 }
 

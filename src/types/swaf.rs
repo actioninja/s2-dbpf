@@ -255,35 +255,36 @@ mod tests {
         cursor.set_position(0);
 
         let out: WantType = cursor.read_le().unwrap();
-        assert_eq!(out, x)
+        assert_eq!(out, x);
     }
 
     #[test]
     fn want_type_parses() {
-        let none: WantType = Cursor::new([0x00u8, 0xFFu8]).read_le().unwrap();
+        let none: WantType = Cursor::new([0x00_u8, 0xFF_u8]).read_le().unwrap();
         assert_eq!(none, WantType::None);
 
-        let sim: WantType = Cursor::new([0x01u8, 0x05u8, 0x00u8, 0xFFu8])
+        let sim: WantType = Cursor::new([0x01_u8, 0x05_u8, 0x00_u8, 0xFF_u8])
             .read_le()
             .unwrap();
         assert_eq!(sim, WantType::Sim(5));
 
-        let object: WantType = Cursor::new([0x02u8, 0x05u8, 0x00u8, 0x00u8, 0x00u8, 0xFFu8])
+        let object: WantType = Cursor::new([0x02_u8, 0x05_u8, 0x00_u8, 0x00_u8, 0x00_u8, 0xFF_u8])
             .read_le()
             .unwrap();
         assert_eq!(object, WantType::Object(5));
 
-        let category: WantType = Cursor::new([0x03u8, 0x05u8, 0x00u8, 0x00u8, 0x00u8, 0xFFu8])
-            .read_le()
-            .unwrap();
+        let category: WantType =
+            Cursor::new([0x03_u8, 0x05_u8, 0x00_u8, 0x00_u8, 0x00_u8, 0xFF_u8])
+                .read_le()
+                .unwrap();
         assert_eq!(category, WantType::Category(5));
 
-        let skill: WantType = Cursor::new([0x04u8, 0x05u8, 0x00u8, 0xFFu8, 0xFFu8, 0xFFu8])
+        let skill: WantType = Cursor::new([0x04_u8, 0x05_u8, 0x00_u8, 0xFF_u8, 0xFF_u8, 0xFF_u8])
             .read_le()
             .unwrap();
         assert_eq!(skill, WantType::Skill(5));
 
-        let career: WantType = Cursor::new([0x05u8, 0x05u8, 0x00u8, 0x00u8, 0x00u8, 0xFFu8])
+        let career: WantType = Cursor::new([0x05_u8, 0x05_u8, 0x00_u8, 0x00_u8, 0x00_u8, 0xFF_u8])
             .read_le()
             .unwrap();
         assert_eq!(career, WantType::Career(5));

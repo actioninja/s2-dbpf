@@ -9,8 +9,8 @@ use binrw::{binrw, NullString};
 #[binrw]
 #[derive(PartialEq, Debug)]
 struct ObjectData {
-    filename: NullString,
     #[brw(pad_size_to = 64)]
+    filename: NullString,
     version: u32,
     initial_stack_size: u16,
     default_wall_adjacent_flags: u16,

@@ -30,7 +30,7 @@ Currently heavily work in progress and not ready for usage.
 | XTOL | No | No | No |
 | POPS | No | No | No |
 | SCOR | No | No | No |
-| BCON | No | No | No |
+| BCON | Yes | Yes | No |
 | BHAV | Yes | Yes | No |
 | BMP  | No | No | No |
 | CATS | No | No | No |
