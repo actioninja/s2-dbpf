@@ -33,9 +33,9 @@ pub struct CompressedFile {
 }
 
 impl CompressedFile {
-    pub fn compress(in_vec: &Vec<u8>) -> Result<CompressedFile, &'static str> {
+    pub fn compress(in_vec: &[u8]) -> Result<CompressedFile, &'static str> {
         //Already compressed
-        if &in_vec[4..=5] == MAGIC_QFS_ID.to_be_bytes() {
+        if in_vec[4..=5] == MAGIC_QFS_ID.to_be_bytes() {
             Err("Already compressed!")
         } else {
             let uncompressed_len = in_vec.len();

@@ -16,7 +16,7 @@ Currently heavily work in progress and not ready for usage.
 
 | Format | Raw Support | Integration Tests | Easy Types |
 | ------ | ----------- | ----------------- | ---------- |
-| DBPF | No | No | No |
+| DBPF   | No | No | No |
 | UI   | No | No | No |
 | WGRA | No | No | No |
 | TRKS | No | No | No |
@@ -31,7 +31,7 @@ Currently heavily work in progress and not ready for usage.
 | POPS | No | No | No |
 | SCOR | No | No | No |
 | BCON | No | No | No |
-| BHAV | Yes | No | No |
+| BHAV | Yes | Yes | No |
 | BMP  | No | No | No |
 | CATS | No | No | No |
 | CIGE | No | No | No |

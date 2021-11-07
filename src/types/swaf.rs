@@ -14,28 +14,28 @@ use test_strategy::Arbitrary;
 #[derive(Debug, PartialEq)]
 #[brw(little)]
 pub struct Swaf {
-    pub version: SwafVersion,
-    #[br(if(version != SwafVersion::One), temp)]
+    pub version: Version,
+    #[br(if(version != Version::One), temp)]
     #[bw(calc = lifetime_wants.as_ref().map(|lifetime_want_vec| lifetime_want_vec.len() as u32))]
     lifetime_want_count: Option<u32>,
-    #[br(if(version != SwafVersion::One))]
+    #[br(if(version != Version::One))]
     #[br(count = if let Some(count) = lifetime_want_count { count } else { 0 } )]
     pub lifetime_wants: Option<Vec<WantRecord>>,
-    #[br(if(version != SwafVersion::One))]
+    #[br(if(version != Version::One))]
     pub max_wants: Option<u32>,
     #[br(temp)]
     #[bw(calc = wants.len() as u32)]
     want_count: u32,
     #[br(count = want_count as usize)]
     pub wants: Vec<WantRecord>,
-    #[br(if(version != SwafVersion::One))]
+    #[br(if(version != Version::One))]
     pub max_fears: Option<u32>,
     #[br(temp)]
     #[bw(calc = fears.len() as u32)]
     fear_count: u32,
     #[br(count = fear_count as usize)]
     pub fears: Vec<WantRecord>,
-    #[br(if(version != SwafVersion::One))]
+    #[br(if(version != Version::One))]
     pub unknown_1: Option<u32>,
     pub unknown_2: u32,
     pub counter: u32,
@@ -50,7 +50,7 @@ pub struct Swaf {
 #[cfg(test)]
 prop_compose! {
     fn swaf_mapper()(
-        version in any::<SwafVersion>(),
+        version in any::<Version>(),
         lifetime_wants in prop::collection::vec(any::<WantRecord>(), 0..100),
         max_wants in any::<u32>(),
         wants in prop::collection::vec(any::<WantRecord>(), 0..10),
@@ -61,20 +61,7 @@ prop_compose! {
         counter in any::<u32>(),
         previous_wants_fears in prop::collection::vec(any::<PreviousWantsFears>(), 0..100),
     ) -> Swaf {
-        if version != SwafVersion::One {
-            Swaf {
-                version,
-                lifetime_wants: Some(lifetime_wants),
-                max_wants: Some(max_wants),
-                wants,
-                max_fears: Some(max_fears),
-                fears,
-                unknown_1: Some(unknown_1),
-                unknown_2,
-                counter,
-                previous_wants_fears,
-            }
-        } else {
+        if version == Version::One {
             Swaf {
                 version,
                 lifetime_wants: None,
@@ -87,6 +74,20 @@ prop_compose! {
                 counter,
                 previous_wants_fears,
             }
+        } else {
+            Swaf {
+                version,
+                lifetime_wants: Some(lifetime_wants),
+                max_wants: Some(max_wants),
+                wants,
+                max_fears: Some(max_fears),
+                fears,
+                unknown_1: Some(unknown_1),
+                unknown_2,
+                counter,
+                previous_wants_fears,
+            }
+
         }
     }
 }
@@ -106,7 +107,7 @@ impl Arbitrary for Swaf {
 #[derive(Debug, PartialEq)]
 #[cfg_attr(test, derive(Arbitrary))]
 #[brw(little)]
-pub enum SwafVersion {
+pub enum Version {
     #[brw(magic(0x01_u32))]
     One,
     #[brw(magic(0x05_u32))]
@@ -413,7 +414,7 @@ mod tests {
             0x01, //flags
         ],
         Swaf {
-            version: SwafVersion::Six,
+            version: Version::Six,
             lifetime_wants: Some(vec![WantRecord {
                 version: WantRecordVersion::Nine,
                 sim_instance_id: 8,
