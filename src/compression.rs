@@ -4,24 +4,21 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.                   /
 ////////////////////////////////////////////////////////////////////////////////
 
-use crate::helpers::{copy_within_slice, U24};
-use binrw::io::Cursor;
-use binrw::{binrw, BinRead, BinResult, BinWrite, ReadOptions, WriteOptions};
-use debug_print::debug_println as dprintln;
-use proptest::char::range;
 use std::fmt::{Display, Formatter};
 use std::io::{Read, Seek, Write};
 use std::option::Option::Some;
 use std::str;
 
-#[cfg(test)]
-use proptest::collection::vec;
+use binrw::io::Cursor;
+use binrw::{binrw, BinRead, BinResult, BinWrite, ReadOptions, WriteOptions};
+use debug_print::debug_println as dprintln;
+use proptest::char::range;
 #[cfg(test)]
 use proptest::prelude::*;
 #[cfg(test)]
-use proptest::sample::size_range;
-#[cfg(test)]
 use test_strategy::Arbitrary;
+
+use crate::helpers::{copy_within_slice, U24};
 
 const MAGIC_QFS_ID: u16 = 0x10FB;
 
@@ -31,8 +28,8 @@ const MAGIC_QFS_ID: u16 = 0x10FB;
 struct CompressionHeader {
     compressed_size: u32,
     #[brw(big, magic = 0x10FB_u16)]
-    #[br(map = |x: U24| *x)]
-    #[bw(map = |x: &u32| U24(*x))]
+    #[br(map = | x: U24 | * x)]
+    #[bw(map = | x: & u32 | U24(* x))]
     uncompressed_size: u32,
 }
 
@@ -695,12 +692,9 @@ impl TryFrom<&Vec<u8>> for CompressedFile {
 
 #[cfg(test)]
 mod tests {
-    use super::*;
     use crate::test_helpers::test_parsing;
-    use binrw::io::Cursor;
-    use binrw::{BinReaderExt, BinWriterExt};
-    use paste::paste;
-    use test_strategy::proptest;
+
+    use super::*;
 
     #[test]
     fn decompression_yields_correct_data() {

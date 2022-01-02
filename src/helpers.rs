@@ -4,9 +4,10 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.                   /
 ////////////////////////////////////////////////////////////////////////////////
 
-use binrw::{BinRead, BinResult, BinWrite, ReadOptions, WriteOptions};
 use std::io::{Read, Seek, Write};
 use std::ops::Deref;
+
+use binrw::{BinRead, BinResult, BinWrite, ReadOptions, WriteOptions};
 
 #[derive(Debug, Clone, Copy, PartialEq, PartialOrd)]
 pub struct U24(pub u32);

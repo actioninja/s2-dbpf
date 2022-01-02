@@ -15,27 +15,27 @@ use test_strategy::Arbitrary;
 #[brw(little)]
 pub struct Swaf {
     pub version: Version,
-    #[br(if(version != Version::One), temp)]
-    #[bw(calc = lifetime_wants.as_ref().map(|lifetime_want_vec| lifetime_want_vec.len() as u32))]
+    #[br(if (version != Version::One), temp)]
+    #[bw(calc = lifetime_wants.as_ref().map(| lifetime_want_vec | lifetime_want_vec.len() as u32))]
     lifetime_want_count: Option<u32>,
-    #[br(if(version != Version::One))]
-    #[br(count = if let Some(count) = lifetime_want_count { count } else { 0 } )]
+    #[br(if (version != Version::One))]
+    #[br(count = if let Some(count) = lifetime_want_count { count } else { 0 })]
     pub lifetime_wants: Option<Vec<WantRecord>>,
-    #[br(if(version != Version::One))]
+    #[br(if (version != Version::One))]
     pub max_wants: Option<u32>,
     #[br(temp)]
     #[bw(calc = wants.len() as u32)]
     want_count: u32,
     #[br(count = want_count as usize)]
     pub wants: Vec<WantRecord>,
-    #[br(if(version != Version::One))]
+    #[br(if (version != Version::One))]
     pub max_fears: Option<u32>,
     #[br(temp)]
     #[bw(calc = fears.len() as u32)]
     fear_count: u32,
     #[br(count = fear_count as usize)]
     pub fears: Vec<WantRecord>,
-    #[br(if(version != Version::One))]
+    #[br(if (version != Version::One))]
     pub unknown_1: Option<u32>,
     pub unknown_2: u32,
     pub counter: u32,
@@ -140,7 +140,7 @@ pub struct WantRecord {
     pub price: u16,
     pub counter: u32,
     pub aspiration: i32,
-    #[br(if(version == WantRecordVersion::Nine))]
+    #[br(if (version == WantRecordVersion::Nine))]
     pub influence: Option<i32>,
     pub flags: u8,
 }
@@ -240,12 +240,13 @@ pub enum WantType {
 
 #[cfg(test)]
 mod tests {
-    use super::*;
-    use crate::test_helpers::test_parsing;
     use binrw::io::Cursor;
     use binrw::{BinReaderExt, BinWriterExt};
-    use paste::paste;
     use test_strategy::proptest;
+
+    use crate::test_helpers::test_parsing;
+
+    use super::*;
 
     #[proptest]
     fn want_type_symmetrical(x: WantType) {

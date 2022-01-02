@@ -4,8 +4,9 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.                   /
 ////////////////////////////////////////////////////////////////////////////////
 
-use crate::constants::data_kinds::FormatKind;
 use binrw::binrw;
+
+use crate::constants::data_kinds::FormatKind;
 
 #[binrw]
 #[derive(Debug, PartialEq)]

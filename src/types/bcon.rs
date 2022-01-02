@@ -14,7 +14,7 @@ use test_strategy::Arbitrary;
 #[brw(little)]
 pub struct Bcon {
     #[br(map(NullString::into_string))]
-    #[bw(map(|x: &String| NullString::from_string(x.clone()) ))]
+    #[bw(map(| x: & String | NullString::from_string(x.clone())))]
     #[brw(pad_size_to = 64)]
     pub file_name: String,
     #[br(temp)]
@@ -28,13 +28,7 @@ pub struct Bcon {
 
 #[cfg(test)]
 mod tests {
-    use super::*;
     use crate::test_helpers::test_parsing;
-    use binrw::io::Cursor;
-    use binrw::{BinReaderExt, BinWriterExt};
-    use paste::paste;
-    use proptest::prelude::*;
-    use test_strategy::proptest;
 
     test_parsing!(
         [

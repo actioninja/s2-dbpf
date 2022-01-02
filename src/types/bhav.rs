@@ -4,15 +4,15 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.                   /
 ////////////////////////////////////////////////////////////////////////////////
 
-use binrw::{binrw, BinRead, BinResult, BinWrite, NullString, ReadOptions, VecArgs, WriteOptions};
+use std::io::{Read, Seek, Write};
 
+use binrw::{binrw, BinRead, BinResult, BinWrite, NullString, ReadOptions, VecArgs, WriteOptions};
 #[cfg(test)]
 use proptest::collection::vec;
 #[cfg(test)]
 use proptest::prelude::*;
 #[cfg(test)]
 use proptest::sample::size_range;
-use std::io::{Read, Seek, Write};
 #[cfg(test)]
 use test_strategy::Arbitrary;
 
@@ -22,7 +22,7 @@ use test_strategy::Arbitrary;
 #[brw(little)]
 pub struct Bhav {
     #[br(map(binrw::NullString::into_string))]
-    #[bw(map(|x: &String| NullString::from_string(x.clone()) ))]
+    #[bw(map(| x: & String | NullString::from_string(x.clone())))]
     #[brw(pad_size_to = 64)]
     #[cfg_attr(test, strategy("[\\x01-\\xFF]{1,64}"))] //non-null ascii characters only
     pub file_name: String,
@@ -35,9 +35,9 @@ pub struct Bhav {
     pub num_locals: u8,
     pub flag: u8,
     pub tree_version: i32,
-    #[br(args { count: num_instructions as usize, inner: (signature,) } )]
-    #[bw(args_raw = (*signature,))]
-    #[cfg_attr(test, strategy(vec(any_with::<Instruction>((#signature,)), (0..100))))]
+    #[br(args { count: num_instructions as usize, inner: (signature,) })]
+    #[bw(args_raw = (* signature,))]
+    #[cfg_attr(test, strategy(vec(any_with::< Instruction > ((# signature,)), (0..100))))]
     pub instructions: Vec<Instruction>,
 }
 
@@ -304,12 +304,13 @@ impl BinWrite for GoTo {
 
 #[cfg(test)]
 mod tests {
-    use super::*;
-    use crate::test_helpers::{test_parsing, test_parsing_bhav_ins};
     use binrw::io::Cursor;
     use binrw::{BinReaderExt, BinWriterExt};
-    use paste::paste;
     use test_strategy::proptest;
+
+    use crate::test_helpers::{test_parsing, test_parsing_bhav_ins};
+
+    use super::*;
 
     #[test]
     fn goto_parses() {

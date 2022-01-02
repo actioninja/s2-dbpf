@@ -4,10 +4,12 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.                   /
 ////////////////////////////////////////////////////////////////////////////////
 
-use binrw::BinReaderExt;
-use s2_dbpf::types::bhav::{Bhav, GoTo, Instruction, Signature};
 use std::fs::File;
 use std::io::BufReader;
+
+use binrw::BinReaderExt;
+
+use s2_dbpf::types::bhav::{Bhav, GoTo, Instruction, Signature};
 
 const path: &str = "tests/ex_files/bhav/42484156-00000000-7FB208FA-0000202E.bhav";
 
