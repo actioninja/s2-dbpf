@@ -4,12 +4,11 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.                   /
 ////////////////////////////////////////////////////////////////////////////////
 
-#![allow(unused_macros)]
 #![allow(unused_imports)]
 
 macro_rules! test_parsing {
     ($data:expr, $types:expr, $intype:ident, $name:ident) => {
-        paste! {
+        paste::paste! {
             #[test]
             fn [<$name _parse>]() {
                 let pre = $data;
@@ -31,7 +30,7 @@ macro_rules! test_parsing {
                 assert_eq!(&cursor.into_inner()[..], expected);
             }
 
-            #[proptest]
+            #[test_strategy::proptest]
             fn [<$name _symmetrical>](x: $intype) {
                 let mut cursor = Cursor::new(vec![]);
                 cursor.write_le(&x)?;
@@ -47,7 +46,7 @@ macro_rules! test_parsing {
     };
 
     ($data:expr, $types:expr, $intype:ident, $name:ident, $args:expr) => {
-        paste! {
+        paste::paste! {
             #[test]
             fn [<$name _parse>]() {
                 let pre = $data;
@@ -84,11 +83,12 @@ macro_rules! test_parsing {
         }
     };
 }
+pub(crate) use test_parsing;
 
 //TODO: learn macros better
 macro_rules! test_parsing_bhav_ins {
     ($data:expr, $types:expr, $intype:ident, $name:ident, $args:expr) => {
-        paste! {
+        paste::paste! {
             #[test]
             fn [<$name _parse>]() {
                 let pre = $data;
@@ -125,3 +125,4 @@ macro_rules! test_parsing_bhav_ins {
         }
     };
 }
+pub(crate) use test_parsing_bhav_ins;

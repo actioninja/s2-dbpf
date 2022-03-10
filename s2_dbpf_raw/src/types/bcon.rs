@@ -28,7 +28,12 @@ pub struct Bcon {
 
 #[cfg(test)]
 mod tests {
-    use crate::test_helpers::test_parsing;
+    use super::*;
+    use crate::test_helpers::*;
+    use binrw::*;
+    use proptest::prelude::*;
+    use std::io::Cursor;
+    use test_strategy::*;
 
     test_parsing!(
         [
