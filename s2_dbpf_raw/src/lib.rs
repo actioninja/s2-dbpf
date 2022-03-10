@@ -12,8 +12,6 @@
 // too many lines is a dumb metric
 #![allow(clippy::too_many_lines)]
 
-pub mod compression;
 pub mod constants;
-mod helpers;
 mod test_helpers;
 pub mod types;

@@ -9,13 +9,13 @@ use std::io::BufReader;
 
 use binrw::BinReaderExt;
 
-use s2_dbpf::types::bhav::{Bhav, GoTo, Instruction, Signature};
+use s2_dbpf::raw::types::bhav::{Bhav, GoTo, Instruction, Signature};
 
-const path: &str = "tests/ex_files/bhav/42484156-00000000-7FB208FA-0000202E.bhav";
+const PATH: &str = "tests/ex_files/bhav/42484156-00000000-7FB208FA-0000202E.bhav";
 
 #[test]
 fn real_file_bhav_parse() {
-    let file_handle = File::open(path).unwrap();
+    let file_handle = File::open(PATH).unwrap();
     let mut buf_reader = BufReader::new(file_handle);
     let bhav: Bhav = buf_reader.read_le().unwrap();
     let expected = Bhav {

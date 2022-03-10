@@ -7,6 +7,8 @@
 use binrw::binrw;
 use const_format::formatcp;
 
+//TODO: make a macro to generate this crap
+
 #[binrw]
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub enum FormatKind {
