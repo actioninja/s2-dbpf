@@ -251,7 +251,8 @@ impl BinRead for GoTo {
         options: &ReadOptions,
         args: Self::Args,
     ) -> BinResult<Self> {
-        if args.0 {
+        let is_byte = args.0;
+        if is_byte {
             let byte = u8::read_options(reader, options, ())?;
             match byte {
                 GoTo::ERROR_BYTE => Ok(GoTo::Error),
