@@ -5,6 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 pub mod audio_file;
+pub mod audio_reference;
 pub mod behavior_constant;
 pub mod behavior_constant_labels;
 pub mod behavior_function;
@@ -16,6 +17,11 @@ pub mod database_packed_file;
 pub mod directory;
 pub mod drawgroup;
 pub mod face_properties;
+pub mod family_data;
+pub mod family_information;
+pub mod function;
+pub mod global_data;
+pub mod house_descriptor;
 pub mod image_link;
 pub mod lot_description;
 pub mod object_definition;
@@ -26,6 +32,7 @@ pub mod sim_scores;
 pub mod sim_wants_and_fears;
 pub mod texture_overlay_xml;
 pub mod texture_resource;
+pub mod textured_material;
 pub mod three_d_array;
 pub mod track_settings;
 pub mod ui_data;
