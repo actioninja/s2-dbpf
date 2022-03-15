@@ -4,17 +4,29 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.                   /
 ////////////////////////////////////////////////////////////////////////////////
 
+pub mod audio_file;
 pub mod behavior_constant;
 pub mod behavior_constant_labels;
 pub mod behavior_function;
-mod binary_index;
+pub mod binary_index;
+pub mod bitmap_image;
+pub mod catalog_description;
+pub mod catalog_string;
 pub mod database_packed_file;
 pub mod directory;
-mod lot_description;
+pub mod drawgroup;
+pub mod face_properties;
+pub mod image_link;
+pub mod lot_description;
 pub mod object_definition;
-mod pool_surface;
+pub mod pool_surface;
+pub mod popups;
+pub mod scene_node;
+pub mod sim_scores;
 pub mod sim_wants_and_fears;
-mod texture_resource;
-mod track_settings;
-mod ui_data;
-mod wall_graph;
+pub mod texture_overlay_xml;
+pub mod texture_resource;
+pub mod three_d_array;
+pub mod track_settings;
+pub mod ui_data;
+pub mod wall_graph;
