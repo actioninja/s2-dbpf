@@ -4,4 +4,12 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.                   /
 ////////////////////////////////////////////////////////////////////////////////
 
-pub struct Popups {}
+pub mod family_data;
+pub mod family_information;
+pub mod family_ties;
+pub mod lot_description;
+pub mod neighborhood_memory;
+mod neighborhood_terrain;
+mod neighborhood_view;
+pub mod popups;
+pub mod ttat;

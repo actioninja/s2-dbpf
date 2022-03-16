@@ -4,16 +4,24 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.                   /
 ////////////////////////////////////////////////////////////////////////////////
 
+////////////////////////////////////////////////////////////////////////////////
+// This Source Code Form is subject to the terms of the Mozilla Public         /
+// License, v. 2.0. If a copy of the MPL was not distributed with this         /
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.                   /
+////////////////////////////////////////////////////////////////////////////////
+
 use binrw::binrw;
 #[cfg(test)]
 use proptest::prelude::*;
 #[cfg(test)]
 use test_strategy::Arbitrary;
 
+pub type SWAF = WantsAndFears;
+
 #[binrw]
 #[derive(Debug, PartialEq)]
 #[brw(little)]
-pub struct Swaf {
+pub struct WantsAndFears {
     pub version: Version,
     #[br(if (version != Version::One), temp)]
     #[bw(calc = lifetime_wants.as_ref().map(| lifetime_want_vec | lifetime_want_vec.len() as u32))]
@@ -60,9 +68,9 @@ prop_compose! {
         unknown_2 in any::<u32>(),
         counter in any::<u32>(),
         previous_wants_fears in prop::collection::vec(any::<PreviousWantsFears>(), 0..100),
-    ) -> Swaf {
+    ) -> WantsAndFears {
         if version == Version::One {
-            Swaf {
+            WantsAndFears {
                 version,
                 lifetime_wants: None,
                 max_wants: None,
@@ -75,7 +83,7 @@ prop_compose! {
                 previous_wants_fears,
             }
         } else {
-            Swaf {
+            WantsAndFears {
                 version,
                 lifetime_wants: Some(lifetime_wants),
                 max_wants: Some(max_wants),
@@ -93,14 +101,14 @@ prop_compose! {
 }
 
 #[cfg(test)]
-impl Arbitrary for Swaf {
+impl Arbitrary for WantsAndFears {
     type Parameters = ();
 
     fn arbitrary_with(_args: Self::Parameters) -> Self::Strategy {
         swaf_mapper().boxed()
     }
 
-    type Strategy = BoxedStrategy<Swaf>;
+    type Strategy = BoxedStrategy<WantsAndFears>;
 }
 
 #[binrw]
@@ -244,7 +252,7 @@ mod tests {
     use binrw::{BinReaderExt, BinWriterExt};
     use test_strategy::proptest;
 
-    use crate::test_helpers::test_parsing;
+    use crate::test_parsing;
 
     use super::*;
 
@@ -416,7 +424,7 @@ mod tests {
             0x05, 0x00, 0x00, 0x00, // aspiration
             0x01, //flags
         ],
-        Swaf {
+        WantsAndFears {
             version: Version::Six,
             lifetime_wants: Some(vec![WantRecord {
                 version: WantRecordVersion::Nine,
@@ -471,7 +479,7 @@ mod tests {
                 }],
             }]
         },
-        Swaf,
+        WantsAndFears,
         swaf
     );
 }
