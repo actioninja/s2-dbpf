@@ -7,9 +7,12 @@
 pub mod family_data;
 pub mod family_information;
 pub mod family_ties;
+pub mod id_number;
 pub mod lot_description;
 pub mod neighborhood_memory;
-mod neighborhood_terrain;
-mod neighborhood_view;
+pub mod neighborhood_terrain;
+pub mod neighborhood_view;
 pub mod popups;
+pub mod three_d_reference;
 pub mod ttat;
+pub mod weather_info;

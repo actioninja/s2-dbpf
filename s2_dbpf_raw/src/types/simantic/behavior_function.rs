@@ -4,6 +4,12 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.                   /
 ////////////////////////////////////////////////////////////////////////////////
 
+////////////////////////////////////////////////////////////////////////////////
+// This Source Code Form is subject to the terms of the Mozilla Public         /
+// License, v. 2.0. If a copy of the MPL was not distributed with this         /
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.                   /
+////////////////////////////////////////////////////////////////////////////////
+
 use std::io::{Read, Seek, Write};
 
 use binrw::{binrw, BinRead, BinResult, BinWrite, NullString, ReadOptions, VecArgs, WriteOptions};
@@ -16,11 +22,13 @@ use proptest::sample::size_range;
 #[cfg(test)]
 use test_strategy::Arbitrary;
 
+pub type BHAV = BehaviorFunction;
+
 #[binrw]
 #[derive(Debug, PartialEq)]
 #[cfg_attr(test, derive(Arbitrary))]
 #[brw(little)]
-pub struct Bhav {
+pub struct BehaviorFunction {
     #[br(map(binrw::NullString::into_string))]
     #[bw(map(| x: & String | NullString::from_string(x.clone())))]
     #[brw(pad_size_to = 64)]
@@ -611,7 +619,7 @@ mod tests {
             0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E,
             0x0F, 0x10,
         ],
-        Bhav {
+        BehaviorFunction {
             file_name: "TestFile".to_string(),
             signature: Signature::Seven,
             tree_type: 1,
@@ -631,7 +639,7 @@ mod tests {
                 cache_flags: None
             },]
         },
-        Bhav,
+        BehaviorFunction,
         bhav
     );
 }

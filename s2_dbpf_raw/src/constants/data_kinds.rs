@@ -4,10 +4,10 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.                   /
 ////////////////////////////////////////////////////////////////////////////////
 
-use crate::types::behavior_constant::Bcon;
-use crate::types::behavior_function::Bhav;
 use crate::types::directory::Dir;
 use crate::types::sim::wants_and_fears::Swaf;
+use crate::types::simantic::behavior_constant::Bcon;
+use crate::types::simantic::behavior_function::Bhav;
 use binrw::binrw;
 use const_format::formatcp;
 use enum_as_inner::EnumAsInner;
