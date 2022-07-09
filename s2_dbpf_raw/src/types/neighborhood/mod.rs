@@ -4,6 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.                   /
 ////////////////////////////////////////////////////////////////////////////////
 
+pub mod business_info;
 pub mod family_data;
 pub mod family_information;
 pub mod family_ties;

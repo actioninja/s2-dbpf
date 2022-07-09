@@ -14,3 +14,4 @@
 
 //pub mod raw;
 mod behavior;
+mod opcode;

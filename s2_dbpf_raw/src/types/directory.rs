@@ -17,7 +17,7 @@ use proptest::prelude::*;
 #[cfg(test)]
 use test_strategy::Arbitrary;
 
-use crate::constants::data_kinds::FormatId;
+use crate::constants::data_kinds::Id;
 
 const SIZE_OF_DIR_ENTRY: u32 = 128; // 4 DWORDS
 const SIZE_OF_DIR_ENTRY_HI: u32 = SIZE_OF_DIR_ENTRY + 32; // extra hi entry bumps up the length by one more DWORD
@@ -39,7 +39,7 @@ pub struct Dir {
 #[cfg_attr(test, derive(Arbitrary))]
 #[cfg_attr(test, arbitrary(args = (bool,)))]
 struct DirEntry {
-    type_id: FormatId,
+    type_id: Id,
     group_id: u32,
     instance_id_lo: u32,
     #[br(if(hi_instance))]

@@ -15,6 +15,7 @@ keywords = ["sims", "two", "dbpf", "package", "parsing"]
 [dependencies]
 s2-dbpf-raw = { path = "../s2_dbpf_raw" }
 binrw = "0.8"
+slotmap = "1.0"
 const_format = "0.2.22"
 refpack = "1.0.0"
 proptest = "1.0.0"

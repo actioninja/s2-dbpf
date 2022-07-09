@@ -7,7 +7,7 @@
 use binrw::*;
 use std::io::{Read, Seek, SeekFrom, Write};
 
-use crate::constants::data_kinds::FormatId;
+use crate::constants::data_kinds::Id;
 use crate::types::directory::Dir;
 
 #[derive(Debug, PartialEq)]
@@ -82,12 +82,29 @@ struct Header {
     index_minor_version: u32,
 }
 
+#[derive(Debug, PartialEq, PartialOrd)]
+pub struct DbpfKey {
+    kind: Id,
+    group_id: GroupId,
+    resource_id: ResourceId,
+    instance_id: InstanceId,
+}
+
+#[derive(Debug, Ord, PartialOrd, Eq, PartialEq)]
+pub struct GroupId(pub u32);
+
+#[derive(Debug, Ord, PartialOrd, Eq, PartialEq)]
+pub struct ResourceId(pub u32);
+
+#[derive(Debug, Ord, PartialOrd, Eq, PartialEq)]
+pub struct InstanceId(pub u32);
+
 //#[binrw]
 #[derive(Debug, PartialEq)]
 //#[brw(little)]
 //#[br(import(has_hi: bool))]
 struct IndexEntry {
-    kind: FormatId,
+    kind: Id,
     group_id: u32,
     instance_id_lo: u32,
     //#[br(if(has_hi))]
