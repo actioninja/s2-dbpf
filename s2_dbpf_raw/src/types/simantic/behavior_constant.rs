@@ -4,15 +4,20 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.                   /
 ////////////////////////////////////////////////////////////////////////////////
 
+use crate::constants::data_kinds::{DbpfKind, Id};
+use crate::types::util::parser_args::ParserArgs;
 use binrw::{binrw, NullString};
 #[cfg(test)]
 use test_strategy::Arbitrary;
 
+pub type BCON = BehaviorConstants;
+
 #[binrw]
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone)]
 #[cfg_attr(test, derive(Arbitrary))]
 #[brw(little)]
-pub struct Bcon {
+#[br(import_raw(args: ParserArgs))]
+pub struct BehaviorConstants {
     #[br(map(NullString::into_string))]
     #[bw(map(| x: & String | NullString::from_string(x.clone())))]
     #[brw(pad_size_to = 64)]
@@ -24,6 +29,16 @@ pub struct Bcon {
     pub flags: u8,
     #[br(count(count))]
     pub constants: Vec<i16>,
+}
+
+impl DbpfKind for BehaviorConstants {
+    fn id(&self) -> Id {
+        Id::BehaviorConstant
+    }
+
+    fn name(&self) -> Option<String> {
+        Some(self.file_name.clone())
+    }
 }
 
 #[cfg(test)]

@@ -13,15 +13,17 @@ keywords = ["sims", "two", "dbpf", "package", "parsing"]
 
 
 [dependencies]
-binrw = "0.8"
-enum-assoc = "0.3"
-slotmap = "1.0"
+s2-dbpf-raw-macros = { path = "macros" }
+binrw = "0.9"
 const_format = "0.2.22"
-refpack = "1.0.0"
-proptest = "1.0.0"
-test-strategy = "0.1.2"
-debug_print = "1.0.0"
-paste = "1.0.5"
-macro_const = "0.1.0"
-enum-as-inner = "0.4.0"
 derive_more = "0.99"
+enum-as-inner = "0.5"
+enum-assoc = "0.3"
+enum_dispatch = "0.3"
+refpack = "1.0.0"
+slotmap = "1.0"
+
+[dev-dependencies]
+paste = "1.0"
+proptest = "1.0.0"
+test-strategy = "0.2"

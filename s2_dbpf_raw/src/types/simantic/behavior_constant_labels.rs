@@ -4,13 +4,18 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.                   /
 ////////////////////////////////////////////////////////////////////////////////
 
+use crate::constants::data_kinds::{DbpfKind, Id};
 use binrw::{binrw, NullString};
+
+pub type TRCN = BehaviorConstantLabels;
 
 #[binrw]
 #[derive(Debug, PartialEq)]
 #[brw(little)]
-pub struct Trcn {
-    pub file_name: NullString,
+pub struct BehaviorConstantLabels {
+    #[br(map(NullString::into_string))]
+    #[bw(map(| x: & String | NullString::from_string(x.clone())))]
+    pub file_name: String,
     #[brw(pad_size_to = 64)]
     #[brw(magic(b"NCRT"))]
     pub unknown: u32,
@@ -20,6 +25,16 @@ pub struct Trcn {
     num_labels: u32,
     #[br(count(num_labels as usize))]
     pub labels: Vec<BconLabel>,
+}
+
+impl DbpfKind for BehaviorConstantLabels {
+    fn id(&self) -> Id {
+        Id::BehaviorFunctionLabels
+    }
+
+    fn name(&self) -> Option<String> {
+        Some(self.file_name.clone())
+    }
 }
 
 #[binrw]

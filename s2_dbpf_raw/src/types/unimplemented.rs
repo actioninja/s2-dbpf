@@ -5,25 +5,20 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 use crate::constants::data_kinds::{DbpfKind, Id};
-use binrw::{binrw, NullString};
-#[cfg(test)]
-use test_strategy::Arbitrary;
-
-pub type TPRP = BehaviorFunctionLabels;
+use crate::types::util::parser_args::ParserArgs;
+use binrw::binrw;
+use derive_more::Constructor;
 
 #[binrw]
-#[derive(Debug, PartialEq, Clone)]
-#[cfg_attr(test, derive(Arbitrary))]
-pub struct BehaviorFunctionLabels {
-    #[br(map(NullString::into_string))]
-    #[bw(map(| x: & String | NullString::from_string(x.clone())))]
-    #[brw(pad_size_to = 64)]
-    //Supposedly unused
-    file_name: String,
+#[derive(Debug, PartialEq, Clone, Constructor)]
+#[br(import_raw(args: ParserArgs))]
+pub struct Unimplemented {
+    #[br(count(args.index_entry.size.0))]
+    data: Vec<u8>,
 }
 
-impl DbpfKind for BehaviorFunctionLabels {
+impl DbpfKind for Unimplemented {
     fn id(&self) -> Id {
-        Id::BehaviorFunctionLabels
+        Id::UiData
     }
 }

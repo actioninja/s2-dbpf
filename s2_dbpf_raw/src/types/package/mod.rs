@@ -4,11 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.                   /
 ////////////////////////////////////////////////////////////////////////////////
 
-use crate::types::unimplemented::Unimplemented;
-
-pub type FAMh = FamilyData;
-
-pub type FamilyData = Unimplemented;
-
-//TODO
-//pub struct FamilyData {}
+pub mod database_packed_file;
+pub mod directory;
+pub mod header;
+pub mod index_table;

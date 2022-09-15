@@ -5,6 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #![allow(unused_imports)]
+#![cfg(test)]
 
 macro_rules! test_parsing {
     ($data:expr, $types:expr, $intype:ident, $name:ident) => {

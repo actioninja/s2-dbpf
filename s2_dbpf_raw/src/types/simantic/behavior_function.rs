@@ -12,6 +12,8 @@
 
 use std::io::{Read, Seek, Write};
 
+use crate::constants::data_kinds::{DbpfKind, Id};
+use crate::types::util::parser_args::ParserArgs;
 use binrw::{binrw, BinRead, BinResult, BinWrite, NullString, ReadOptions, VecArgs, WriteOptions};
 #[cfg(test)]
 use proptest::collection::vec;
@@ -28,6 +30,7 @@ pub type BHAV = BehaviorFunction;
 #[derive(Debug, PartialEq)]
 #[cfg_attr(test, derive(Arbitrary))]
 #[brw(little)]
+#[br(import_raw(args: ParserArgs))]
 pub struct BehaviorFunction {
     #[br(map(binrw::NullString::into_string))]
     #[bw(map(| x: & String | NullString::from_string(x.clone())))]
@@ -47,6 +50,16 @@ pub struct BehaviorFunction {
     #[bw(args_raw = (* signature,))]
     #[cfg_attr(test, strategy(vec(any_with::< Instruction > ((# signature,)), (0..100))))]
     pub instructions: Vec<Instruction>,
+}
+
+impl DbpfKind for BehaviorFunction {
+    fn id(&self) -> Id {
+        Id::BehaviorFunction
+    }
+
+    fn name(&self) -> Option<String> {
+        Some(self.file_name.clone())
+    }
 }
 
 #[binrw]

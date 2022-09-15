@@ -1,5 +1,6 @@
 [workspace]
 members = [
     "s2_dbpf",
-    "s2_dbpf_raw"
+    "s2_dbpf_raw",
+    "s2_dbpf_raw/macros"
 ]

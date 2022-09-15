@@ -4,4 +4,8 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.                   /
 ////////////////////////////////////////////////////////////////////////////////
 
-pub struct AudioFile {}
+use crate::types::unimplemented::Unimplemented;
+
+pub type XA = AudioFile;
+
+pub type AudioFile = Unimplemented;

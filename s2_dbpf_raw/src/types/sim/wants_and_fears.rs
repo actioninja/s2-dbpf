@@ -10,6 +10,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.                   /
 ////////////////////////////////////////////////////////////////////////////////
 
+use crate::constants::data_kinds::{DbpfKind, Id};
 use binrw::binrw;
 #[cfg(test)]
 use proptest::prelude::*;
@@ -19,7 +20,7 @@ use test_strategy::Arbitrary;
 pub type SWAF = WantsAndFears;
 
 #[binrw]
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone)]
 #[brw(little)]
 pub struct WantsAndFears {
     pub version: Version,
@@ -52,6 +53,12 @@ pub struct WantsAndFears {
     previous_count: u32,
     #[br(count = previous_count as usize)]
     pub previous_wants_fears: Vec<PreviousWantsFears>,
+}
+
+impl DbpfKind for WantsAndFears {
+    fn id(&self) -> Id {
+        Id::SimWantsAndFears
+    }
 }
 
 //TODO: There probably is a better way to do this but I couldn't figure it out.
@@ -112,7 +119,7 @@ impl Arbitrary for WantsAndFears {
 }
 
 #[binrw]
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Copy, Clone)]
 #[cfg_attr(test, derive(Arbitrary))]
 #[brw(little)]
 pub enum Version {
@@ -125,7 +132,7 @@ pub enum Version {
 }
 
 #[binrw]
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone)]
 #[cfg_attr(test, derive(Arbitrary))]
 #[brw(little)]
 pub struct PreviousWantsFears {
@@ -138,7 +145,7 @@ pub struct PreviousWantsFears {
 }
 
 #[binrw]
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone, Copy)]
 #[brw(little)]
 pub struct WantRecord {
     pub version: WantRecordVersion,
@@ -252,9 +259,9 @@ mod tests {
     use binrw::{BinReaderExt, BinWriterExt};
     use test_strategy::proptest;
 
-    use crate::test_parsing;
-
     use super::*;
+
+    use crate::test_helpers::test_parsing;
 
     #[proptest]
     fn want_type_symmetrical(x: WantType) {

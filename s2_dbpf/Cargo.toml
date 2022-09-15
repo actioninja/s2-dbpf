@@ -14,12 +14,10 @@ keywords = ["sims", "two", "dbpf", "package", "parsing"]
 
 [dependencies]
 s2-dbpf-raw = { path = "../s2_dbpf_raw" }
-binrw = "0.8"
+binrw = "0.9"
 slotmap = "1.0"
 const_format = "0.2.22"
 refpack = "1.0.0"
 proptest = "1.0.0"
-test-strategy = "0.1.2"
-debug_print = "1.0.0"
-paste = "1.0.5"
+test-strategy = "0.2"
 macro_const = "0.1.0"
