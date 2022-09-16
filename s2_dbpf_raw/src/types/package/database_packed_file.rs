@@ -19,7 +19,6 @@ use crate::constants::data_kinds::{DbpfId, DbpfKind};
 use crate::types::package::directory::{Dir, SIZE_OF_DIR_ENTRY, SIZE_OF_DIR_ENTRY_WITH_RESOURCE};
 use crate::types::package::header::Header;
 use crate::types::package::index_table::IndexTable;
-use crate::types::util::bytes::{Position, Size};
 use crate::types::util::parser_args::ParserArgs;
 #[cfg(test)]
 use proptest::prelude::*;
@@ -29,7 +28,7 @@ use test_strategy::Arbitrary;
 
 #[derive(Debug, Clone)]
 pub struct Dbpf {
-    header: Header,
+    pub header: Header,
     pub entries: HashMap<Key, Entry>,
 }
 

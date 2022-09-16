@@ -15,3 +15,4 @@
 pub mod constants;
 mod test_helpers;
 pub mod types;
+pub mod error;
