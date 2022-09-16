@@ -1,8 +1,0 @@
-# Seeds for failure cases proptest has generated in the past. It is
-# automatically read and these particular cases re-run before any
-# novel cases are generated.
-#
-# It is recommended to check this file in to source control so that
-# everyone who runs the test benefits from these saved cases.
-cc d6b4e70226ca41a8874cd5cf0180b67691a5abfc228d7741cebeb652935459d7 # shrinks to input = _WantRecordSymmetricalArgs { x: WantRecord { version: Seven, sim_instance_id: 0, want_id: 0, want_type: None, price: 0, counter: 0, aspiration: 0, influence: Some(0), flags: 0 } }
-cc 92037be2d792702de9d699809247ace4f43e2c3e8090f167f43276e6e7e1b3ad # shrinks to input = _WantRecordSymmetricalArgs { x: WantRecord { version: Nine, sim_instance_id: 0, want_id: 0, want_type: None, price: 0, counter: 0, aspiration: 0, influence: None, flags: 0 } }

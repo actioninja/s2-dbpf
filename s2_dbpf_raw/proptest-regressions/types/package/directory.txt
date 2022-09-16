@@ -1,7 +1,0 @@
-# Seeds for failure cases proptest has generated in the past. It is
-# automatically read and these particular cases re-run before any
-# novel cases are generated.
-#
-# It is recommended to check this file in to source control so that
-# everyone who runs the test benefits from these saved cases.
-cc 807ecea9a0f079661065412959f219c5ec6e73e3727e1fe4917c64c64e910a78 # shrinks to input = _SymmetricalWriteArgs { has_resource: true, in_dir: Dir { table: {Key { kind: UiData, group_id: GroupId(0), instance_id: InstanceId(0), resource_id: None }: Entry { decompressed_size: Size(0) }} } }
