@@ -27,7 +27,7 @@ use test_strategy::Arbitrary;
 pub type BHAV = BehaviorFunction;
 
 #[binrw]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[cfg_attr(test, derive(Arbitrary))]
 #[brw(little)]
 #[br(import_raw(_args: ParserArgs))]

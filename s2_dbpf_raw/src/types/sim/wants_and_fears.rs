@@ -20,7 +20,7 @@ use test_strategy::Arbitrary;
 pub type SWAF = WantsAndFears;
 
 #[binrw]
-#[derive(Debug, PartialEq, Clone)]
+#[derive(Debug, PartialEq, Eq, Clone)]
 #[brw(little)]
 pub struct WantsAndFears {
     pub version: Version,
@@ -132,7 +132,7 @@ pub enum Version {
 }
 
 #[binrw]
-#[derive(Debug, PartialEq, Clone)]
+#[derive(Debug, PartialEq, Eq, Clone)]
 #[cfg_attr(test, derive(Arbitrary))]
 #[brw(little)]
 pub struct PreviousWantsFears {
