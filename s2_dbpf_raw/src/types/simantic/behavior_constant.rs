@@ -13,10 +13,10 @@ use test_strategy::Arbitrary;
 pub type BCON = BehaviorConstants;
 
 #[binrw]
-#[derive(Debug, PartialEq, Clone)]
+#[derive(Debug, PartialEq, Eq, Clone)]
 #[cfg_attr(test, derive(Arbitrary))]
 #[brw(little)]
-#[br(import_raw(args: ParserArgs))]
+#[br(import_raw(_args: ParserArgs))]
 pub struct BehaviorConstants {
     #[br(try_map(NullString::try_into))]
     #[bw(map(| x: & String | NullString::from(x.clone())))]
@@ -44,11 +44,11 @@ impl DbpfEntry for BehaviorConstants {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::test_helpers::*;
-    use binrw::*;
+    use crate::test_helpers::test_parsing;
+    use binrw::{BinReaderExt, BinWriterExt};
     use proptest::prelude::*;
     use std::io::Cursor;
-    use test_strategy::*;
+    
 
     test_parsing!(
         [

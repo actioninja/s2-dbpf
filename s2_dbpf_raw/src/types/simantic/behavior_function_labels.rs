@@ -13,9 +13,9 @@ use test_strategy::Arbitrary;
 pub type TPRP = BehaviorFunctionLabels;
 
 #[binrw]
-#[derive(Debug, PartialEq, Clone)]
+#[derive(Debug, PartialEq, Eq, Clone)]
 #[cfg_attr(test, derive(Arbitrary))]
-#[br(import_raw(args: ParserArgs))]
+#[br(import_raw(_args: ParserArgs))]
 pub struct BehaviorFunctionLabels {
     #[br(try_map(NullString::try_into))]
     #[bw(map(| x: & String | NullString::from(x.clone())))]

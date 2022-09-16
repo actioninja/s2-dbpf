@@ -7,7 +7,7 @@
 use binrw::{binrw, NullString};
 
 #[binrw]
-#[derive(PartialEq, Debug)]
+#[derive(PartialEq, Eq, Debug)]
 pub struct ObjectData {
     #[brw(pad_size_to = 64)]
     pub filename: NullString,

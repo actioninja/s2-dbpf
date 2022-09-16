@@ -7,7 +7,7 @@
 use crate::types::package::header::Header;
 use crate::types::package::index_table::Entry;
 
-#[derive(Clone, PartialEq, Debug, Default)]
+#[derive(Clone, PartialEq, Eq, Debug, Default)]
 pub struct ParserArgs {
     pub header: Header,
     pub index_entry: Entry,

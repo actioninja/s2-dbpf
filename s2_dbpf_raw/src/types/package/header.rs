@@ -8,7 +8,7 @@ use crate::types::util::bytes::{Position, Size};
 use binrw::binrw;
 
 #[binrw]
-#[derive(Debug, Copy, Clone, PartialEq)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq)]
 #[brw(little, magic = b"DBPF")]
 pub struct Header {
     #[br(assert(major_version <= 1, "Not a Sims 2 DBPF File"))]
@@ -52,7 +52,7 @@ impl Default for Header {
 }
 
 impl Header {
-    pub fn has_resource_id(&self) -> bool {
+    #[must_use] pub fn has_resource_id(&self) -> bool {
         self.index_minor_version.unwrap_or(0) >= 2
     }
 }

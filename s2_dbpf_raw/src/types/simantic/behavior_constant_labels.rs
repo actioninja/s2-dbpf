@@ -11,9 +11,9 @@ use binrw::{binrw, NullString};
 pub type TRCN = BehaviorConstantLabels;
 
 #[binrw]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[brw(little)]
-#[br(import_raw(args: ParserArgs))]
+#[br(import_raw(_args: ParserArgs))]
 pub struct BehaviorConstantLabels {
     #[br(try_map(NullString::try_into))]
     #[bw(map(| x: &String | NullString::from(x.clone())))]
@@ -40,7 +40,7 @@ impl DbpfEntry for BehaviorConstantLabels {
 }
 
 #[binrw]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[brw(little)]
 pub struct BconLabel {
     #[brw(pad_before = 32)]

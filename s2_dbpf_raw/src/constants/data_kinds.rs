@@ -4,7 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.                   /
 ////////////////////////////////////////////////////////////////////////////////
 
-use binrw::{binrw, BinRead, BinWrite};
+use binrw::{binrw, BinRead};
 
 use crate::types::util::parser_args::ParserArgs;
 use s2_dbpf_raw_macros::DbpfKindsDerive;

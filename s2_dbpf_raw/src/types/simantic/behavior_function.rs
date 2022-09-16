@@ -30,7 +30,7 @@ pub type BHAV = BehaviorFunction;
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(test, derive(Arbitrary))]
 #[brw(little)]
-#[br(import_raw(args: ParserArgs))]
+#[br(import_raw(_args: ParserArgs))]
 pub struct BehaviorFunction {
     #[br(try_map(NullString::try_into))]
     #[bw(map(| x: &String | NullString::from(x.clone())))]
@@ -63,7 +63,7 @@ impl DbpfEntry for BehaviorFunction {
 }
 
 #[binrw]
-#[derive(Debug, PartialOrd, PartialEq, Copy, Clone)]
+#[derive(Debug, PartialOrd, PartialEq, Eq, Copy, Clone)]
 #[cfg_attr(test, derive(Arbitrary))]
 #[brw(little)]
 pub enum Signature {
@@ -95,7 +95,7 @@ impl Default for Signature {
     }
 }
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Instruction {
     pub opcode: u16,
     pub goto_true: GoTo,
@@ -175,7 +175,7 @@ impl BinWrite for Instruction {
         GoTo::write_options(&self.goto_true, writer, options, (byte_gotos,))?;
         GoTo::write_options(&self.goto_false, writer, options, (byte_gotos,))?;
         if let Some(node_version) = self.node_version {
-            u8::write_options(&(node_version as u8), writer, options, ())?;
+            u8::write_options(&u8::from(node_version), writer, options, ())?;
         }
         <Vec<u8>>::write_options(&self.operands, writer, options, ())?;
         <Option<u8>>::write_options(&self.cache_flags, writer, options, ())?;
@@ -230,7 +230,7 @@ impl Arbitrary for Instruction {
     type Strategy = BoxedStrategy<Self>;
 }
 
-#[derive(Debug, PartialEq, Clone, Copy)]
+#[derive(Debug, PartialEq, Eq, Clone, Copy)]
 pub enum GoTo {
     Error,
     True,

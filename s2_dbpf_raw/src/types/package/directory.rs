@@ -29,7 +29,7 @@ use crate::types::util::bytes::Size;
 pub const SIZE_OF_DIR_ENTRY: Size = Size::dword(4);
 pub const SIZE_OF_DIR_ENTRY_WITH_RESOURCE: Size = Size::dword(5); // extra hi entry bumps up the length by one more DWORD
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[cfg_attr(test, derive(Arbitrary))]
 #[cfg_attr(test, arbitrary(args = (bool,)))]
 pub struct Dir {
@@ -79,7 +79,7 @@ impl BinWrite for Dir {
 }
 
 #[binrw]
-#[derive(Debug, PartialEq, Clone, Copy, PartialOrd)]
+#[derive(Debug, PartialEq, Eq, Clone, Copy, PartialOrd)]
 #[cfg_attr(test, derive(Arbitrary))]
 #[cfg_attr(test, arbitrary(args = (bool,)))]
 pub struct Entry {
@@ -94,7 +94,7 @@ mod test {
     use binrw::{BinReaderExt, BinWriterExt};
     use std::io::Cursor;
     use test_strategy::proptest;
-    use test_strategy::*;
+    
 
     #[test]
     fn simple_test() {
@@ -135,7 +135,7 @@ mod test {
         let num_files = in_dir.table.len();
         writer.write_le(&in_dir).unwrap();
 
-        let clone = writer.clone().into_inner();
+        let _clone = writer.clone().into_inner();
 
         //println!("Dir: {:?}", in_dir);
 

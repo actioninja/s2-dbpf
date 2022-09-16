@@ -119,7 +119,7 @@ impl Arbitrary for WantsAndFears {
 }
 
 #[binrw]
-#[derive(Debug, PartialEq, Copy, Clone)]
+#[derive(Debug, PartialEq, Eq, Copy, Clone)]
 #[cfg_attr(test, derive(Arbitrary))]
 #[brw(little)]
 pub enum Version {
@@ -145,7 +145,7 @@ pub struct PreviousWantsFears {
 }
 
 #[binrw]
-#[derive(Debug, PartialEq, Clone, Copy)]
+#[derive(Debug, PartialEq, Eq, Clone, Copy)]
 #[brw(little)]
 pub struct WantRecord {
     pub version: WantRecordVersion,
@@ -222,7 +222,7 @@ impl Arbitrary for WantRecord {
 }
 
 #[binrw]
-#[derive(Copy, Clone, Debug, PartialEq)]
+#[derive(Copy, Clone, Debug, PartialEq, Eq)]
 #[cfg_attr(test, derive(Arbitrary))]
 #[brw(little)]
 pub enum WantRecordVersion {
@@ -235,7 +235,7 @@ pub enum WantRecordVersion {
 }
 
 #[binrw]
-#[derive(Copy, Clone, Debug, PartialEq)]
+#[derive(Copy, Clone, Debug, PartialEq, Eq)]
 #[cfg_attr(test, derive(Arbitrary))]
 #[brw(little)]
 pub enum WantType {

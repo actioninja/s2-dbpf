@@ -10,7 +10,7 @@ use binrw::binrw;
 use derive_more::Constructor;
 
 #[binrw]
-#[derive(Debug, PartialEq, Clone, Constructor)]
+#[derive(Debug, PartialEq, Eq, Clone, Constructor)]
 #[br(import_raw(args: ParserArgs))]
 pub struct Unimplemented {
     #[br(count(args.index_entry.size.0))]

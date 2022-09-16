@@ -10,8 +10,8 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.                   /
 ////////////////////////////////////////////////////////////////////////////////
 
-use binrw::*;
-use derive_more::{AsRef, Constructor, Display};
+use binrw::{BinRead, BinResult, ReadOptions, binrw};
+use derive_more::{Constructor, Display};
 use std::collections::HashMap;
 use std::io::{Cursor, Read, Seek, SeekFrom, Write};
 
@@ -38,11 +38,11 @@ impl BinRead for Dbpf {
     fn read_options<R: Read + Seek>(
         reader: &mut R,
         options: &ReadOptions,
-        args: Self::Args,
+        _args: Self::Args,
     ) -> BinResult<Self> {
         let header = Header::read(reader)?;
         let store_pos = reader.stream_position()?;
-        reader.seek(SeekFrom::Start(header.index_position.0 as u64))?;
+        reader.seek(SeekFrom::Start(u64::from(header.index_position.0)))?;
         let has_resource = header.has_resource_id();
         let index_table =
             IndexTable::read_options(reader, options, (has_resource, header.index_entry_count))?;
@@ -53,7 +53,7 @@ impl BinRead for Dbpf {
             .map(|(_, entry)| entry);
 
         let compression_table = if let Some(compression_entry) = compression_position {
-            reader.seek(SeekFrom::Start(compression_entry.location.0 as u64))?;
+            reader.seek(SeekFrom::Start(u64::from(compression_entry.location.0)))?;
             let entry_size = if header.has_resource_id() {
                 SIZE_OF_DIR_ENTRY_WITH_RESOURCE
             } else {
@@ -70,7 +70,7 @@ impl BinRead for Dbpf {
         let mut entries_table = HashMap::new();
         for (key, entry) in index_table.table {
             let parser_args = ParserArgs {
-                header: header.clone(),
+                header,
                 index_entry: entry,
             };
             let new_kind = if let Some(ref compression_table) = compression_table {
