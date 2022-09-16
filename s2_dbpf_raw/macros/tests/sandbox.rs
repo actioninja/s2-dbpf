@@ -5,28 +5,28 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 use binrw::{binrw, BinRead};
-use s2_dbpf_derive::DbpfKindsDerive;
+use s2_dbpf_raw_macros::DbpfKindsDerive;
 
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Debug)]
 pub struct ParserArgs;
 
 #[binrw]
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Debug, PartialEq, Eq)]
 #[br(import_raw(args: ParserArgs))]
 pub struct Size(u32);
 
 #[binrw]
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Debug, PartialEq)]
 #[br(import_raw(args: ParserArgs))]
 pub struct Unimplemented(u8);
 
 #[binrw]
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Debug, PartialEq)]
 #[br(import_raw(args: ParserArgs))]
 pub struct Entry1AssocType(u8);
 
 #[binrw]
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Debug, PartialEq)]
 #[br(import_raw(args: ParserArgs))]
 pub struct Entry2AssocType(u8);
 

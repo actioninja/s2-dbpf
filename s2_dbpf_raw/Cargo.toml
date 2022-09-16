@@ -14,7 +14,7 @@ keywords = ["sims", "two", "dbpf", "package", "parsing"]
 
 [dependencies]
 s2-dbpf-raw-macros = { path = "macros" }
-binrw = "0.9"
+binrw = "0.10.0-rc.0"
 const_format = "0.2.22"
 derive_more = "0.99"
 enum-as-inner = "0.5"

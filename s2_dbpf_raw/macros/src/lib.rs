@@ -2,9 +2,7 @@ use proc_macro::TokenStream;
 use proc_macro2::Ident;
 use proc_macro_error::{abort, proc_macro_error, OptionExt};
 use quote::quote;
-use syn::punctuated::Punctuated;
 use syn::spanned::Spanned;
-use syn::token::Comma;
 use syn::{
     parse_macro_input, Attribute, Data, DataEnum, DeriveInput, Expr, Lit, Meta, MetaNameValue,
     NestedMeta, Variant,
@@ -94,7 +92,7 @@ pub fn dbpf_kinds_derive(input: TokenStream) -> TokenStream {
         quote! { Self::#name => #id }
     });
 
-    let kind_name = Ident::new(&format!("{}Kind", ident), ident.span());
+    let kind_name = Ident::new("DbpfKind", ident.span());
 
     let variants_wrapped = variants.iter().filter_map(|v| {
         let name = &v.ident;
@@ -187,6 +185,7 @@ pub fn dbpf_kinds_derive(input: TokenStream) -> TokenStream {
             }
         }
 
+        #[derive(Debug, Clone, PartialEq)]
         pub enum #kind_name {
             #(#variants_wrapped,)*
         }

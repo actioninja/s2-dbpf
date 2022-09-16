@@ -34,7 +34,7 @@ use crate::types::unimplemented::Unimplemented;
 #[repr(u32)]
 #[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Debug, Hash, DbpfKindsDerive)]
 #[cfg_attr(test, derive(Arbitrary))]
-pub enum Id {
+pub enum DbpfId {
     #[dbpf(short_name = "UI")]
     UiData = 0x0,
     #[dbpf(short_name = "WGRA")]
@@ -239,14 +239,14 @@ pub enum Id {
     Unimplemented = 0xFFFF_FFFF,
 }
 
-impl Default for Id {
+impl Default for DbpfId {
     fn default() -> Self {
-        Id::UiData
+        DbpfId::Unimplemented
     }
 }
 
-pub trait DbpfKind {
-    fn id(&self) -> Id;
+pub trait DbpfEntry {
+    fn id(&self) -> DbpfId;
     fn name(&self) -> Option<String> {
         None
     }

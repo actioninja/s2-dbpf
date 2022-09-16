@@ -10,7 +10,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.                   /
 ////////////////////////////////////////////////////////////////////////////////
 
-use crate::constants::data_kinds::{DbpfKind, Id};
+use crate::constants::data_kinds::{DbpfEntry, DbpfId};
 use binrw::binrw;
 #[cfg(test)]
 use proptest::prelude::*;
@@ -55,9 +55,9 @@ pub struct WantsAndFears {
     pub previous_wants_fears: Vec<PreviousWantsFears>,
 }
 
-impl DbpfKind for WantsAndFears {
-    fn id(&self) -> Id {
-        Id::SimWantsAndFears
+impl DbpfEntry for WantsAndFears {
+    fn id(&self) -> DbpfId {
+        DbpfId::SimWantsAndFears
     }
 }
 

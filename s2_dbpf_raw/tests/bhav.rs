@@ -9,7 +9,9 @@ use std::io::BufReader;
 
 use binrw::BinReaderExt;
 
-use s2_dbpf::raw::types::bhav::{Bhav, GoTo, Instruction, Signature};
+use s2_dbpf_raw::types::simantic::behavior_function::{
+    BehaviorFunction, GoTo, Instruction, Signature,
+};
 
 const PATH: &str = "tests/ex_files/bhav/42484156-00000000-7FB208FA-0000202E.bhav";
 
@@ -17,8 +19,8 @@ const PATH: &str = "tests/ex_files/bhav/42484156-00000000-7FB208FA-0000202E.bhav
 fn real_file_bhav_parse() {
     let file_handle = File::open(PATH).unwrap();
     let mut buf_reader = BufReader::new(file_handle);
-    let bhav: Bhav = buf_reader.read_le().unwrap();
-    let expected = Bhav {
+    let bhav: BehaviorFunction = buf_reader.read_le().unwrap();
+    let expected = BehaviorFunction {
         file_name: "Interaction - Answer".to_string(),
         signature: Signature::Seven,
         tree_type: 0,

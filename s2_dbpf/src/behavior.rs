@@ -12,6 +12,7 @@ new_key_type! {
     struct InstructionKey;
 }
 
+#[derive(Clone)]
 struct Behavior {
     constants: SlotMap<ConstantKey, Constant>,
     variables: SlotMap<VariableKey, Variable>,
@@ -19,23 +20,32 @@ struct Behavior {
     head: InstructionKey,
 }
 
+impl Behavior {
+    pub fn new() {}
+}
+
+#[derive(Clone, Copy, Default, PartialEq, Eq, Debug)]
 enum InstructionOutcome {
     GoTo(InstructionKey),
     ReturnTrue,
     ReturnFalse,
+    #[default]
     Error,
 }
 
+#[derive(Clone)]
 struct Instruction {
     opcode: u16,
     params: String,
 }
 
+#[derive(Clone)]
 pub struct Constant {
     pub name: String,
     pub value: f32,
 }
 
+#[derive(Clone)]
 pub struct Variable {
     pub name: String,
     pub value: f32,

@@ -4,7 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.                   /
 ////////////////////////////////////////////////////////////////////////////////
 
-use crate::constants::data_kinds::{DbpfKind, Id};
+use crate::constants::data_kinds::{DbpfEntry, DbpfId};
 use crate::types::unimplemented::Unimplemented;
 use binrw::binrw;
 

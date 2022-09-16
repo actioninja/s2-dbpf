@@ -4,7 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.                   /
 ////////////////////////////////////////////////////////////////////////////////
 
-use crate::constants::data_kinds::{DbpfKind, Id};
+use crate::constants::data_kinds::{DbpfEntry, DbpfId};
 use crate::types::util::parser_args::ParserArgs;
 use binrw::binrw;
 use derive_more::Constructor;
@@ -17,8 +17,8 @@ pub struct Unimplemented {
     data: Vec<u8>,
 }
 
-impl DbpfKind for Unimplemented {
-    fn id(&self) -> Id {
-        Id::UiData
+impl DbpfEntry for Unimplemented {
+    fn id(&self) -> DbpfId {
+        DbpfId::UiData
     }
 }

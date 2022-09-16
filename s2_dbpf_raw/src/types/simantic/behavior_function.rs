@@ -12,7 +12,7 @@
 
 use std::io::{Read, Seek, Write};
 
-use crate::constants::data_kinds::{DbpfKind, Id};
+use crate::constants::data_kinds::{DbpfEntry, DbpfId};
 use crate::types::util::parser_args::ParserArgs;
 use binrw::{binrw, BinRead, BinResult, BinWrite, NullString, ReadOptions, VecArgs, WriteOptions};
 #[cfg(test)]
@@ -27,13 +27,13 @@ use test_strategy::Arbitrary;
 pub type BHAV = BehaviorFunction;
 
 #[binrw]
-#[derive(Debug, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(test, derive(Arbitrary))]
 #[brw(little)]
 #[br(import_raw(args: ParserArgs))]
 pub struct BehaviorFunction {
-    #[br(map(binrw::NullString::into_string))]
-    #[bw(map(| x: & String | NullString::from_string(x.clone())))]
+    #[br(try_map(NullString::try_into))]
+    #[bw(map(| x: &String | NullString::from(x.clone())))]
     #[brw(pad_size_to = 64)]
     #[cfg_attr(test, strategy("[\\x01-\\xFF]{1,64}"))] //non-null ascii characters only
     pub file_name: String,
@@ -52,9 +52,9 @@ pub struct BehaviorFunction {
     pub instructions: Vec<Instruction>,
 }
 
-impl DbpfKind for BehaviorFunction {
-    fn id(&self) -> Id {
-        Id::BehaviorFunction
+impl DbpfEntry for BehaviorFunction {
+    fn id(&self) -> DbpfId {
+        DbpfId::BehaviorFunction
     }
 
     fn name(&self) -> Option<String> {
@@ -95,7 +95,7 @@ impl Default for Signature {
     }
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct Instruction {
     pub opcode: u16,
     pub goto_true: GoTo,

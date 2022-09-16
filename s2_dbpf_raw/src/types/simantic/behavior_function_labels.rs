@@ -4,7 +4,8 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.                   /
 ////////////////////////////////////////////////////////////////////////////////
 
-use crate::constants::data_kinds::{DbpfKind, Id};
+use crate::constants::data_kinds::{DbpfEntry, DbpfId};
+use crate::types::util::parser_args::ParserArgs;
 use binrw::{binrw, NullString};
 #[cfg(test)]
 use test_strategy::Arbitrary;
@@ -14,16 +15,17 @@ pub type TPRP = BehaviorFunctionLabels;
 #[binrw]
 #[derive(Debug, PartialEq, Clone)]
 #[cfg_attr(test, derive(Arbitrary))]
+#[br(import_raw(args: ParserArgs))]
 pub struct BehaviorFunctionLabels {
-    #[br(map(NullString::into_string))]
-    #[bw(map(| x: & String | NullString::from_string(x.clone())))]
+    #[br(try_map(NullString::try_into))]
+    #[bw(map(| x: & String | NullString::from(x.clone())))]
     #[brw(pad_size_to = 64)]
     //Supposedly unused
     file_name: String,
 }
 
-impl DbpfKind for BehaviorFunctionLabels {
-    fn id(&self) -> Id {
-        Id::BehaviorFunctionLabels
+impl DbpfEntry for BehaviorFunctionLabels {
+    fn id(&self) -> DbpfId {
+        DbpfId::BehaviorFunctionLabels
     }
 }

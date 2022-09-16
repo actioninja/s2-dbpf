@@ -89,7 +89,7 @@ pub struct Entry {
 #[cfg(test)]
 mod test {
     use super::*;
-    use crate::constants::data_kinds::Id;
+    use crate::constants::data_kinds::DbpfId;
     use crate::types::package::database_packed_file::{GroupId, InstanceId, Key, ResourceId};
     use binrw::{BinReaderExt, BinWriterExt};
     use std::io::Cursor;
@@ -101,8 +101,18 @@ mod test {
         let mut in_dir = Dir {
             table: HashMap::new(),
         };
-        let key = Key::new(Id::UiData, GroupId(1), InstanceId(2), Some(ResourceId(3)));
-        let key2 = Key::new(Id::UiData, GroupId(2), InstanceId(2), Some(ResourceId(3)));
+        let key = Key::new(
+            DbpfId::UiData,
+            GroupId(1),
+            InstanceId(2),
+            Some(ResourceId(3)),
+        );
+        let key2 = Key::new(
+            DbpfId::UiData,
+            GroupId(2),
+            InstanceId(2),
+            Some(ResourceId(3)),
+        );
         let dir_entry = Entry {
             decompressed_size: Size(8),
         };

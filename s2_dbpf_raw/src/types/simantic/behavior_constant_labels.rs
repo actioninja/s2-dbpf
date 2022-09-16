@@ -4,17 +4,19 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.                   /
 ////////////////////////////////////////////////////////////////////////////////
 
-use crate::constants::data_kinds::{DbpfKind, Id};
+use crate::constants::data_kinds::{DbpfEntry, DbpfId};
+use crate::types::util::parser_args::ParserArgs;
 use binrw::{binrw, NullString};
 
 pub type TRCN = BehaviorConstantLabels;
 
 #[binrw]
-#[derive(Debug, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 #[brw(little)]
+#[br(import_raw(args: ParserArgs))]
 pub struct BehaviorConstantLabels {
-    #[br(map(NullString::into_string))]
-    #[bw(map(| x: & String | NullString::from_string(x.clone())))]
+    #[br(try_map(NullString::try_into))]
+    #[bw(map(| x: &String | NullString::from(x.clone())))]
     pub file_name: String,
     #[brw(pad_size_to = 64)]
     #[brw(magic(b"NCRT"))]
@@ -27,9 +29,9 @@ pub struct BehaviorConstantLabels {
     pub labels: Vec<BconLabel>,
 }
 
-impl DbpfKind for BehaviorConstantLabels {
-    fn id(&self) -> Id {
-        Id::BehaviorFunctionLabels
+impl DbpfEntry for BehaviorConstantLabels {
+    fn id(&self) -> DbpfId {
+        DbpfId::BehaviorFunctionLabels
     }
 
     fn name(&self) -> Option<String> {
@@ -38,7 +40,7 @@ impl DbpfKind for BehaviorConstantLabels {
 }
 
 #[binrw]
-#[derive(Debug, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 #[brw(little)]
 pub struct BconLabel {
     #[brw(pad_before = 32)]

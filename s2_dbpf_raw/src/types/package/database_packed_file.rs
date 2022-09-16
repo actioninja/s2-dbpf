@@ -12,15 +12,15 @@
 
 use binrw::*;
 use derive_more::{AsRef, Constructor, Display};
-use slotmap::{new_key_type, SecondaryMap, SlotMap};
 use std::collections::HashMap;
 use std::io::{Cursor, Read, Seek, SeekFrom, Write};
 
-use crate::constants::data_kinds::Id;
+use crate::constants::data_kinds::{DbpfId, DbpfKind};
 use crate::types::package::directory::{Dir, SIZE_OF_DIR_ENTRY, SIZE_OF_DIR_ENTRY_WITH_RESOURCE};
 use crate::types::package::header::Header;
 use crate::types::package::index_table::IndexTable;
 use crate::types::util::bytes::{Position, Size};
+use crate::types::util::parser_args::ParserArgs;
 #[cfg(test)]
 use proptest::prelude::*;
 use refpack::decompress;
@@ -50,7 +50,7 @@ impl BinRead for Dbpf {
         let compression_position = index_table
             .table
             .iter()
-            .find(|(key, _entry)| key.kind == Id::Directory)
+            .find(|(key, _entry)| key.kind == DbpfId::Directory)
             .map(|(_, entry)| entry);
 
         let compression_table = if let Some(compression_entry) = compression_position {
@@ -70,16 +70,23 @@ impl BinRead for Dbpf {
 
         let mut entries_table = HashMap::new();
         for (key, entry) in index_table.table {
+            let parser_args = ParserArgs {
+                header: header.clone(),
+                index_entry: entry,
+            };
             let new_kind = if let Some(ref compression_table) = compression_table {
                 let decompressed_size = compression_table.table[&key].decompressed_size.0;
                 let mut decomp_buffer = Cursor::new(vec![0u8; decompressed_size as usize]);
                 decompress(reader, &mut decomp_buffer).expect("Decompression failed");
                 decomp_buffer.set_position(0);
-                ::parse(&mut decomp_buffer, key.kind, options, entry.size)?
+                DbpfKind::parse(&mut decomp_buffer, key.kind, options, parser_args)?
             } else {
-                Kind::parse(reader, key.kind, options, entry.size)?
+                DbpfKind::parse(reader, key.kind, options, parser_args)?
             };
-            let new_entry = Entry { compressed: false };
+            let new_entry = Entry {
+                compressed: false,
+                data: new_kind,
+            };
             entries_table.insert(key, new_entry);
         }
 
@@ -120,7 +127,7 @@ impl BinWrite for Dbpf {
 #[cfg_attr(test, derive(Arbitrary))]
 #[cfg_attr(test, arbitrary(args = (bool,)))]
 pub struct Key {
-    pub kind: Id,
+    pub kind: DbpfId,
     pub group_id: GroupId,
     pub instance_id: InstanceId,
     #[br(if(has_resource))]
@@ -145,6 +152,6 @@ pub struct ResourceId(pub u32);
 
 #[derive(Debug, Clone)]
 pub struct Entry {
-    compressed: bool,
-    //data:
+    pub compressed: bool,
+    pub data: DbpfKind,
 }

@@ -4,7 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.                   /
 ////////////////////////////////////////////////////////////////////////////////
 
-use crate::constants::data_kinds::{DbpfKind, Id};
+use crate::constants::data_kinds::{DbpfEntry, DbpfId};
 use crate::types::util::parser_args::ParserArgs;
 use binrw::{binrw, NullString};
 #[cfg(test)]
@@ -18,8 +18,8 @@ pub type BCON = BehaviorConstants;
 #[brw(little)]
 #[br(import_raw(args: ParserArgs))]
 pub struct BehaviorConstants {
-    #[br(map(NullString::into_string))]
-    #[bw(map(| x: & String | NullString::from_string(x.clone())))]
+    #[br(try_map(NullString::try_into))]
+    #[bw(map(| x: & String | NullString::from(x.clone())))]
     #[brw(pad_size_to = 64)]
     pub file_name: String,
     #[br(temp)]
@@ -31,9 +31,9 @@ pub struct BehaviorConstants {
     pub constants: Vec<i16>,
 }
 
-impl DbpfKind for BehaviorConstants {
-    fn id(&self) -> Id {
-        Id::BehaviorConstant
+impl DbpfEntry for BehaviorConstants {
+    fn id(&self) -> DbpfId {
+        DbpfId::BehaviorConstant
     }
 
     fn name(&self) -> Option<String> {
@@ -65,12 +65,12 @@ mod tests {
             0x01, 0x00, 0x02, 0x00, 0x03, 0x00, 0x04, 0x00, // constants
             0x05, 0x00, 0x06, 0x00, 0x07, 0x00, 0x08, 0x00, // constants
         ],
-        Bcon {
+        BehaviorConstants {
             file_name: "TestFile".to_string(),
             flags: 8,
             constants: vec![1, 2, 3, 4, 5, 6, 7, 8]
         },
-        Bcon,
+        BehaviorConstants,
         bcon
     );
 }
