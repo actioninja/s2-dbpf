@@ -52,7 +52,8 @@ impl Default for Header {
 }
 
 impl Header {
-    #[must_use] pub fn has_resource_id(&self) -> bool {
+    #[must_use]
+    pub fn has_resource_id(&self) -> bool {
         self.index_minor_version.unwrap_or(0) >= 2
     }
 }

@@ -4,6 +4,6 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.                   /
 ////////////////////////////////////////////////////////////////////////////////
 
-type SCOR = Scores;
+pub type SCOR = Scores;
 
 pub struct Scores {}

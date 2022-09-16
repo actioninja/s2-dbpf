@@ -94,7 +94,6 @@ mod test {
     use binrw::{BinReaderExt, BinWriterExt};
     use std::io::Cursor;
     use test_strategy::proptest;
-    
 
     #[test]
     fn simple_test() {

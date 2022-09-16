@@ -10,10 +10,10 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.                   /
 ////////////////////////////////////////////////////////////////////////////////
 
-use binrw::{BinRead, BinResult, ReadOptions, binrw};
+use binrw::{binrw, BinRead, BinResult, ReadOptions};
 use derive_more::{Constructor, Display};
 use std::collections::HashMap;
-use std::io::{Cursor, Read, Seek, SeekFrom, Write};
+use std::io::{Cursor, Read, Seek, SeekFrom};
 
 use crate::constants::data_kinds::{DbpfId, DbpfKind};
 use crate::types::package::directory::{Dir, SIZE_OF_DIR_ENTRY, SIZE_OF_DIR_ENTRY_WITH_RESOURCE};

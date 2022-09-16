@@ -13,6 +13,6 @@
 #![allow(clippy::too_many_lines)]
 
 pub mod constants;
+pub mod error;
 mod test_helpers;
 pub mod types;
-pub mod error;

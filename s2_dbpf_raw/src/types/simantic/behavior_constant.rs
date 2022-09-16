@@ -48,7 +48,6 @@ mod tests {
     use binrw::{BinReaderExt, BinWriterExt};
     use proptest::prelude::*;
     use std::io::Cursor;
-    
 
     test_parsing!(
         [
