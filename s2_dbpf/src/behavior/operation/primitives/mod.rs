@@ -4,10 +4,16 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.                   /
 ////////////////////////////////////////////////////////////////////////////////
 
-pub struct Operation {}
+mod sleep;
 
-pub struct OpSpec {
-    name: String,
-    description: Option<String>,
-    opcode: u16,
+pub trait PrimitiveOp {
+    fn from_args(args: &[u8]) -> Self;
+
+    fn get_args(&self) -> [u8; 16];
 }
+
+pub enum ReturnValues {
+    TrueFalse,
+}
+
+pub enum Primitive {}

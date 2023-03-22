@@ -9,3 +9,4 @@ pub mod behavior_constant_labels;
 pub mod behavior_flowchart_tree;
 pub mod behavior_function;
 pub mod behavior_function_labels;
+pub mod global_data;

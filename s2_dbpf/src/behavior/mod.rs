@@ -4,28 +4,36 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.                   /
 ////////////////////////////////////////////////////////////////////////////////
 
+pub mod operation;
+mod spec;
+
+use crate::behavior::operation::Operation;
 use slotmap::{new_key_type, SlotMap};
 
 new_key_type! {
-    struct ConstantKey;
-    struct VariableKey;
-    struct InstructionKey;
+    pub struct ConstantKey;
+    pub struct VariableKey;
+    pub struct InstructionKey;
+    pub struct ParameterKey;
 }
 
-#[derive(Clone)]
-struct Behavior {
-    constants: SlotMap<ConstantKey, Constant>,
-    variables: SlotMap<VariableKey, Variable>,
-    instructions: SlotMap<InstructionKey, Instruction>,
-    head: InstructionKey,
+#[derive(Clone, Default)]
+pub struct Behavior {
+    pub constants: SlotMap<ConstantKey, Constant>,
+    pub variables: SlotMap<VariableKey, Variable>,
+    pub parameters: SlotMap<ParameterKey, Variable>,
+    pub instructions: SlotMap<InstructionKey, Instruction>,
+    pub head: Option<InstructionKey>,
 }
 
 impl Behavior {
-    pub fn new() {}
+    pub fn new() -> Self {
+        Behavior::default()
+    }
 }
 
 #[derive(Clone, Copy, Default, PartialEq, Eq, Debug)]
-enum InstructionOutcome {
+pub enum InstructionOutcome {
     GoTo(InstructionKey),
     ReturnTrue,
     ReturnFalse,
@@ -34,9 +42,10 @@ enum InstructionOutcome {
 }
 
 #[derive(Clone)]
-struct Instruction {
-    opcode: u16,
-    params: String,
+pub struct Instruction {
+    operation: Operation,
+    true_outcome: InstructionOutcome,
+    false_outcome: InstructionOutcome,
 }
 
 #[derive(Clone)]

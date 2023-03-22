@@ -4,4 +4,13 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.                   /
 ////////////////////////////////////////////////////////////////////////////////
 
-pub struct GlobalData {}
+use binrw::{binrw, NullString};
+
+#[binrw]
+#[derive(Default, Clone, PartialEq)]
+pub struct GlobalData {
+    #[br(try_map(NullString::try_into))]
+    #[bw(map(| x: & String | NullString::from(x.clone())))]
+    #[brw(pad_size_to = 64)]
+    pub file_name: String,
+}

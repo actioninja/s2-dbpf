@@ -17,7 +17,6 @@ pub mod effects_resource_tree;
 pub mod environment_cube_lighting;
 pub mod fence_post_layer;
 pub mod function;
-pub mod global_data;
 pub mod hitlist;
 pub mod house_descriptor;
 pub mod image_color_palette;
